@@ -1,6 +1,22 @@
 import { createTheme } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 
+declare module '@mui/material/styles' {
+    interface TypographyVariants {
+        footer: React.CSSProperties;
+    }
+
+    interface TypographyVariantsOptions {
+        footer?: React.CSSProperties;
+    }
+}
+
+declare module '@mui/material/Typography' {
+    interface TypographyPropsVariantOverrides {
+        footer: true;
+    }
+}
+
 const theme = createTheme({
     palette: {
         primary: {
@@ -8,6 +24,11 @@ const theme = createTheme({
         },
         error: {
             main: red.A400,
+        },
+    },
+    typography: {
+        footer: {
+            fontSize: '0.7rem',
         },
     },
     components: {
@@ -30,11 +51,14 @@ const theme = createTheme({
             },
         },
         MuiTypography: {
+            defaultProps: {
+                variantMapping: {
+                    footer: 'h6',
+                },
+            },
             styleOverrides: {
                 root: {
                     fontFamily: 'Merriweather',
-                    fontWeight: 300,
-                    fontSize: 13,
                 },
             },
         },

@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import Footer from '~/components/layout/Footer';
 import HeaderBar from '~/components/layout/Header';
 
 const Home = () => {
@@ -124,7 +125,10 @@ const Home = () => {
             </Box>
             <Box
                 sx={{
-                    height: '10vh',
+                    height: '0vh',
+                    '@media (min-width: 900px)': {
+                        height: '10vh',
+                    },
                 }}
             ></Box>
             <Box
@@ -161,6 +165,15 @@ const Home = () => {
             >
                 <img src="src/assets/images/coffee-brewing.jpg" width="100%" height="100%" alt="coffee-brewing" />
             </Box>
+            <Box
+                sx={{
+                    height: '0vh',
+                    '@media (min-width: 900px)': {
+                        height: '10vh',
+                    },
+                }}
+            ></Box>
+            <Footer />
         </Box>
     );
 };

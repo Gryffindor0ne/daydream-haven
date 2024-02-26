@@ -31,7 +31,7 @@ const HeaderBar = (props: Props) => {
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ my: 2, fontSize: 17 }}>
+            <Typography variant="h6" sx={{ my: 2, fontFamily: 'Fraunces', fontWeight: 700, fontSize: 25 }}>
                 Daydream Haven
             </Typography>
             <Divider />
@@ -82,14 +82,14 @@ const HeaderBar = (props: Props) => {
                         variant="h6"
                         component="div"
                         sx={{
-                            fontFamily: 'Merriweather',
-                            fontWeight: 400,
-                            fontSize: 20,
+                            fontFamily: 'Fraunces',
+                            fontWeight: 700,
+                            fontSize: 28,
                             flexGrow: 1,
                             textAlign: 'center',
                             '@media (min-width: 900px)': {
                                 textAlign: 'left',
-                                fontSize: 25,
+                                fontSize: 29,
                             },
                             display: { sm: 'block' },
                         }}
@@ -107,7 +107,7 @@ const HeaderBar = (props: Props) => {
                             </Button>
                         ))}
                     </Box>
-                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                    <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                         {userItems.map((item) => (
                             <Button
                                 key={item}
