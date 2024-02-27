@@ -12,6 +12,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
     window?: () => Window;
@@ -25,20 +26,27 @@ const HeaderBar = (props: Props) => {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
 
+    const navigate = useNavigate();
+    const handleHomeButtonClick = () => navigate(`/`);
+
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
     };
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ my: 2, fontFamily: 'Fraunces', fontWeight: 700, fontSize: 25 }}>
+            <Typography
+                onClick={handleHomeButtonClick}
+                variant="h6"
+                sx={{ my: 2, fontFamily: 'Fraunces', fontWeight: 700, fontSize: 25, cursor: 'pointer' }}
+            >
                 Daydream Haven
             </Typography>
             <Divider />
             <List>
                 {categoryItems.map((item) => (
                     <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'left' }}>
+                        <ListItemButton onClick={() => navigate(`/${item.toLowerCase()}`)} sx={{ textAlign: 'left' }}>
                             <ListItemText primary={item} />
                         </ListItemButton>
                     </ListItem>
@@ -48,7 +56,7 @@ const HeaderBar = (props: Props) => {
             <List>
                 {userItems.map((item) => (
                     <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'left' }}>
+                        <ListItemButton onClick={() => navigate(`/${item.toLowerCase()}`)} sx={{ textAlign: 'left' }}>
                             <ListItemText primary={item} />
                         </ListItemButton>
                     </ListItem>
@@ -79,6 +87,7 @@ const HeaderBar = (props: Props) => {
                         <MenuIcon />
                     </IconButton>
                     <Typography
+                        onClick={handleHomeButtonClick}
                         variant="h6"
                         component="div"
                         sx={{
@@ -92,6 +101,7 @@ const HeaderBar = (props: Props) => {
                                 fontSize: 29,
                             },
                             display: { sm: 'block' },
+                            cursor: 'pointer',
                         }}
                     >
                         Daydream Haven
@@ -100,6 +110,7 @@ const HeaderBar = (props: Props) => {
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'block' } }}>
                         {categoryItems.map((item) => (
                             <Button
+                                onClick={() => navigate(`/${item.toLowerCase()}`)}
                                 key={item}
                                 sx={{ color: '#503C3C', fontFamily: 'Merriweather', fontWeight: 300, fontSize: 14 }}
                             >
@@ -110,6 +121,7 @@ const HeaderBar = (props: Props) => {
                     <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                         {userItems.map((item) => (
                             <Button
+                                onClick={() => navigate(`/${item.toLowerCase()}`)}
                                 key={item}
                                 sx={{
                                     color: '#503C3C',

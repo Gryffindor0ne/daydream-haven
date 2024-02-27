@@ -13,9 +13,9 @@ const Footer = () => {
         <Box
             sx={{
                 width: '100vw',
-                height: '45vh',
+                height: 'auto',
                 '@media (min-width: 900px)': {
-                    height: '18vh',
+                    height: '20vh',
                 },
                 padding: 5,
                 background: '#212121',

@@ -1,16 +1,28 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import Footer from '~/components/layout/Footer';
+import HeaderBar from '~/components/layout/Header';
 import Home from '~/pages';
-import Category from '~/pages/Category';
-import Product from '~/pages/Product';
+import About from '~/pages/About';
+import Contact from '~/pages/Contact';
+import Shop from '~/pages/Shop';
+import Subscription from '~/pages/Subscription';
+import Wholesale from '~/pages/Wholesale';
 
 const Router = () => {
     return (
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/category/*" element={<Category />} />
-            <Route path="/product/*" element={<Product />} />
-            <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+        <>
+            <HeaderBar />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about/*" element={<About />} />
+                <Route path="/shop/*" element={<Shop />} />
+                <Route path="/wholesale/*" element={<Wholesale />} />
+                <Route path="/subscription/*" element={<Subscription />} />
+                <Route path="/contact/*" element={<Contact />} />
+                <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+            <Footer />
+        </>
     );
 };
 
