@@ -1,15 +1,28 @@
-import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
+import ProductsList from '~/components/ProductsList';
+import { axiosInstance } from '~/lib/axiosInstance';
 
 const Shop = () => {
+    const [lists, setLists] = useState([]);
+
+    const getLists = async () => {
+        try {
+            const { data } = await axiosInstance.get(`/shop`);
+            setLists(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getLists();
+    }, []);
+
     return (
-        <Container maxWidth="lg">
-            <Box sx={{ paddingTop: 12, marginTop: 10 }}>
-                {' '}
-                <Typography>Shop</Typography>
-            </Box>
-        </Container>
+        <Box sx={{ minHeight: '75vh', paddingTop: 12, paddingX: 2, marginTop: 10, marginBottom: 22 }}>
+            {lists.length !== 0 ? <ProductsList lists={lists} /> : null}
+        </Box>
     );
 };
 

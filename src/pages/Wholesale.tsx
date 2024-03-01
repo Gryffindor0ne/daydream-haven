@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 const Wholesale = () => {
     return (
         <Container maxWidth="lg">
-            <Box sx={{ paddingTop: 12, marginTop: 10 }}>
+            <Box sx={{ minHeight: '75vh', paddingTop: 12, marginTop: 10 }}>
                 <Typography>Wholesale</Typography>
             </Box>
         </Container>

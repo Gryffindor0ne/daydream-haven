@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 
 const Home = () => {
     return (
-        <Box>
+        <Box sx={{ minHeight: '75vh' }}>
             <Box
                 sx={{
                     marginTop: 10,

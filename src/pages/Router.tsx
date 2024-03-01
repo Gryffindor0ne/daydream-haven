@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import ProductDetail from '~/components/ProductDetail';
 import Footer from '~/components/layout/Footer';
 import HeaderBar from '~/components/layout/Header';
 import Home from '~/pages';
@@ -14,11 +15,12 @@ const Router = () => {
             <HeaderBar />
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/about/*" element={<About />} />
-                <Route path="/shop/*" element={<Shop />} />
-                <Route path="/wholesale/*" element={<Wholesale />} />
-                <Route path="/subscription/*" element={<Subscription />} />
-                <Route path="/contact/*" element={<Contact />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/shop/:id" element={<ProductDetail />} />
+                <Route path="/wholesale" element={<Wholesale />} />
+                <Route path="/subscription" element={<Subscription />} />
+                <Route path="/contact" element={<Contact />} />
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
             <Footer />

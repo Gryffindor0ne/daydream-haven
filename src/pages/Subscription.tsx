@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 const Subscription = () => {
     return (
         <Container maxWidth="lg">
-            <Box sx={{ paddingTop: 12, marginTop: 10 }}>
+            <Box sx={{ minHeight: '75vh', paddingTop: 12, marginTop: 10 }}>
                 <Typography>Subscription</Typography>
             </Box>
         </Container>
