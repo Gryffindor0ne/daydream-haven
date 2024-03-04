@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -41,15 +42,13 @@ const About = () => {
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        filter: 'none',
-                        transition: 'filter 0.3s ease',
-                        '&:hover': {
-                            filter: 'grayscale(100%)',
-                        },
                     },
                 }}
             >
-                <img src="src/assets/images/daydream.jpg" alt="daydream" />
+                <img
+                    src="https://images.unsplash.com/photo-1536623975707-c4b3b2af565d?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="daydream"
+                />
             </Box>
             <Typography
                 sx={{
@@ -81,9 +80,7 @@ const About = () => {
             <Grid
                 container
                 spacing={{ xs: 3, md: 2 }}
-                sx={{ marginY: 30 }}
-                alignItems={'center'}
-                justifyContent={'flex-start'}
+                sx={{ marginY: 30, alignItems: 'center', justifyContent: 'flex-start' }}
             >
                 <Grid item xs={12} sm={12} md={12} lg={6}>
                     <Typography
@@ -101,7 +98,7 @@ const About = () => {
                     <Typography
                         sx={{
                             marginTop: 2,
-                            marginBottom: 5,
+                            marginBottom: 10,
                             paddingX: { xs: 10, sm: 15, md: 8, lg: 12, xl: 16 },
                             lineHeight: 1.8,
                         }}
@@ -109,11 +106,18 @@ const About = () => {
                         커피 한 잔으로 평온함을 얻음과 동시에 자유로운 상상의 숲속으로 들어갈 수 있습니다. 우리는 자유의
                         숲을 거닐며 마음의 안식과 평화를 찾을 수 있습니다. 꿈을 꾸며 더 나은 삶을 갈구할 수 있습니다.
                     </Typography>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', marginY: 10 }}>
+                        <Divider
+                            sx={{
+                                width: '50%',
+                            }}
+                        />
+                    </Box>
                     <Typography
                         sx={{
                             fontFamily: 'Gowun Batang',
                             marginTop: 2,
-                            marginBottom: 5,
+                            marginBottom: 7,
                             paddingX: { xs: 10, sm: 15, md: 8, lg: 12, xl: 16 },
                             lineHeight: 1.8,
                         }}
@@ -144,15 +148,13 @@ const About = () => {
                                 width: '100%',
                                 height: '100%',
                                 objectFit: 'cover',
-                                filter: 'none',
-                                transition: 'filter 0.3s ease',
-                                '&:hover': {
-                                    filter: 'grayscale(100%)',
-                                },
                             },
                         }}
                     >
-                        <img src="src/assets/images/sunshine.jpg" alt="sunshine" />
+                        <img
+                            src="https://images.unsplash.com/photo-1588406320565-9fa6d9901d1d?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="sunshine"
+                        />
                     </Box>
                 </Grid>
             </Grid>
@@ -175,15 +177,13 @@ const About = () => {
                                 width: '100%',
                                 height: '100%',
                                 objectFit: 'cover',
-                                filter: 'none',
-                                transition: 'filter 0.3s ease',
-                                '&:hover': {
-                                    filter: 'grayscale(100%)',
-                                },
                             },
                         }}
                     >
-                        <img src="src/assets/images/coffee-hand.jpg" alt="coffee-hand" />
+                        <img
+                            src="https://images.unsplash.com/photo-1550731358-491ded4af838?q=80&w=2667&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="coffee-hand"
+                        />
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6}>
