@@ -74,15 +74,15 @@ const HeaderBar = (props: Props) => {
                 sx={{
                     boxShadow: 1,
                     paddingY: 1,
+                    backgroundColor: '#ffffff',
                 }}
             >
                 <Toolbar>
                     <IconButton
                         color="inherit"
-                        aria-label="open drawer"
                         edge="start"
                         onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { md: 'none' } }}
+                        sx={{ mr: 2, display: { md: 'none' }, color: '#191919' }}
                     >
                         <MenuIcon />
                     </IconButton>
@@ -102,6 +102,7 @@ const HeaderBar = (props: Props) => {
                             },
                             display: { sm: 'block' },
                             cursor: 'pointer',
+                            color: '#191919',
                         }}
                     >
                         Daydream Haven

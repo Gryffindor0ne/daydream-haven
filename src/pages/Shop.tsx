@@ -21,7 +21,7 @@ const Shop = () => {
 
     return (
         <Box sx={{ minHeight: '75vh', paddingTop: 12, paddingX: 2, marginTop: 10, marginBottom: 22 }}>
-            {lists.length !== 0 ? <ProductsList lists={lists} /> : null}
+            {lists.length !== 0 && <ProductsList lists={lists} />}
         </Box>
     );
 };

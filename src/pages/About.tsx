@@ -7,9 +7,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 const About = () => {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const isTablet = useMediaQuery(theme.breakpoints.down('md'));
     return (
-        <Box sx={{ paddingTop: 12, paddingX: isMobile ? 0 : 15, marginTop: 10 }}>
+        <Box sx={{ paddingTop: 12, paddingX: isTablet ? 0 : 15, marginTop: 10 }}>
             <Typography
                 sx={{
                     fontSize: 30,

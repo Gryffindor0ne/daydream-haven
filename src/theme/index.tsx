@@ -20,7 +20,7 @@ declare module '@mui/material/Typography' {
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#ffffff',
+            main: '#B67352',
         },
         error: {
             main: red.A400,
@@ -32,13 +32,6 @@ const theme = createTheme({
         },
     },
     components: {
-        MuiCssBaseline: {
-            styleOverrides: {
-                body: {
-                    backgroundColor: '#ffffff',
-                },
-            },
-        },
         MuiButton: {
             styleOverrides: {
                 root: {

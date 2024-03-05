@@ -5,11 +5,13 @@ export type ProductInfo = {
     id: string;
     name: string;
     price: number;
+    delivery_fee: number;
     product_image: string;
+    product_detail_image: string[];
     category_no: number;
-    product_no: number;
-    roasting_level: number;
-    origin: number[];
+    roasting_level: string;
+    origin: string[];
+    flavor: string[];
     large_capacity: number;
 };
 

@@ -19,7 +19,7 @@ const Product = (content: ProductInfo) => {
             }}
         >
             <Box
-                onClick={() => navigate(`/shop/${content.product_no}`)}
+                onClick={() => navigate(`/shop/${content.id}`)}
                 sx={{
                     maxWidth: '100%',
                     height: 'auto',
@@ -39,7 +39,7 @@ const Product = (content: ProductInfo) => {
                 <img src={content.product_image} alt={`product_${content.id}`} />
             </Box>
             <Typography
-                onClick={() => navigate(`/shop/${content.product_no}`)}
+                onClick={() => navigate(`/shop/${content.id}`)}
                 sx={{
                     fontFamily: 'Gowun Batang',
                     fontSize: 16,
