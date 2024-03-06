@@ -2,7 +2,7 @@ import Grid from '@mui/material/Grid';
 import Product from '~/components/Product';
 
 export type ProductInfo = {
-    id: string;
+    id: number;
     name: string;
     price: number;
     delivery_fee: number;

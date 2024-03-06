@@ -4,14 +4,13 @@ import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProductInfo } from '~/components/ProductsList';
 import { axiosInstance } from '~/lib/axiosInstance';
+import ProductSelectBox from '~/components/ProductSelectBox';
+import { formattedNumber } from '~/utils/utils';
 
 const Dot = styled('span')({
     width: '2px',
@@ -27,37 +26,6 @@ const ProductDetail = () => {
 
     const theme = useTheme();
     const isTablet = useMediaQuery(theme.breakpoints.up('md'));
-
-    const [weight, setWeight] = useState('');
-    const [grindSize, setGrindSize] = useState('');
-
-    const grindSizeGroups = [
-        '갈지않음(홀빈)',
-        '에스프레소',
-        '모카포트',
-        '에어로프레스',
-        '프렌치프레스',
-        '핸드드립',
-        '커피메이커',
-        '더치커피',
-    ];
-
-    const handleWeightChange = (event: SelectChangeEvent) => {
-        setWeight(event.target.value);
-    };
-    const handleGrindSizeChange = (event: SelectChangeEvent) => {
-        setGrindSize(event.target.value);
-    };
-
-    const [isOpen, setIsOpen] = useState(false);
-
-    const handleSelectClick = () => {
-        setIsOpen(true);
-    };
-
-    const handleClose = () => {
-        setIsOpen(false);
-    };
 
     const getLists = async () => {
         try {
@@ -78,9 +46,6 @@ const ProductDetail = () => {
 
     const listItem = getListItemById(id as string);
 
-    const formattedNumber = (price: number) => new Intl.NumberFormat().format(price);
-
-    console.log(weight, grindSize);
     return (
         <Box sx={{ minHeight: '75vh', paddingTop: 20, paddingX: 2, marginTop: 10, marginBottom: 20 }}>
             <Grid container spacing={2} sx={{ marginBottom: 20 }}>
@@ -294,75 +259,9 @@ const ProductDetail = () => {
                                 {`${formattedNumber(listItem?.delivery_fee as number)}원  (50,000원 이상 구매 시 무료)`}
                             </Typography>
                         </Box>
-                        {/* <------------------------------------------------------------------------> */}
-                        <Box sx={{ marginTop: 5 }}>
-                            <FormControl sx={{ m: 1, minWidth: 120, width: 400 }}>
-                                <Typography
-                                    sx={{
-                                        width: 120,
-                                        fontSize: 13,
-                                        marginY: 0.5,
-                                        paddingLeft: 1,
-                                    }}
-                                >
-                                    용량
-                                </Typography>
-                                <Select value={weight} displayEmpty onChange={handleWeightChange} sx={{ fontSize: 12 }}>
-                                    <MenuItem value="" disabled sx={{ fontSize: 12 }}>
-                                        <em>용량을 선택하세요.</em>
-                                    </MenuItem>
-                                    <MenuItem value={200} sx={{ fontSize: 12 }}>
-                                        200g
-                                    </MenuItem>
-                                    <MenuItem value={500} sx={{ fontSize: 12 }}>
-                                        500g {`(+${formattedNumber(listItem?.price as number)}원)`}
-                                    </MenuItem>
-                                </Select>
-                            </FormControl>
-                            <FormControl sx={{ m: 1, minWidth: 120, width: 400 }}>
-                                <Typography
-                                    sx={{
-                                        width: 120,
-                                        fontSize: 13,
-                                        marginY: 0.5,
-                                        paddingLeft: 1,
-                                    }}
-                                >
-                                    분쇄도
-                                </Typography>
-                                {weight ? (
-                                    <Select
-                                        value={grindSize}
-                                        displayEmpty
-                                        onChange={handleGrindSizeChange}
-                                        sx={{ fontSize: 12 }}
-                                    >
-                                        <MenuItem value="" disabled sx={{ fontSize: 12 }}>
-                                            <em>분쇄도를 선택하세요</em>
-                                        </MenuItem>
+                        {/* <-----------------------------상품 선택 상자-----------------------------------------> */}
 
-                                        {grindSizeGroups.map((grindSize, idx) => (
-                                            <MenuItem key={idx} value={idx} sx={{ fontSize: 12 }}>
-                                                {grindSize}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                ) : (
-                                    <Select
-                                        value={grindSize}
-                                        onClose={handleClose}
-                                        onOpen={handleSelectClick}
-                                        displayEmpty={!isOpen}
-                                        onChange={handleGrindSizeChange}
-                                        sx={{ fontSize: 12 }}
-                                    >
-                                        <MenuItem value="" disabled sx={{ fontSize: 12 }}>
-                                            <em>{isOpen ? '용량을 먼저 선택해주세요.' : '분쇄도를 선택하세요.'}</em>
-                                        </MenuItem>
-                                    </Select>
-                                )}
-                            </FormControl>
-                        </Box>
+                        <ProductSelectBox product={listItem as ProductInfo} />
                     </Box>
                 </Grid>
             </Grid>

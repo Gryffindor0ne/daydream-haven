@@ -4,11 +4,12 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useNavigate } from 'react-router-dom';
 import { ProductInfo } from '~/components/ProductsList';
+import { formattedNumber } from '~/utils/utils';
 
 const Product = (content: ProductInfo) => {
     const theme = useTheme();
     const isBrowser = useMediaQuery(theme.breakpoints.down('lg'));
-    const formattedNumber = new Intl.NumberFormat().format(content.price);
+
     const navigate = useNavigate();
     return (
         <Box
@@ -53,7 +54,7 @@ const Product = (content: ProductInfo) => {
             </Typography>
             <Typography
                 sx={{ fontFamily: 'Gowun Batang', fontSize: 14, paddingX: 2 }}
-            >{`${formattedNumber}원`}</Typography>
+            >{`${formattedNumber(content.price)}원`}</Typography>
         </Box>
     );
 };
