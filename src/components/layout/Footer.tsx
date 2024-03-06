@@ -69,7 +69,7 @@ const Footer = () => {
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            flexDirection: 'column',
+                            flexDirection: isMobile ? 'row' : 'column',
                             color: isMobile ? '#FFD23F' : '#B67352',
                             marginTop: isMobile ? 4 : 0,
                             gap: isMobile ? 3 : 2,
