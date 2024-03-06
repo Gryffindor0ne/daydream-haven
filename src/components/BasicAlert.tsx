@@ -8,17 +8,35 @@ import Typography from '@mui/material/Typography';
 interface AlertProps {
     open: boolean;
     onClose: () => void;
+    message: string;
+    cartPopupClose?: () => void;
 }
 
-const BasicAlert: React.FC<AlertProps> = ({ open, onClose }: AlertProps) => {
+const BasicAlert: React.FC<AlertProps> = ({ open, onClose, message, cartPopupClose }: AlertProps) => {
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog
+            open={open}
+            onClose={() => {
+                onClose();
+                if (cartPopupClose) {
+                    cartPopupClose();
+                }
+            }}
+        >
             <DialogTitle sx={{ width: 400, fontSize: 17 }}>Daydream Haven에서 알려드립니다.</DialogTitle>
             <DialogContent>
-                <Typography sx={{ fontSize: 14 }}>동일한 선택이 존재합니다.</Typography>
+                <Typography sx={{ fontSize: 14 }}>{message}</Typography>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose} autoFocus>
+                <Button
+                    onClick={() => {
+                        onClose();
+                        if (cartPopupClose) {
+                            cartPopupClose();
+                        }
+                    }}
+                    autoFocus
+                >
                     확인
                 </Button>
             </DialogActions>

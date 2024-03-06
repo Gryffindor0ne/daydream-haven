@@ -11,6 +11,7 @@ import ProductSummaryBox from '~/components/ProductSummaryBox';
 import { formattedNumber } from '~/utils/utils';
 import BasicAlert from '~/components/BasicAlert';
 import { useNavigate } from 'react-router-dom';
+import CartGuidancePopup from '~/components/CartGuidancePopup';
 
 export type OrderProductSummaryInfo = {
     id: number;
@@ -27,6 +28,8 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
     const [selectedProducts, setSelectedProducts] = useState<OrderProductSummaryInfo[]>([]);
     const [isOpen, setIsOpen] = useState(false);
     const [showAlert, setShowAlert] = useState<boolean>(false);
+    const [showCartGuidancePopup, setShowCartGuidancePopup] = useState<boolean>(false);
+    const [alertMessage, setAlertMessage] = useState('');
 
     const navigate = useNavigate();
 
@@ -59,6 +62,9 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
 
     const handleAlertClose = () => {
         setShowAlert(false);
+    };
+    const handleCartGuidancePopupClose = () => {
+        setShowCartGuidancePopup(false);
     };
 
     const addProduct = useCallback(() => {
@@ -98,6 +104,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
             );
             if (existingProduct) {
                 setShowAlert(true);
+                setAlertMessage('동일한 선택이 존재합니다.');
             } else {
                 addProduct();
             }
@@ -106,9 +113,18 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
         }
     }, [addProduct, grindSize, isOpen, selectedProducts, weight]);
 
+    useEffect(() => {
+        if (showCartGuidancePopup && selectedProducts.length === 0) {
+            setShowAlert(true);
+            setAlertMessage('옵션을 선택하여야 합니다.');
+        } else {
+            setShowAlert(false);
+        }
+    }, [showCartGuidancePopup, selectedProducts]);
+
     return (
         <Box sx={{ marginTop: 5 }}>
-            {showAlert && <BasicAlert open={showAlert} onClose={handleAlertClose} />}
+            {showAlert && <BasicAlert open={showAlert} onClose={handleAlertClose} message={alertMessage} />}
             <FormControl sx={{ marginY: 2, maxWidth: 450, width: '100%' }}>
                 <Typography
                     sx={{
@@ -183,9 +199,22 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
 
             {/* <------------------------------------------------------------------------> */}
 
+            {showAlert && (
+                <BasicAlert
+                    open={showAlert}
+                    onClose={handleAlertClose}
+                    message={alertMessage}
+                    cartPopupClose={handleCartGuidancePopupClose}
+                />
+            )}
+
+            {showCartGuidancePopup && selectedProducts.length !== 0 && (
+                <CartGuidancePopup open={showCartGuidancePopup} onClose={handleCartGuidancePopupClose} />
+            )}
+
             <Stack direction="row" spacing={2} sx={{ marginTop: 5, height: 50 }}>
                 <Button
-                    onClick={() => navigate(`/cart`)}
+                    onClick={() => setShowCartGuidancePopup(true)}
                     variant="outlined"
                     sx={{
                         width: 215,
@@ -199,7 +228,12 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                     장바구니 담기
                 </Button>
                 <Button
-                    onClick={() => navigate(`/cart`)}
+                    onClick={() => {
+                        if (selectedProducts.length !== 0) {
+                            navigate(`/cart`);
+                        }
+                        setShowCartGuidancePopup(true);
+                    }}
                     variant="contained"
                     sx={{
                         width: 215,
