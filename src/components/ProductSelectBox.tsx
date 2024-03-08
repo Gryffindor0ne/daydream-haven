@@ -12,9 +12,14 @@ import { formattedNumber } from '~/utils/utils';
 import BasicAlert from '~/components/BasicAlert';
 import { useNavigate } from 'react-router-dom';
 import CartGuidancePopup from '~/components/CartGuidancePopup';
+import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
+import { cartState, addToCart } from '~/features/cart/cartSlice';
+import DuplicateGuidancePopup from '~/components/DuplicateGuidancePopup';
+import { nanoid } from 'nanoid';
+import { addToPurchase } from '~/features/purchase/purchaseSlice';
 
 export type OrderProductSummaryInfo = {
-    id: number;
+    id: string;
     name: string;
     price: number;
     weight: string;
@@ -29,9 +34,17 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [showCartGuidancePopup, setShowCartGuidancePopup] = useState<boolean>(false);
+    const [showDuplicateGuidancePopup, setShowDuplicateGuidancePopup] = useState<boolean>(false);
     const [alertMessage, setAlertMessage] = useState('');
 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
+    const WEIGHT_OPTIONS = [
+        { value: '', label: '용량을 선택하세요.', disabled: true },
+        { value: '200', label: '200g' },
+        { value: '500', label: `500g (+${formattedNumber(product?.price as number)}원)` },
+    ];
 
     const grindSizeGroups = [
         '',
@@ -45,11 +58,9 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
         '더치커피',
     ];
 
-    const handleWeightChange = (event: SelectChangeEvent) => {
-        setWeight(event.target.value);
-    };
-    const handleGrindSizeChange = (event: SelectChangeEvent) => {
-        setGrindSize(event.target.value);
+    //weight와 grindSize를 통합
+    const handleOptionChange = (event: SelectChangeEvent, setter: React.Dispatch<React.SetStateAction<string>>) => {
+        setter(event.target.value);
     };
 
     const handleSelectClick = () => {
@@ -63,13 +74,18 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
     const handleAlertClose = () => {
         setShowAlert(false);
     };
-    const handleCartGuidancePopupClose = () => {
-        setShowCartGuidancePopup(false);
+
+    const handleCartGuidancePopupToggle = (open: boolean) => {
+        setShowCartGuidancePopup(open);
+    };
+
+    const handleDuplicateGuidancePopupClose = () => {
+        setShowDuplicateGuidancePopup(false);
     };
 
     const addProduct = useCallback(() => {
         const newProduct: OrderProductSummaryInfo = {
-            id: selectedProducts.length + 1,
+            id: nanoid(),
             name: product.name,
             price: parseInt(weight) === 200 ? product.price : product.price * 2,
             weight: weight,
@@ -78,13 +94,13 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
         };
 
         setSelectedProducts((prevProducts) => [...prevProducts, newProduct]);
-    }, [selectedProducts, product, weight, grindSize]);
+    }, [product, weight, grindSize]);
 
-    const handleDelete = (productId: number) => {
+    const handleDelete = (productId: string) => {
         setSelectedProducts((prevProducts) => prevProducts.filter((product) => product.id !== productId));
     };
 
-    const handleQuantityChange = (productId: number, newQuantity: number) => {
+    const handleQuantityChange = (productId: string, newQuantity: number) => {
         setSelectedProducts((prevProducts) => {
             return prevProducts.map((item) => {
                 if (item.id === productId) {
@@ -96,11 +112,31 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
             });
         });
     };
+    const { cartItems } = useAppSelector(cartState);
+
+    const findDuplicateProducts = () => {
+        const duplicates: OrderProductSummaryInfo[] = [];
+
+        selectedProducts.forEach((selectedProduct) => {
+            const foundProduct = cartItems.find((product) => {
+                return (
+                    product.grindSize === selectedProduct.grindSize &&
+                    product.weight === selectedProduct.weight &&
+                    product.name === selectedProduct.name
+                );
+            });
+
+            if (foundProduct) {
+                duplicates.push(foundProduct);
+            }
+        });
+        return duplicates;
+    };
 
     useEffect(() => {
-        if (grindSize && !isOpen) {
+        if (grindSize && !isOpen && product) {
             const existingProduct = selectedProducts.find(
-                (item) => item.grindSize === grindSize && item.weight === weight,
+                (item) => item.grindSize === grindSize && item.weight === weight && item.name === product.name,
             );
             if (existingProduct) {
                 setShowAlert(true);
@@ -111,7 +147,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
             setWeight('');
             setGrindSize('');
         }
-    }, [addProduct, grindSize, isOpen, selectedProducts, weight]);
+    }, [addProduct, grindSize, isOpen, selectedProducts, weight, product]);
 
     useEffect(() => {
         if (showCartGuidancePopup && selectedProducts.length === 0) {
@@ -136,16 +172,22 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                 >
                     용량
                 </Typography>
-                <Select value={weight} displayEmpty onChange={handleWeightChange} sx={{ fontSize: 12 }}>
-                    <MenuItem value="" disabled sx={{ fontSize: 12 }}>
-                        <em>용량을 선택하세요.</em>
-                    </MenuItem>
-                    <MenuItem value={200} sx={{ fontSize: 12 }}>
-                        200g
-                    </MenuItem>
-                    <MenuItem value={500} sx={{ fontSize: 12 }}>
-                        500g {`(+${formattedNumber(product?.price as number)}원)`}
-                    </MenuItem>
+                <Select
+                    value={weight}
+                    displayEmpty
+                    onChange={(event) => handleOptionChange(event, setWeight)}
+                    sx={{ fontSize: 12 }}
+                >
+                    {WEIGHT_OPTIONS.map((option) => (
+                        <MenuItem
+                            key={option.value}
+                            value={option.value}
+                            disabled={option.disabled}
+                            sx={{ fontSize: 12 }}
+                        >
+                            {option.label}
+                        </MenuItem>
+                    ))}
                 </Select>
             </FormControl>
             <FormControl sx={{ marginY: 2, maxWidth: 450, width: '100%' }}>
@@ -160,7 +202,12 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                     분쇄도
                 </Typography>
                 {weight ? (
-                    <Select value={grindSize} displayEmpty onChange={handleGrindSizeChange} sx={{ fontSize: 12 }}>
+                    <Select
+                        value={grindSize}
+                        displayEmpty
+                        onChange={(event) => handleOptionChange(event, setGrindSize)}
+                        sx={{ fontSize: 12 }}
+                    >
                         <MenuItem value="" disabled sx={{ fontSize: 12 }}>
                             <em>분쇄도를 선택하세요</em>
                         </MenuItem>
@@ -177,7 +224,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                         onClose={handleClose}
                         onOpen={handleSelectClick}
                         displayEmpty={!isOpen}
-                        onChange={handleGrindSizeChange}
+                        onChange={(event) => handleOptionChange(event, setGrindSize)}
                         sx={{ fontSize: 12 }}
                     >
                         <MenuItem value="" disabled sx={{ fontSize: 12 }}>
@@ -204,17 +251,33 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                     open={showAlert}
                     onClose={handleAlertClose}
                     message={alertMessage}
-                    cartPopupClose={handleCartGuidancePopupClose}
+                    cartPopupClose={handleCartGuidancePopupToggle}
                 />
             )}
 
             {showCartGuidancePopup && selectedProducts.length !== 0 && (
-                <CartGuidancePopup open={showCartGuidancePopup} onClose={handleCartGuidancePopupClose} />
+                <CartGuidancePopup open={showCartGuidancePopup} onClose={handleCartGuidancePopupToggle} />
+            )}
+
+            {showDuplicateGuidancePopup && (
+                <DuplicateGuidancePopup
+                    open={showDuplicateGuidancePopup}
+                    onClose={handleDuplicateGuidancePopupClose}
+                    showCartGuidancePopup={handleCartGuidancePopupToggle}
+                    products={selectedProducts}
+                />
             )}
 
             <Stack direction="row" spacing={2} sx={{ marginTop: 5, height: 50 }}>
                 <Button
-                    onClick={() => setShowCartGuidancePopup(true)}
+                    onClick={() => {
+                        if (findDuplicateProducts().length !== 0) {
+                            setShowDuplicateGuidancePopup(true);
+                        } else {
+                            setShowCartGuidancePopup(true);
+                            dispatch(addToCart(selectedProducts));
+                        }
+                    }}
                     variant="outlined"
                     sx={{
                         width: 215,
@@ -230,7 +293,8 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                 <Button
                     onClick={() => {
                         if (selectedProducts.length !== 0) {
-                            navigate(`/cart`);
+                            navigate(`/order`);
+                            dispatch(addToPurchase(selectedProducts));
                         }
                         setShowCartGuidancePopup(true);
                     }}

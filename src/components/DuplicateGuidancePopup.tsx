@@ -5,18 +5,27 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '~/app/reduxHooks';
+import { OrderProductSummaryInfo } from '~/components/ProductSelectBox';
+import { addToCart } from '~/features/cart/cartSlice';
 
 interface PopupProps {
     open: boolean;
-    onClose: (open: boolean) => void;
+    products: OrderProductSummaryInfo[];
+    onClose: () => void;
+    showCartGuidancePopup: (open: boolean) => void;
 }
 
-const CartGuidancePopup: React.FC<PopupProps> = ({ open, onClose }: PopupProps) => {
-    const navigate = useNavigate();
+const DuplicateGuidancePopup: React.FC<PopupProps> = ({
+    open,
+    onClose,
+    products,
+    showCartGuidancePopup,
+}: PopupProps) => {
+    const dispatch = useAppDispatch();
 
     return (
-        <Dialog open={open} onClose={() => onClose(false)}>
+        <Dialog open={open}>
             <DialogTitle
                 sx={{
                     width: 340,
@@ -32,11 +41,20 @@ const CartGuidancePopup: React.FC<PopupProps> = ({ open, onClose }: PopupProps) 
             </DialogTitle>
             <DialogContent>
                 <Typography
-                    sx={{ fontSize: 14, height: 50, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                    sx={{
+                        fontSize: 13,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
                 >
-                    선택하신 상품이 장바구니에 담겼습니다.
+                    장바구니에 동일한 상품이 존재합니다.
+                </Typography>
+                <Typography sx={{ fontSize: 13, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    장바구니에 해당 상품을 추가하겠습니까?
                 </Typography>
             </DialogContent>
+
             <DialogActions>
                 <Grid
                     container
@@ -46,33 +64,11 @@ const CartGuidancePopup: React.FC<PopupProps> = ({ open, onClose }: PopupProps) 
                     <Grid item>
                         <Button
                             variant="outlined"
-                            onClick={() => onClose(false)}
+                            onClick={onClose}
                             sx={{
                                 '&:hover': {
                                     color: '#B67352',
                                     background: '#ffffff',
-                                },
-                            }}
-                        >
-                            <Typography
-                                sx={{
-                                    fontSize: 14,
-                                }}
-                            >
-                                계속 쇼핑하기
-                            </Typography>
-                        </Button>
-                    </Grid>
-                    <Grid item>
-                        <Button
-                            variant="contained"
-                            onClick={() => {
-                                navigate(`/cart`);
-                            }}
-                            sx={{
-                                '&:hover': {
-                                    color: '#ffffff',
-                                    background: '#B67352',
                                 },
                             }}
                             autoFocus
@@ -82,7 +78,31 @@ const CartGuidancePopup: React.FC<PopupProps> = ({ open, onClose }: PopupProps) 
                                     fontSize: 14,
                                 }}
                             >
-                                장바구니 가기
+                                취소
+                            </Typography>
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Button
+                            variant="contained"
+                            onClick={() => {
+                                dispatch(addToCart(products));
+                                showCartGuidancePopup(true);
+                                onClose();
+                            }}
+                            sx={{
+                                '&:hover': {
+                                    color: '#ffffff',
+                                    background: '#B67352',
+                                },
+                            }}
+                        >
+                            <Typography
+                                sx={{
+                                    fontSize: 14,
+                                }}
+                            >
+                                확인
                             </Typography>
                         </Button>
                     </Grid>
@@ -92,4 +112,4 @@ const CartGuidancePopup: React.FC<PopupProps> = ({ open, onClose }: PopupProps) 
     );
 };
 
-export default CartGuidancePopup;
+export default DuplicateGuidancePopup;

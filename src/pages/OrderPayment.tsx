@@ -2,17 +2,16 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useAppSelector } from '~/app/reduxHooks';
-import { cartState } from '~/features/cart/cartSlice';
+import { selectPurchase } from '~/features/purchase/purchaseSlice';
 
-const ShoppingCart = () => {
-    const { cartItems } = useAppSelector(cartState);
-
+const OrderPayment = () => {
+    const { selectedProducts } = useAppSelector(selectPurchase);
     return (
         <Container maxWidth="lg">
             <Box sx={{ minHeight: '75vh', paddingTop: 12, marginTop: 10 }}>
-                <Typography>ShoppingCart</Typography>
+                <Typography>OrderPayment</Typography>
 
-                {cartItems.map((item, idx) => (
+                {selectedProducts.map((item, idx) => (
                     <Typography key={idx}>
                         {item.name} {item.quantity} {item.price}
                     </Typography>
@@ -22,4 +21,4 @@ const ShoppingCart = () => {
     );
 };
 
-export default ShoppingCart;
+export default OrderPayment;

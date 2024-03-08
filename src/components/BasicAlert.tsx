@@ -9,7 +9,7 @@ interface AlertProps {
     open: boolean;
     onClose: () => void;
     message: string;
-    cartPopupClose?: () => void;
+    cartPopupClose?: (open: boolean) => void;
 }
 
 const BasicAlert: React.FC<AlertProps> = ({ open, onClose, message, cartPopupClose }: AlertProps) => {
@@ -19,7 +19,7 @@ const BasicAlert: React.FC<AlertProps> = ({ open, onClose, message, cartPopupClo
             onClose={() => {
                 onClose();
                 if (cartPopupClose) {
-                    cartPopupClose();
+                    cartPopupClose(false);
                 }
             }}
         >
@@ -32,7 +32,7 @@ const BasicAlert: React.FC<AlertProps> = ({ open, onClose, message, cartPopupClo
                     onClick={() => {
                         onClose();
                         if (cartPopupClose) {
-                            cartPopupClose();
+                            cartPopupClose(false);
                         }
                     }}
                     autoFocus
