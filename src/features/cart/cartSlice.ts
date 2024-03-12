@@ -30,10 +30,13 @@ const cartSlice = createSlice({
                 }
             });
         },
+        removeFromCart: (state, action: PayloadAction<OrderProductSummaryInfo[]>) => {
+            state.cartItems = action.payload;
+        },
     },
 });
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, removeFromCart } = cartSlice.actions;
 
 export const cartState = (state: RootState): CartState => state.cart;
 

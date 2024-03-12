@@ -17,6 +17,7 @@ import { cartState, addToCart } from '~/features/cart/cartSlice';
 import DuplicateGuidancePopup from '~/components/DuplicateGuidancePopup';
 import { nanoid } from 'nanoid';
 import { addToPurchase } from '~/features/purchase/purchaseSlice';
+import { GRINDSIZE_SET } from '~/utils/constants';
 
 export type OrderProductSummaryInfo = {
     id: string;
@@ -25,6 +26,7 @@ export type OrderProductSummaryInfo = {
     weight: string;
     grindSize: string;
     quantity: number;
+    product_image: string;
 };
 
 const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
@@ -44,18 +46,6 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
         { value: '', label: '용량을 선택하세요.', disabled: true },
         { value: '200', label: '200g' },
         { value: '500', label: `500g (+${formattedNumber(product?.price as number)}원)` },
-    ];
-
-    const grindSizeGroups = [
-        '',
-        '갈지않음(홀빈)',
-        '에스프레소',
-        '모카포트',
-        '에어로프레스',
-        '프렌치프레스',
-        '핸드드립',
-        '커피메이커',
-        '더치커피',
     ];
 
     //weight와 grindSize를 통합
@@ -91,6 +81,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
             weight: weight,
             grindSize: grindSize,
             quantity: 1,
+            product_image: product.product_detail_image[0],
         };
 
         setSelectedProducts((prevProducts) => [...prevProducts, newProduct]);
@@ -212,7 +203,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                             <em>분쇄도를 선택하세요</em>
                         </MenuItem>
 
-                        {grindSizeGroups.map((grindSize, idx) => (
+                        {GRINDSIZE_SET.map((grindSize, idx) => (
                             <MenuItem key={idx} value={idx} sx={{ fontSize: 12 }}>
                                 {grindSize}
                             </MenuItem>
