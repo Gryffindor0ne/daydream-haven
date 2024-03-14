@@ -5,7 +5,7 @@ import Divider from '@mui/material/Divider';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProductInfo } from '~/components/ProductsList';
 import { axiosInstance } from '~/lib/axiosInstance';
@@ -121,9 +121,8 @@ const ProductDetail = () => {
                             </Typography>
                             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                 {listItem?.origin.map((country, idx) => (
-                                    <>
+                                    <React.Fragment key={idx}>
                                         <Typography
-                                            key={idx}
                                             sx={{
                                                 fontSize: 13,
                                                 marginY: 0.5,
@@ -132,8 +131,8 @@ const ProductDetail = () => {
                                         >
                                             {country}
                                         </Typography>
-                                        {idx !== listItem.origin.length - 1 && <Dot />}
-                                    </>
+                                        {idx !== listItem.origin.length - 1 && <Dot key={`dot-${idx}`} />}
+                                    </React.Fragment>
                                 ))}
                             </Box>
                         </Box>
@@ -174,9 +173,8 @@ const ProductDetail = () => {
                             </Typography>
                             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                 {listItem?.flavor.map((taste, idx) => (
-                                    <>
+                                    <React.Fragment key={idx}>
                                         <Typography
-                                            key={idx}
                                             sx={{
                                                 fontSize: 13,
                                                 marginY: 0.5,
@@ -185,8 +183,8 @@ const ProductDetail = () => {
                                         >
                                             {taste}
                                         </Typography>
-                                        {idx !== listItem.flavor.length - 1 && <Dot />}
-                                    </>
+                                        {idx !== listItem.flavor.length - 1 && <Dot key={`dot_dot-${idx}`} />}
+                                    </React.Fragment>
                                 ))}
                             </Box>
                         </Box>
