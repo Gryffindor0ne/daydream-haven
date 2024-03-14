@@ -4,10 +4,14 @@ import { OrderProductSummaryInfo } from '~/components/ProductSelectBox';
 
 export type CartState = {
     cartItems: OrderProductSummaryInfo[];
+    subTotal: number;
+    deliveryFeeCondition: string;
 };
 
 const initialState: CartState = {
     cartItems: [],
+    subTotal: 0,
+    deliveryFeeCondition: '',
 };
 
 const cartSlice = createSlice({
@@ -30,13 +34,23 @@ const cartSlice = createSlice({
                 }
             });
         },
+        updateCartTotal: (state) => {
+            const subTotal = state.cartItems.reduce((total, item) => total + item.price, 0);
+            const deliveryFeeCondition = checkDeliveryFee(subTotal);
+
+            state.subTotal = subTotal;
+            state.deliveryFeeCondition = deliveryFeeCondition;
+        },
         removeFromCart: (state, action: PayloadAction<OrderProductSummaryInfo[]>) => {
             state.cartItems = action.payload;
         },
     },
 });
 
-export const { addToCart, removeFromCart } = cartSlice.actions;
+const checkDeliveryFee = (subTotal: number): string => {
+    return subTotal > 50000 ? '배송비 없음' : '3,000원 조건';
+};
+export const { addToCart, removeFromCart, updateCartTotal } = cartSlice.actions;
 
 export const cartState = (state: RootState): CartState => state.cart;
 

@@ -8,12 +8,12 @@ import { formattedNumber } from '~/utils/utils';
 
 type CartItemProps = {
     item: OrderProductSummaryInfo;
-    fee: boolean;
+    deliveryFeeCondition: string;
     checked: boolean;
     handler: () => void;
 };
 
-const CartItem = ({ item, fee, checked, handler }: CartItemProps) => {
+const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProps) => {
     return (
         <Box sx={{ display: 'flex', py: 0.5, borderBottom: '1px solid #F4EDCC' }}>
             <Checkbox
@@ -57,7 +57,7 @@ const CartItem = ({ item, fee, checked, handler }: CartItemProps) => {
                     {`${formattedNumber(item.price)}원`}
                 </Typography>
                 <Typography variant="body2" sx={{ flex: 1.5, display: 'flex', justifyContent: 'center' }}>
-                    {fee ? '3,000원 조건' : '배송비 없음'}
+                    {deliveryFeeCondition}
                 </Typography>
             </Box>
         </Box>

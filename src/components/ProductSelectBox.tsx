@@ -13,10 +13,10 @@ import BasicAlert from '~/components/BasicAlert';
 import { useNavigate } from 'react-router-dom';
 import CartGuidancePopup from '~/components/CartGuidancePopup';
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
-import { cartState, addToCart } from '~/features/cart/cartSlice';
+import { cartState, addToCart, updateCartTotal } from '~/features/cart/cartSlice';
 import DuplicateGuidancePopup from '~/components/DuplicateGuidancePopup';
 import { nanoid } from 'nanoid';
-import { addToPurchase } from '~/features/purchase/purchaseSlice';
+import { addToOrder, updateOrderTotal } from '~/features/order/orderSlice';
 import { GRINDSIZE_SET } from '~/utils/constants';
 
 export type OrderProductSummaryInfo = {
@@ -267,6 +267,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                         } else {
                             setShowCartGuidancePopup(true);
                             dispatch(addToCart(selectedProducts));
+                            dispatch(updateCartTotal());
                         }
                     }}
                     variant="outlined"
@@ -285,7 +286,8 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                     onClick={() => {
                         if (selectedProducts.length !== 0) {
                             navigate(`/order`);
-                            dispatch(addToPurchase(selectedProducts));
+                            dispatch(addToOrder(selectedProducts));
+                            dispatch(updateOrderTotal());
                         }
                         setShowCartGuidancePopup(true);
                     }}
