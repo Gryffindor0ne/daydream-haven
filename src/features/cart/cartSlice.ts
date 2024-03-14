@@ -34,6 +34,17 @@ const cartSlice = createSlice({
                 }
             });
         },
+        updateCartItemQuantity: (state, action) => {
+            const { productId, newQuantity } = action.payload;
+            state.cartItems = state.cartItems.map((item) => {
+                if (item.id === productId) {
+                    const unitPrice = item.price / item.quantity; // 상품 원래의 값 구함.
+                    const newPrice = unitPrice * newQuantity;
+                    return { ...item, price: newPrice, quantity: newQuantity };
+                }
+                return item;
+            });
+        },
         updateCartTotal: (state) => {
             const subTotal = state.cartItems.reduce((total, item) => total + item.price, 0);
             const deliveryFeeCondition = checkDeliveryFee(subTotal);
@@ -50,7 +61,7 @@ const cartSlice = createSlice({
 const checkDeliveryFee = (subTotal: number): string => {
     return subTotal > 50000 ? '배송비 없음' : '3,000원 조건';
 };
-export const { addToCart, removeFromCart, updateCartTotal } = cartSlice.actions;
+export const { addToCart, removeFromCart, updateCartTotal, updateCartItemQuantity } = cartSlice.actions;
 
 export const cartState = (state: RootState): CartState => state.cart;
 

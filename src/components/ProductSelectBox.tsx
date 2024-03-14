@@ -42,6 +42,8 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
+    const { cartItems } = useAppSelector(cartState);
+
     const WEIGHT_OPTIONS = [
         { value: '', label: '용량을 선택하세요.', disabled: true },
         { value: '200', label: '200g' },
@@ -103,7 +105,6 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
             });
         });
     };
-    const { cartItems } = useAppSelector(cartState);
 
     const findDuplicateProducts = () => {
         const duplicates: OrderProductSummaryInfo[] = [];
@@ -234,7 +235,6 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                     onQuantityChange={(newQuantity) => handleQuantityChange(product.id, newQuantity)}
                 />
             ))}
-
             {/* <------------------------------------------------------------------------> */}
 
             {showAlert && (

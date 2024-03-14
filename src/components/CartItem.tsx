@@ -5,6 +5,9 @@ import { GRINDSIZE_SET } from '~/utils/constants';
 
 import { OrderProductSummaryInfo } from '~/components/ProductSelectBox';
 import { formattedNumber } from '~/utils/utils';
+import QuantityButton from '~/components/QuantityButton';
+import { updateCartItemQuantity } from '~/features/cart/cartSlice';
+import { useAppDispatch } from '~/app/reduxHooks';
 
 type CartItemProps = {
     item: OrderProductSummaryInfo;
@@ -14,6 +17,15 @@ type CartItemProps = {
 };
 
 const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProps) => {
+    const dispatch = useAppDispatch();
+
+    const handleQuantityChange = (newQuantity: number) => {
+        const productId = item.id;
+        if (newQuantity >= 1) {
+            dispatch(updateCartItemQuantity({ productId, newQuantity }));
+        }
+    };
+
     return (
         <Box sx={{ display: 'flex', py: 0.5, borderBottom: '1px solid #F4EDCC' }}>
             <Checkbox
@@ -50,9 +62,13 @@ const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProp
                         {`${item.weight}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]}`}
                     </Typography>
                 </Box>
-                <Typography variant="body2" sx={{ flex: 1.5, display: 'flex', justifyContent: 'center' }}>
-                    {item.quantity}
-                </Typography>
+
+                <QuantityButton
+                    quantity={item.quantity}
+                    onIncrease={() => handleQuantityChange(item.quantity + 1)}
+                    onDecrease={() => handleQuantityChange(item.quantity - 1)}
+                />
+
                 <Typography variant="body2" sx={{ flex: 1.5, display: 'flex', justifyContent: 'center' }}>
                     {`${formattedNumber(item.price)}원`}
                 </Typography>
