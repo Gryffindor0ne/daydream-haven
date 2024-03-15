@@ -69,7 +69,7 @@ const ShoppingCart = () => {
                         }}
                     />
                     <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-                        <Typography variant="body2" sx={{ flex: 5, display: 'flex', justifyContent: 'center' }}>
+                        <Typography variant="body2" sx={{ flex: 4, display: 'flex', justifyContent: 'center' }}>
                             상품정보
                         </Typography>
                         <Typography variant="body2" sx={{ flex: 1.5, display: 'flex', justifyContent: 'center' }}>

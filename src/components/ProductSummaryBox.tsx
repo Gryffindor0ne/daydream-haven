@@ -51,7 +51,7 @@ const ProductSummaryBox = ({
             }}
         >
             <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
-                <Box>
+                <Box sx={{ px: 2 }}>
                     <Typography sx={{ fontSize: 10, marginRight: 2 }}>{product.name}</Typography>
                     <Typography sx={{ fontSize: 16, marginRight: 2 }}>
                         {product.weight}g / {grindSizeGroups[parseInt(product.grindSize)]}

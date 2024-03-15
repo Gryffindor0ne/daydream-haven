@@ -54,7 +54,7 @@ const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProp
                         />
                     </Box>
                 </Box>
-                <Box sx={{ flex: 3.5, display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ flex: 3, display: 'flex', flexDirection: 'column' }}>
                     <Typography variant="body1" sx={{ display: 'flex' }}>
                         {item.name}
                     </Typography>
@@ -63,11 +63,13 @@ const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProp
                     </Typography>
                 </Box>
 
-                <QuantityButton
-                    quantity={item.quantity}
-                    onIncrease={() => handleQuantityChange(item.quantity + 1)}
-                    onDecrease={() => handleQuantityChange(item.quantity - 1)}
-                />
+                <Box sx={{ flex: 1.5, display: 'flex', flexDirection: 'column' }}>
+                    <QuantityButton
+                        quantity={item.quantity}
+                        onIncrease={() => handleQuantityChange(item.quantity + 1)}
+                        onDecrease={() => handleQuantityChange(item.quantity - 1)}
+                    />
+                </Box>
 
                 <Typography variant="body2" sx={{ flex: 1.5, display: 'flex', justifyContent: 'center' }}>
                     {`${formattedNumber(item.price)}원`}

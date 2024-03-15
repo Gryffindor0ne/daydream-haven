@@ -11,7 +11,7 @@ type QuantityButtonProps = {
 
 const QuantityButton = ({ quantity, onIncrease, onDecrease }: QuantityButtonProps) => {
     return (
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" sx={{ px: 2 }}>
             <IconButton onClick={onDecrease} aria-label="Decrease quantity">
                 <RemoveCircleOutlined />
             </IconButton>
