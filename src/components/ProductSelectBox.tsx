@@ -26,7 +26,7 @@ export type OrderProductSummaryInfo = {
     weight: string;
     grindSize: string;
     quantity: number;
-    product_image: string;
+    thumbnail: string;
 };
 
 const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
@@ -83,7 +83,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
             weight: weight,
             grindSize: grindSize,
             quantity: 1,
-            product_image: product.product_detail_image[0],
+            thumbnail: product.detail_images[0],
         };
 
         setSelectedProducts((prevProducts) => [...prevProducts, newProduct]);

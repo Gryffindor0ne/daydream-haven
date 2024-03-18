@@ -6,8 +6,8 @@ export type ProductInfo = {
     name: string;
     price: number;
     delivery_fee: number;
-    product_image: string;
-    product_detail_image: string[];
+    thumbnail: string;
+    detail_images: string[];
     category_no: number;
     roasting_level: string;
     origin: string[];

@@ -48,8 +48,8 @@ const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProp
                         }}
                     >
                         <img
-                            src={item.product_image}
-                            alt="product_image"
+                            src={item.thumbnail}
+                            alt="thumbnail"
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                     </Box>

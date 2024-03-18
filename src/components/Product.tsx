@@ -37,7 +37,7 @@ const Product = (content: ProductInfo) => {
                     },
                 }}
             >
-                <img src={content.product_image} alt={`product_${content.id}`} />
+                <img src={content.thumbnail} alt={`product_${content.id}`} />
             </Box>
             <Typography
                 onClick={() => navigate(`/shop/${content.id}`)}

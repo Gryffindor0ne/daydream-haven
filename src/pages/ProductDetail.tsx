@@ -64,7 +64,7 @@ const ProductDetail = () => {
                             },
                         }}
                     >
-                        <img src={listItem?.product_detail_image[0]} alt={`product_${listItem?.name}`} />
+                        <img src={listItem?.detail_images[0]} alt={`product_${listItem?.name}`} />
                     </Box>
                 </Grid>
 
