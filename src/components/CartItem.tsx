@@ -59,7 +59,7 @@ const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProp
                         {item.name}
                     </Typography>
                     <Typography variant="body2" sx={{ display: 'flex' }}>
-                        {`${item.weight}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]}`}
+                        {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]}`}
                     </Typography>
                 </Box>
 

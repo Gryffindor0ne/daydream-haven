@@ -23,7 +23,7 @@ const cartSlice = createSlice({
                 const existingProductIndex = state.cartItems.findIndex(
                     (product) =>
                         product.name === newProduct.name &&
-                        product.weight === newProduct.weight &&
+                        product.capacity === newProduct.capacity &&
                         product.grindSize === newProduct.grindSize,
                 );
                 if (existingProductIndex !== -1) {

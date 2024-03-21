@@ -1,39 +1,36 @@
+import { useCallback, useEffect, useState } from 'react';
+
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import { useCallback, useEffect, useState } from 'react';
+import { nanoid } from 'nanoid';
+
 import { ProductInfo } from '~/components/ProductsList';
 import ProductSummaryBox from '~/components/ProductSummaryBox';
-import { formattedNumber } from '~/utils/utils';
 import BasicAlert from '~/components/BasicAlert';
 import { useNavigate } from 'react-router-dom';
 import CartGuidancePopup from '~/components/CartGuidancePopup';
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { cartState, addToCart, updateCartTotal } from '~/features/cart/cartSlice';
 import DuplicateGuidancePopup from '~/components/DuplicateGuidancePopup';
-import { nanoid } from 'nanoid';
 import { addToOrder, updateOrderTotal } from '~/features/order/orderSlice';
-import { GRINDSIZE_SET } from '~/utils/constants';
+import CapacityGrindSelector from '~/components/CapacityGrindSelector';
 
 export type OrderProductSummaryInfo = {
     id: string;
     name: string;
     price: number;
-    weight: string;
+    capacity: string;
     grindSize: string;
     quantity: number;
     thumbnail: string;
 };
 
 const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
-    const [weight, setWeight] = useState<string>('');
+    const [capacity, setCapacity] = useState<string>('');
     const [grindSize, setGrindSize] = useState<string>('');
     const [selectedProducts, setSelectedProducts] = useState<OrderProductSummaryInfo[]>([]);
-    const [isOpen, setIsOpen] = useState(false);
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [showCartGuidancePopup, setShowCartGuidancePopup] = useState<boolean>(false);
     const [showDuplicateGuidancePopup, setShowDuplicateGuidancePopup] = useState<boolean>(false);
@@ -44,23 +41,12 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
 
     const { cartItems } = useAppSelector(cartState);
 
-    const WEIGHT_OPTIONS = [
-        { value: '', label: '용량을 선택하세요.', disabled: true },
-        { value: '200', label: '200g' },
-        { value: '500', label: `500g (+${formattedNumber(product?.price as number)}원)` },
-    ];
-
-    //weight와 grindSize를 통합
-    const handleOptionChange = (event: SelectChangeEvent, setter: React.Dispatch<React.SetStateAction<string>>) => {
+    //capacity와 grindSize를 통합
+    const handleOptionChange = (
+        event: SelectChangeEvent<string>,
+        setter: React.Dispatch<React.SetStateAction<string>>,
+    ) => {
         setter(event.target.value);
-    };
-
-    const handleSelectClick = () => {
-        setIsOpen(true);
-    };
-
-    const handleClose = () => {
-        setIsOpen(false);
     };
 
     const handleAlertClose = () => {
@@ -79,15 +65,15 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
         const newProduct: OrderProductSummaryInfo = {
             id: nanoid(),
             name: product.name,
-            price: parseInt(weight) === 200 ? product.price : product.price * 2,
-            weight: weight,
+            price: parseInt(capacity) === 200 ? product.price : product.price * 2,
+            capacity: capacity,
             grindSize: grindSize,
             quantity: 1,
             thumbnail: product.detail_images[0],
         };
 
         setSelectedProducts((prevProducts) => [...prevProducts, newProduct]);
-    }, [product, weight, grindSize]);
+    }, [product, capacity, grindSize]);
 
     const handleDelete = (productId: string) => {
         setSelectedProducts((prevProducts) => prevProducts.filter((product) => product.id !== productId));
@@ -97,8 +83,8 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
         setSelectedProducts((prevProducts) => {
             return prevProducts.map((item) => {
                 if (item.id === productId) {
-                    const weight = parseInt(item.weight);
-                    const newPrice = weight === 200 ? product.price : product.price * 2;
+                    const capacity = parseInt(item.capacity);
+                    const newPrice = capacity === 200 ? product.price : product.price * 2;
                     return { ...item, price: newPrice * newQuantity, quantity: newQuantity };
                 }
                 return item;
@@ -113,7 +99,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
             const foundProduct = cartItems.find((product) => {
                 return (
                     product.grindSize === selectedProduct.grindSize &&
-                    product.weight === selectedProduct.weight &&
+                    product.capacity === selectedProduct.capacity &&
                     product.name === selectedProduct.name
                 );
             });
@@ -126,9 +112,9 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
     };
 
     useEffect(() => {
-        if (grindSize && !isOpen && product) {
+        if (grindSize && product) {
             const existingProduct = selectedProducts.find(
-                (item) => item.grindSize === grindSize && item.weight === weight && item.name === product.name,
+                (item) => item.grindSize === grindSize && item.capacity === capacity && item.name === product.name,
             );
             if (existingProduct) {
                 setShowAlert(true);
@@ -136,10 +122,10 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
             } else {
                 addProduct();
             }
-            setWeight('');
+            setCapacity('');
             setGrindSize('');
         }
-    }, [addProduct, grindSize, isOpen, selectedProducts, weight, product]);
+    }, [addProduct, grindSize, selectedProducts, capacity, product]);
 
     useEffect(() => {
         if (showCartGuidancePopup && selectedProducts.length === 0) {
@@ -153,78 +139,17 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
     return (
         <Box sx={{ marginTop: 5 }}>
             {showAlert && <BasicAlert open={showAlert} onClose={handleAlertClose} message={alertMessage} />}
-            <FormControl sx={{ marginY: 2, maxWidth: 450, width: '100%' }}>
-                <Typography
-                    sx={{
-                        width: 120,
-                        fontSize: 13,
-                        marginY: 0.5,
-                        paddingLeft: 1,
-                    }}
-                >
-                    용량
-                </Typography>
-                <Select
-                    value={weight}
-                    displayEmpty
-                    onChange={(event) => handleOptionChange(event, setWeight)}
-                    sx={{ fontSize: 12 }}
-                >
-                    {WEIGHT_OPTIONS.map((option) => (
-                        <MenuItem
-                            key={option.value}
-                            value={option.value}
-                            disabled={option.disabled}
-                            sx={{ fontSize: 12 }}
-                        >
-                            {option.label}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <FormControl sx={{ marginY: 2, maxWidth: 450, width: '100%' }}>
-                <Typography
-                    sx={{
-                        width: 120,
-                        fontSize: 13,
-                        marginY: 0.5,
-                        paddingLeft: 1,
-                    }}
-                >
-                    분쇄도
-                </Typography>
-                {weight ? (
-                    <Select
-                        value={grindSize}
-                        displayEmpty
-                        onChange={(event) => handleOptionChange(event, setGrindSize)}
-                        sx={{ fontSize: 12 }}
-                    >
-                        <MenuItem value="" disabled sx={{ fontSize: 12 }}>
-                            <em>분쇄도를 선택하세요</em>
-                        </MenuItem>
 
-                        {GRINDSIZE_SET.map((grindSize, idx) => (
-                            <MenuItem key={idx} value={idx} sx={{ fontSize: 12 }}>
-                                {grindSize}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                ) : (
-                    <Select
-                        value={grindSize}
-                        onClose={handleClose}
-                        onOpen={handleSelectClick}
-                        displayEmpty={!isOpen}
-                        onChange={(event) => handleOptionChange(event, setGrindSize)}
-                        sx={{ fontSize: 12 }}
-                    >
-                        <MenuItem value="" disabled sx={{ fontSize: 12 }}>
-                            <em>{isOpen ? '용량을 먼저 선택해주세요.' : '분쇄도를 선택하세요.'}</em>
-                        </MenuItem>
-                    </Select>
-                )}
-            </FormControl>
+            {/* 용량과 분쇄도 선택 컴포넌트 */}
+            <CapacityGrindSelector
+                productPrice={product?.price}
+                capacity={capacity}
+                setCapacity={setCapacity}
+                grindSize={grindSize}
+                setGrindSize={setGrindSize}
+                handleOptionChange={handleOptionChange}
+            />
+
             {/* <------------------------------------------------------------------------> */}
 
             {selectedProducts.map((product) => (

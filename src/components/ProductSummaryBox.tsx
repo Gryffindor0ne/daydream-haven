@@ -6,6 +6,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { OrderProductSummaryInfo } from '~/components/ProductSelectBox';
 import QuantityButton from '~/components/QuantityButton';
 import { formattedNumber } from '~/utils/utils';
+import { GRINDSIZE_SET } from '~/utils/constants';
 
 const ProductSummaryBox = ({
     product,
@@ -16,17 +17,6 @@ const ProductSummaryBox = ({
     onDelete: () => void;
     onQuantityChange: (newQuantity: number) => void;
 }) => {
-    const grindSizeGroups = [
-        '',
-        '갈지않음(홀빈)',
-        '에스프레소',
-        '모카포트',
-        '에어로프레스',
-        '프렌치프레스',
-        '핸드드립',
-        '커피메이커',
-        '더치커피',
-    ];
     const handleDelete = () => {
         onDelete();
     };
@@ -54,7 +44,7 @@ const ProductSummaryBox = ({
                 <Box sx={{ px: 2 }}>
                     <Typography sx={{ fontSize: 10, marginRight: 2 }}>{product.name}</Typography>
                     <Typography sx={{ fontSize: 16, marginRight: 2 }}>
-                        {product.weight}g / {grindSizeGroups[parseInt(product.grindSize)]}
+                        {product.capacity}g / {GRINDSIZE_SET[parseInt(product.grindSize)]}
                     </Typography>
                 </Box>
 
