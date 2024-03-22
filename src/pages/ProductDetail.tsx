@@ -1,50 +1,45 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Divider from '@mui/material/Divider';
 import { useMediaQuery, useTheme } from '@mui/material';
-import { styled } from '@mui/material/styles';
 
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { ProductInfo } from '~/components/ProductsList';
+import { useEffect, useState } from 'react';
+
 import { axiosInstance } from '~/lib/axiosInstance';
 import ProductSelectBox from '~/components/ProductSelectBox';
-import { formattedNumber } from '~/utils/utils';
-
-const Dot = styled('span')({
-    width: '2px',
-    height: '2px',
-    backgroundColor: 'black',
-    borderRadius: '50%',
-    margin: '0 8px',
-});
+import { ProductInfo } from '~/components/ProductsList';
+import ProductInfoBox from '~/components/ProductInfoBox';
+import SubscriptionInfoBox from '~/components/SubscriptionInfoBox';
+import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 
 const ProductDetail = () => {
-    const { id } = useParams();
+    const { currentPath, id } = useCurrentPathAndId();
+
     const [lists, setLists] = useState<ProductInfo[]>([]);
+    const [listItem, setListItem] = useState<ProductInfo | undefined>();
 
     const theme = useTheme();
     const isTablet = useMediaQuery(theme.breakpoints.up('md'));
 
-    const getLists = async () => {
-        try {
-            const { data } = await axiosInstance.get(`/shop`);
-            setLists(data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    useEffect(() => {
+        const getLists = async () => {
+            try {
+                const { data } = await axiosInstance.get(`/${currentPath}`);
+                setLists(data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        getLists();
+    }, [currentPath]);
 
     useEffect(() => {
-        getLists();
-    }, []);
-
-    const getListItemById = (id: string) => {
-        return lists.find((item) => item.id.toString() === id);
-    };
-
-    const listItem = getListItemById(id as string);
+        if (lists.length > 0 && id) {
+            const item = lists.find((item) => item.id.toString() === id);
+            setListItem(item);
+        }
+    }, [lists, id]);
 
     return (
         <Box sx={{ minHeight: '75vh', paddingTop: 20, paddingX: 2, marginTop: 10, marginBottom: 20 }}>
@@ -80,183 +75,12 @@ const ProductDetail = () => {
                             justifyContent: 'center',
                         }}
                     >
-                        <Typography
-                            sx={{
-                                fontSize: 25,
-                                marginTop: isTablet ? 0 : 5,
-                                marginBottom: 1,
-                                paddingX: 2,
-                            }}
-                        >
-                            {listItem?.name}
-                        </Typography>
-                        <Typography
-                            sx={{
-                                fontSize: 15,
-                                marginY: 1,
-                                paddingX: 2,
-                            }}
-                        >
-                            {`${formattedNumber(listItem?.price as number)}원`}
-                        </Typography>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', marginY: 3 }}>
-                            <Divider
-                                sx={{
-                                    width: '95%',
-                                }}
-                            />
-                        </Box>
-                        {/* <------------------------------------------------------------------------> */}
+                        {currentPath === 'shop' ? (
+                            <ProductInfoBox item={listItem as ProductInfo} />
+                        ) : (
+                            <SubscriptionInfoBox item={listItem as ProductInfo} />
+                        )}
 
-                        <Box sx={{ display: 'flex', marginY: 1 }}>
-                            <Typography
-                                sx={{
-                                    width: 120,
-                                    fontSize: 13,
-                                    marginY: 0.5,
-                                    paddingLeft: 1,
-                                }}
-                            >
-                                원산지
-                            </Typography>
-                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                {listItem?.origin.map((country, idx) => (
-                                    <React.Fragment key={idx}>
-                                        <Typography
-                                            sx={{
-                                                fontSize: 13,
-                                                marginY: 0.5,
-                                                paddingX: 1,
-                                            }}
-                                        >
-                                            {country}
-                                        </Typography>
-                                        {idx !== listItem.origin.length - 1 && <Dot key={`dot-${idx}`} />}
-                                    </React.Fragment>
-                                ))}
-                            </Box>
-                        </Box>
-                        {/* <------------------------------------------------------------------------> */}
-                        <Box sx={{ display: 'flex', marginY: 1 }}>
-                            <Typography
-                                sx={{
-                                    width: 120,
-                                    fontSize: 13,
-                                    marginY: 0.5,
-                                    paddingLeft: 1,
-                                }}
-                            >
-                                로스팅 레벨
-                            </Typography>
-
-                            <Typography
-                                sx={{
-                                    fontSize: 13,
-                                    marginY: 0.5,
-                                    paddingX: 1,
-                                }}
-                            >
-                                {listItem?.roasting_level}
-                            </Typography>
-                        </Box>
-                        {/* <------------------------------------------------------------------------> */}
-                        <Box sx={{ display: 'flex', marginY: 1 }}>
-                            <Typography
-                                sx={{
-                                    width: 120,
-                                    fontSize: 13,
-                                    marginY: 0.5,
-                                    paddingLeft: 1,
-                                }}
-                            >
-                                플레이버
-                            </Typography>
-                            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                {listItem?.flavor.map((taste, idx) => (
-                                    <React.Fragment key={idx}>
-                                        <Typography
-                                            sx={{
-                                                fontSize: 13,
-                                                marginY: 0.5,
-                                                paddingX: 1,
-                                            }}
-                                        >
-                                            {taste}
-                                        </Typography>
-                                        {idx !== listItem.flavor.length - 1 && <Dot key={`dot_dot-${idx}`} />}
-                                    </React.Fragment>
-                                ))}
-                            </Box>
-                        </Box>
-                        {/* <------------------------------------------------------------------------> */}
-                        <Box sx={{ display: 'flex', marginY: 1 }}>
-                            <Typography
-                                sx={{
-                                    width: 120,
-                                    fontSize: 13,
-                                    marginY: 0.5,
-                                    paddingLeft: 1,
-                                }}
-                            >
-                                용량
-                            </Typography>
-
-                            <Typography
-                                sx={{
-                                    fontSize: 13,
-                                    marginY: 0.5,
-                                    paddingX: 1,
-                                }}
-                            >
-                                200g
-                            </Typography>
-                        </Box>
-                        {/* <------------------------------------------------------------------------> */}
-                        <Box sx={{ display: 'flex', marginY: 1 }}>
-                            <Typography
-                                sx={{
-                                    width: 120,
-                                    fontSize: 13,
-                                    marginY: 0.5,
-                                    paddingLeft: 1,
-                                }}
-                            >
-                                제조일
-                            </Typography>
-
-                            <Typography
-                                sx={{
-                                    fontSize: 13,
-                                    marginY: 0.5,
-                                    paddingX: 1,
-                                }}
-                            >
-                                매주 월, 수, 금
-                            </Typography>
-                        </Box>
-                        {/* <------------------------------------------------------------------------> */}
-                        <Box sx={{ display: 'flex', marginY: 1 }}>
-                            <Typography
-                                sx={{
-                                    width: 120,
-                                    fontSize: 13,
-                                    marginY: 0.5,
-                                    paddingLeft: 1,
-                                }}
-                            >
-                                배송비
-                            </Typography>
-
-                            <Typography
-                                sx={{
-                                    fontSize: 13,
-                                    marginY: 0.5,
-                                    paddingX: 1,
-                                }}
-                            >
-                                {`${formattedNumber(listItem?.delivery_fee as number)}원  (50,000원 이상 구매 시 무료)`}
-                            </Typography>
-                        </Box>
                         {/* <-----------------------------상품 선택 상자-----------------------------------------> */}
 
                         <ProductSelectBox product={listItem as ProductInfo} />

@@ -24,7 +24,8 @@ const cartSlice = createSlice({
                     (product) =>
                         product.name === newProduct.name &&
                         product.capacity === newProduct.capacity &&
-                        product.grindSize === newProduct.grindSize,
+                        product.grindSize === newProduct.grindSize &&
+                        (!product.period || product.period === newProduct.period), // period가 있는 경우
                 );
                 if (existingProductIndex !== -1) {
                     state.cartItems[existingProductIndex].quantity += newProduct.quantity;

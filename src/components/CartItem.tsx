@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
-import { GRINDSIZE_SET } from '~/utils/constants';
+import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
 
 import { OrderProductSummaryInfo } from '~/components/ProductSelectBox';
 import { formattedNumber } from '~/utils/utils';
@@ -58,9 +58,15 @@ const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProp
                     <Typography variant="body1" sx={{ display: 'flex' }}>
                         {item.name}
                     </Typography>
-                    <Typography variant="body2" sx={{ display: 'flex' }}>
-                        {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]}`}
-                    </Typography>
+                    {item.period ? (
+                        <Typography variant="body2" sx={{ display: 'flex' }}>
+                            {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]} / ${PERIOD_OPTIONS[parseInt(item.period)]}`}
+                        </Typography>
+                    ) : (
+                        <Typography variant="body2" sx={{ display: 'flex' }}>
+                            {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]}`}
+                        </Typography>
+                    )}
                 </Box>
 
                 <Box sx={{ flex: 1.5, display: 'flex', flexDirection: 'column' }}>

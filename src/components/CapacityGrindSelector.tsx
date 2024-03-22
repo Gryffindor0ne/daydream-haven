@@ -4,8 +4,9 @@ import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { GRINDSIZE_SET } from '~/utils/constants';
+import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
 import { formattedNumber } from '~/utils/utils';
+import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 
 type SelectorProps = {
     productPrice: number;
@@ -13,6 +14,8 @@ type SelectorProps = {
     setCapacity: React.Dispatch<React.SetStateAction<string>>;
     grindSize: string;
     setGrindSize: React.Dispatch<React.SetStateAction<string>>;
+    period: string;
+    setPeriod: React.Dispatch<React.SetStateAction<string>>;
     handleOptionChange: (
         event: SelectChangeEvent<string>,
         setter: React.Dispatch<React.SetStateAction<string>>,
@@ -25,12 +28,16 @@ const CapacityGrindSelector = ({
     setCapacity,
     grindSize,
     setGrindSize,
+    period,
+    setPeriod,
     handleOptionChange,
 }: SelectorProps) => {
-    const CAPACITY_OPTION = [
+    const { currentPath } = useCurrentPathAndId();
+
+    const CAPACITY_OPTIONS = [
         { value: '', label: '용량을 선택하세요.', disabled: true },
         { value: '200', label: '200g' },
-        { value: '500', label: `500g (+${formattedNumber(productPrice)}원)` },
+        { value: '500', label: currentPath === 'shop' ? `500g(+${formattedNumber(productPrice)}원)` : `500g` },
     ];
 
     const [isOpen, setIsOpen] = useState(false);
@@ -62,7 +69,7 @@ const CapacityGrindSelector = ({
                     onChange={(event) => handleOptionChange(event, setCapacity)}
                     sx={{ fontSize: 12 }}
                 >
-                    {CAPACITY_OPTION.map((option) => (
+                    {CAPACITY_OPTIONS.map((option) => (
                         <MenuItem
                             key={option.value}
                             value={option.value}
@@ -116,6 +123,51 @@ const CapacityGrindSelector = ({
                     </Select>
                 )}
             </FormControl>
+
+            {currentPath === 'subscription' && (
+                <FormControl sx={{ marginY: 2, maxWidth: 450, width: '100%' }}>
+                    <Typography
+                        sx={{
+                            width: 120,
+                            fontSize: 13,
+                            marginY: 0.5,
+                            paddingLeft: 1,
+                        }}
+                    >
+                        기간
+                    </Typography>
+                    {grindSize ? (
+                        <Select
+                            value={period}
+                            displayEmpty
+                            onChange={(event) => handleOptionChange(event, setPeriod)}
+                            sx={{ fontSize: 12 }}
+                        >
+                            <MenuItem value="" disabled sx={{ fontSize: 12 }}>
+                                <em>기간을 선택하세요</em>
+                            </MenuItem>
+                            {PERIOD_OPTIONS.map((period, idx) => (
+                                <MenuItem key={idx} value={idx} sx={{ fontSize: 12 }}>
+                                    {period}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    ) : (
+                        <Select
+                            value={period}
+                            onClose={handleClose}
+                            onOpen={handleSelectClick}
+                            displayEmpty={!isOpen}
+                            onChange={(event) => handleOptionChange(event, setPeriod)}
+                            sx={{ fontSize: 12 }}
+                        >
+                            <MenuItem value="" disabled sx={{ fontSize: 12 }}>
+                                <em>{isOpen ? '분쇄도를 먼저 선택해주세요.' : '기간을 선택하세요.'}</em>
+                            </MenuItem>
+                        </Select>
+                    )}
+                </FormControl>
+            )}
         </>
     );
 };

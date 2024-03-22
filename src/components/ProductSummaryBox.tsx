@@ -6,7 +6,8 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { OrderProductSummaryInfo } from '~/components/ProductSelectBox';
 import QuantityButton from '~/components/QuantityButton';
 import { formattedNumber } from '~/utils/utils';
-import { GRINDSIZE_SET } from '~/utils/constants';
+import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
+import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 
 const ProductSummaryBox = ({
     product,
@@ -17,6 +18,8 @@ const ProductSummaryBox = ({
     onDelete: () => void;
     onQuantityChange: (newQuantity: number) => void;
 }) => {
+    const { currentPath } = useCurrentPathAndId();
+
     const handleDelete = () => {
         onDelete();
     };
@@ -43,9 +46,17 @@ const ProductSummaryBox = ({
             <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
                 <Box sx={{ px: 2 }}>
                     <Typography sx={{ fontSize: 10, marginRight: 2 }}>{product.name}</Typography>
-                    <Typography sx={{ fontSize: 16, marginRight: 2 }}>
-                        {product.capacity}g / {GRINDSIZE_SET[parseInt(product.grindSize)]}
-                    </Typography>
+
+                    {currentPath === 'subscription' ? (
+                        <Typography sx={{ fontSize: 16, marginRight: 2 }}>
+                            {`${product.capacity}g / ${GRINDSIZE_SET[parseInt(product.grindSize)]} /
+                            ${PERIOD_OPTIONS[parseInt(product.period as string)]}`}
+                        </Typography>
+                    ) : (
+                        <Typography sx={{ fontSize: 16, marginRight: 2 }}>
+                            {`${product.capacity}g / ${GRINDSIZE_SET[parseInt(product.grindSize)]}`}
+                        </Typography>
+                    )}
                 </Box>
 
                 <IconButton onClick={handleDelete}>

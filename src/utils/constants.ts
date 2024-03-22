@@ -10,6 +10,8 @@ export const GRINDSIZE_SET = [
     '더치커피',
 ];
 
+export const PERIOD_OPTIONS = ['', '1개월', '3개월', '6개월'];
+
 export const requiredTerms = [
     {
         label: '이용약관 동의 (필수)',
