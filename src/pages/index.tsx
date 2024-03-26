@@ -4,18 +4,18 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import { useMediaQuery, useTheme } from '@mui/material';
+import { categoryItems } from '~/utils/constants';
 
 const Home = () => {
     const theme = useTheme();
     const isTablet = useMediaQuery(theme.breakpoints.up('md'));
 
     const navigate = useNavigate();
-    const categoryItems = ['ABOUT', 'SHOP', 'WHOLESALE', 'SUBSCRIPTION', 'CONTACT'];
 
     return (
         <Box sx={{ minHeight: '75vh' }}>
             <Box
-                onClick={() => navigate(`/${categoryItems[0]}`)}
+                onClick={() => navigate(`/${categoryItems[0].toLowerCase()}`)}
                 sx={{
                     marginTop: 10,
                     maxWidth: '100%',
@@ -62,7 +62,7 @@ const Home = () => {
                 </Typography>
             </Box>
             <Box
-                onClick={() => navigate(`/${categoryItems[1]}`)}
+                onClick={() => navigate(`/${categoryItems[1].toLowerCase()}`)}
                 sx={{
                     maxWidth: '100%',
                     height: 'auto',
@@ -116,7 +116,7 @@ const Home = () => {
                     당신의 쉼을 서포트합니다.
                 </Typography>
                 <Typography
-                    onClick={() => navigate(`/${categoryItems[1]}`)}
+                    onClick={() => navigate(`/${categoryItems[1].toLowerCase()}`)}
                     sx={{
                         marginTop: 5,
                         marginBottom: 18,
@@ -129,7 +129,7 @@ const Home = () => {
                 </Typography>
             </Box>
             <Box
-                onClick={() => navigate(`/${categoryItems[2]}`)}
+                onClick={() => navigate(`/${categoryItems[2].toLowerCase()}`)}
                 sx={{
                     maxWidth: '100%',
                     height: 'auto',
@@ -188,7 +188,7 @@ const Home = () => {
                 </Typography>
             </Box>
             <Box
-                onClick={() => navigate(`/${categoryItems[3]}`)}
+                onClick={() => navigate(`/${categoryItems[3].toLowerCase()}`)}
                 sx={{
                     maxWidth: '100%',
                     height: 'auto',
@@ -235,7 +235,7 @@ const Home = () => {
                     Daydream Haven의 특별한 원두를 정기적으로 받아볼 수 있는 구독 서비스
                 </Typography>
                 <Typography
-                    onClick={() => navigate(`/${categoryItems[3]}`)}
+                    onClick={() => navigate(`/${categoryItems[3].toLowerCase()}`)}
                     sx={{
                         marginTop: 5,
                         marginBottom: 18,

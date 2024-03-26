@@ -13,13 +13,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import { categoryItems } from '~/utils/constants';
 
 interface Props {
     window?: () => Window;
 }
 
 const drawerWidth = 320;
-const categoryItems = ['ABOUT', 'SHOP', 'WHOLESALE', 'SUBSCRIPTION', 'CONTACT'];
 const userItems = ['LOGIN', 'CART'];
 
 const HeaderBar = (props: Props) => {

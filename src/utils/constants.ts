@@ -1,3 +1,5 @@
+export const categoryItems = ['ABOUT', 'SHOP', 'WHOLESALE', 'SUBSCRIPTION', 'CONTACT'];
+
 export const GRINDSIZE_SET = [
     '',
     '갈지않음(홀빈)',
