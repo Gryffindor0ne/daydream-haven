@@ -59,7 +59,7 @@ const Product = (content: ProductInfo) => {
                 {content.name}
             </Typography>
 
-            {price200 !== 0 ? (
+            {currentPath === 'subscription' ? (
                 <Typography sx={{ fontFamily: 'Gowun Batang', fontSize: 14, paddingX: 2 }}>
                     {`${formattedNumber(price200 as number)}원`}
                 </Typography>
