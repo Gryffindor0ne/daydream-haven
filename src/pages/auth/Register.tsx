@@ -1,15 +1,19 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import { Checkbox, FormControlLabel } from '@mui/material';
-import { useState } from 'react';
+
 import { requiredTerms } from '~/utils/constants';
+import { axiosInstance } from '~/lib/axiosInstance';
+import BasicAlert from '~/components/BasicAlert';
 
 type RegisterInfo = {
     email: string;
@@ -17,8 +21,8 @@ type RegisterInfo = {
     confirmPassword: string;
     username: string;
     phoneNumber: string;
-    agreeTerms: boolean[];
-    agreeOptional: boolean;
+    termsAgreed: boolean[];
+    marketingTermsAgreed: boolean;
 };
 
 const registerSchema = Yup.object().shape({
@@ -42,22 +46,58 @@ const registerSchema = Yup.object().shape({
         .matches(/^[0-9]+$/, '전화번호는 숫자로만 입력해야 합니다.')
         .length(11, '전화번호는 11자리여야 합니다.')
         .required('전화번호는 필수 입력 항목입니다.'),
-    agreeTerms: Yup.array()
+    termsAgreed: Yup.array()
         .of(Yup.boolean())
-        .test('agreeTerms', '모든 필수 약관에 동의해야 합니다.', (value) => value?.every((item) => item === true)),
+        .test('termsAgreed', '모든 필수 약관에 동의해야 합니다.', (value) => value?.every((item) => item === true)),
 
-    agreeOptional: Yup.boolean(), // 선택적 약관에 대한 유효성 검사 필요 없음
+    marketingTermsAgreed: Yup.boolean(), // 선택적 약관에 대한 유효성 검사 필요 없음
 });
 
 const Register = () => {
-    const handleSubmit = (values: RegisterInfo) => {
-        console.log(values);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isSuccess, setIsSuccess] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>('');
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (values: RegisterInfo) => {
+        try {
+            const response = await axiosInstance.post(`/users/registration`, {
+                email: values.email,
+                password: values.password,
+                name: values.username,
+                phoneNumber: values.phoneNumber,
+                marketingTermsAgreed: values.marketingTermsAgreed,
+            });
+            if (response.status === 201) {
+                setIsOpen(true);
+                setIsSuccess(true);
+                setMessage('회원가입이 완료되었습니다.');
+            }
+        } catch (error) {
+            setIsOpen(true);
+            setMessage('동일한 이메일이 존재합니다.');
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        setIsSuccess(false);
+    }, []);
+
+    const handleClose = () => {
+        setIsOpen(false);
+        if (isSuccess) {
+            navigate(`/login`);
+        }
     };
 
     const [allTermsAgreed, setAllTermsAgreed] = useState(false);
 
     return (
         <Container maxWidth="sm">
+            {isOpen && <BasicAlert open={isOpen} onClose={handleClose} message={message} />}
+
             <Box sx={{ minHeight: '75vh', paddingTop: 20, marginTop: 10, marginBottom: 5 }}>
                 <Grid container spacing={2} justifyContent="center" alignItems="center">
                     <Grid item xs={12}>
@@ -85,15 +125,13 @@ const Register = () => {
                                 confirmPassword: '',
                                 username: '',
                                 phoneNumber: '',
-                                agreeTerms: requiredTerms.map(() => false), // 초기값: 모두 false
-                                agreeOptional: false, // 선택적 약관에 대한 동의 상태
+                                termsAgreed: requiredTerms.map(() => false), // 초기값: 모두 false
+                                marketingTermsAgreed: false, // 선택적 약관에 대한 동의 상태
                             }}
                             validationSchema={registerSchema}
                             onSubmit={handleSubmit}
                         >
                             {({ errors, touched, values, setFieldValue }) => {
-                                console.log(errors, values);
-
                                 return (
                                     <Form>
                                         <Grid container spacing={3}>
@@ -181,18 +219,18 @@ const Register = () => {
                                                                 // 약관에 대한 동의 상태를 모두 변경
                                                                 if (isChecked) {
                                                                     setFieldValue(
-                                                                        'agreeTerms',
+                                                                        'termsAgreed',
                                                                         Array(requiredTerms.length).fill(true),
                                                                     );
                                                                     // 선택 약관에 대한 동의도 변경
-                                                                    setFieldValue('agreeOptional', true);
+                                                                    setFieldValue('marketingTermsAgreed', true);
                                                                 } else {
                                                                     setFieldValue(
-                                                                        'agreeTerms',
+                                                                        'termsAgreed',
                                                                         Array(requiredTerms.length).fill(false),
                                                                     );
                                                                     // 선택 약관에 대한 동의도 변경
-                                                                    setFieldValue('agreeOptional', false);
+                                                                    setFieldValue('marketingTermsAgreed', false);
                                                                 }
                                                             }}
                                                         />
@@ -207,13 +245,13 @@ const Register = () => {
                                                             <Checkbox
                                                                 color="primary"
                                                                 size="small"
-                                                                checked={values.agreeTerms[index]}
+                                                                checked={values.termsAgreed[index]}
                                                                 onChange={(event) => {
                                                                     if (!event.target.checked) {
                                                                         setAllTermsAgreed(false);
                                                                     }
                                                                     setFieldValue(
-                                                                        `agreeTerms.${index}`,
+                                                                        `termsAgreed.${index}`,
                                                                         event.target.checked,
                                                                     );
                                                                 }}
@@ -239,7 +277,7 @@ const Register = () => {
                                                         <Grid item xs={12}>
                                                             <Box sx={{ color: 'red', fontSize: 12 }}>
                                                                 <ErrorMessage
-                                                                    name={`agreeTerms`}
+                                                                    name={`termsAgreed`}
                                                                     component="div"
                                                                     className="error"
                                                                 />
@@ -255,12 +293,15 @@ const Register = () => {
                                                         <Checkbox
                                                             color="primary"
                                                             size="small"
-                                                            checked={values.agreeOptional}
+                                                            checked={values.marketingTermsAgreed}
                                                             onChange={(event) => {
                                                                 if (!event.target.checked) {
                                                                     setAllTermsAgreed(false);
                                                                 }
-                                                                setFieldValue('agreeOptional', event.target.checked);
+                                                                setFieldValue(
+                                                                    'marketingTermsAgreed',
+                                                                    event.target.checked,
+                                                                );
                                                             }}
                                                         />
                                                     }
