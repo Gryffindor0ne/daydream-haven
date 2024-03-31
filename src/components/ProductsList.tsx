@@ -7,19 +7,18 @@ export type PriceItem = {
 };
 
 export type ProductInfo = {
-    id: number;
+    id: string;
     name: string;
     price: number;
-    prices?: PriceItem[];
-    delivery_fee: number;
+    plans?: PriceItem[];
     thumbnail: string;
-    detail_images: string[];
-    category_no: number;
-    roasting_level: string;
+    detailImages: string[];
+    categoryId: number;
+    roastingLevel: string;
     origin: string[];
     flavor: string[];
-    large_capacity: number;
-    product_composition?: string[];
+    largeCapacity: number;
+    productComposition?: string[];
 };
 
 const ProductsList = ({ lists }: { lists: ProductInfo[] }) => {

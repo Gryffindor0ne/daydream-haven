@@ -9,7 +9,7 @@ const Subscription = () => {
 
     const getLists = async () => {
         try {
-            const { data } = await axiosInstance.get(`/subscription`);
+            const { data } = await axiosInstance.get(`/subscriptions`);
             setLists(data);
         } catch (error) {
             console.log(error);

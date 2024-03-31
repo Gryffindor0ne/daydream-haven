@@ -99,7 +99,7 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
                         paddingX: 1,
                     }}
                 >
-                    {item?.roasting_level}
+                    {item?.roastingLevel}
                 </Typography>
             </Box>
             {/* <------------------------------------------------------------------------> */}
@@ -197,7 +197,7 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
                         paddingX: 1,
                     }}
                 >
-                    {`${formattedNumber(item?.delivery_fee as number)}원  (50,000원 이상 구매 시 무료)`}
+                    {`3,000원 (50,000원 이상 구매 시 무료)`}
                 </Typography>
             </Box>
         </>

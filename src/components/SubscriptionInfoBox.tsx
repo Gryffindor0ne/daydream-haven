@@ -55,7 +55,7 @@ const SubscriptionInfoBox = ({ item }: { item: ProductInfo | undefined }) => {
                     paddingLeft: 1,
                 }}
             >
-                {`Daydream Haven의 블랜드 ${item.product_composition!.length}종을 매주 목요일 배송합니다.`}
+                {`Daydream Haven의 블랜드 ${item.productComposition!.length}종을 매주 목요일 배송합니다.`}
             </Typography>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', marginY: 3 }}>
@@ -67,7 +67,7 @@ const SubscriptionInfoBox = ({ item }: { item: ProductInfo | undefined }) => {
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', marginY: 1 }}>
-                {item.product_composition?.map((product, idx) => (
+                {item.productComposition?.map((product, idx) => (
                     <Typography
                         key={idx}
                         sx={{

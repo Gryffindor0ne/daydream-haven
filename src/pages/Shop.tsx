@@ -8,7 +8,7 @@ const Shop = () => {
 
     const getLists = async () => {
         try {
-            const { data } = await axiosInstance.get(`/shop`);
+            const { data } = await axiosInstance.get(`/products`);
             setLists(data);
         } catch (error) {
             console.log(error);

@@ -7,6 +7,6 @@ export const findPriceByCapacityAndPeriod = (
     capacity: string,
     periodIndex: number,
 ): number | undefined => {
-    const priceItem = item?.prices?.find((priceItem) => priceItem?.name === capacity);
+    const priceItem = item?.plans?.find((priceItem) => priceItem?.name === capacity);
     return priceItem ? priceItem?.prices[periodIndex - 1] : undefined;
 };

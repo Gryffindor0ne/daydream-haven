@@ -15,7 +15,6 @@ import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 const ProductDetail = () => {
     const { currentPath, id } = useCurrentPathAndId();
 
-    const [lists, setLists] = useState<ProductInfo[]>([]);
     const [listItem, setListItem] = useState<ProductInfo | undefined>();
 
     const theme = useTheme();
@@ -24,22 +23,17 @@ const ProductDetail = () => {
     useEffect(() => {
         const getLists = async () => {
             try {
-                const { data } = await axiosInstance.get(`/${currentPath}`);
-                setLists(data);
+                const path = currentPath === 'shop' ? 'products' : 'subscriptions';
+                const { data } = await axiosInstance.get(`/${path}/${id}`);
+
+                setListItem(data);
             } catch (error) {
                 console.log(error);
             }
         };
 
         getLists();
-    }, [currentPath]);
-
-    useEffect(() => {
-        if (lists.length > 0 && id) {
-            const item = lists.find((item) => item.id.toString() === id);
-            setListItem(item);
-        }
-    }, [lists, id]);
+    }, [currentPath, id]);
 
     return (
         <Box sx={{ minHeight: '75vh', paddingTop: 20, paddingX: 2, marginTop: 10, marginBottom: 20 }}>
@@ -59,7 +53,7 @@ const ProductDetail = () => {
                             },
                         }}
                     >
-                        <img src={listItem?.detail_images[0]} alt={`product_${listItem?.name}`} />
+                        <img src={listItem?.detailImages[0]} alt={`product_${listItem?.name}`} />
                     </Box>
                 </Grid>
 
