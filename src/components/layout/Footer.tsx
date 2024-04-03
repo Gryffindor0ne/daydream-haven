@@ -14,9 +14,6 @@ const Footer = () => {
             sx={{
                 width: '100vw',
                 height: 'auto',
-                '@media (min-width: 900px)': {
-                    height: '20vh',
-                },
                 padding: 5,
                 background: '#212121',
                 color: '#B3A398',
@@ -57,7 +54,7 @@ const Footer = () => {
                 </Grid>
                 <Grid item xs={12} md={3} sx={{ lineHeight: isMobile ? '2.5' : '2.2' }}>
                     <Typography variant="footer" align={isMobile ? 'center' : 'left'}>
-                        T. 031-383-2321
+                        T. 031-123-4567
                     </Typography>
                     <Typography variant="footer" align={isMobile ? 'center' : 'left'}>
                         master@daydreamhaven.com
