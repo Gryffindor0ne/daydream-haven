@@ -12,8 +12,12 @@ import ShoppingCart from '~/pages/ShoppingCart';
 import OrderPayment from '~/pages/OrderPayment';
 import Login from '~/pages/auth/Login';
 import Register from '~/pages/auth/Register';
+import { useAppSelector } from '~/app/reduxHooks';
+import { authState } from '~/features/auth/authSlice';
 
 const Router = () => {
+    const { isAuthenticated } = useAppSelector(authState);
+
     return (
         <>
             <HeaderBar />
@@ -26,7 +30,7 @@ const Router = () => {
                 <Route path="/subscription" element={<Subscription />} />
                 <Route path="/subscription/:id" element={<ProductDetail />} />
                 <Route path="/contact" element={<Contact />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/cart" element={<ShoppingCart />} />
                 <Route path="/order" element={<OrderPayment />} />
@@ -36,5 +40,4 @@ const Router = () => {
         </>
     );
 };
-
 export default Router;

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -12,26 +14,33 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { useNavigate } from 'react-router-dom';
+
 import { categoryItems } from '~/utils/constants';
+import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
+import { authState } from '~/features/auth/authSlice';
 
 interface Props {
     window?: () => Window;
 }
 
 const drawerWidth = 320;
-const userItems = ['LOGIN', 'CART'];
 
 const HeaderBar = (props: Props) => {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const { isAuthenticated } = useAppSelector(authState);
+
+    const userItems = [isAuthenticated ? 'LOGOUT' : 'LOGIN', 'CART'];
     const handleHomeButtonClick = () => navigate(`/`);
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
     };
+
+    console.log(isAuthenticated);
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -56,7 +65,17 @@ const HeaderBar = (props: Props) => {
             <List>
                 {userItems.map((item) => (
                     <ListItem key={item} disablePadding>
-                        <ListItemButton onClick={() => navigate(`/${item.toLowerCase()}`)} sx={{ textAlign: 'left' }}>
+                        <ListItemButton
+                            onClick={() => {
+                                if (item === 'LOGOUT') {
+                                    dispatch({ type: 'auth/logoutUser' });
+                                    navigate(`/`);
+                                } else {
+                                    navigate(`/${item.toLowerCase()}`);
+                                }
+                            }}
+                            sx={{ textAlign: 'left' }}
+                        >
                             <ListItemText primary={item} />
                         </ListItemButton>
                     </ListItem>
@@ -122,7 +141,14 @@ const HeaderBar = (props: Props) => {
                     <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                         {userItems.map((item) => (
                             <Button
-                                onClick={() => navigate(`/${item.toLowerCase()}`)}
+                                onClick={() => {
+                                    if (item === 'LOGOUT') {
+                                        dispatch({ type: 'auth/logoutUser' });
+                                        navigate(`/`);
+                                    } else {
+                                        navigate(`/${item.toLowerCase()}`);
+                                    }
+                                }}
                                 key={item}
                                 sx={{
                                     color: '#503C3C',
