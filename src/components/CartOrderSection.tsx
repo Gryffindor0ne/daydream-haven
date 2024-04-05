@@ -7,10 +7,12 @@ import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { useAppSelector } from '~/app/reduxHooks';
 import { orderState } from '~/features/order/orderSlice';
 import { formattedNumber } from '~/utils/utils';
+import { authState } from '~/features/auth/authSlice';
 
 const CartOrderSection = ({ products }: { products: string[] }) => {
     const navigate = useNavigate();
     const { deliveryFee, subTotal, totalAmount } = useAppSelector(orderState);
+    const { isAuthenticated } = useAppSelector(authState);
 
     return (
         <>
@@ -95,7 +97,9 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
             >
                 {products.length !== 0 && (
                     <Button
-                        onClick={() => navigate(`/order`)}
+                        onClick={() => {
+                            isAuthenticated ? navigate(`/order`) : navigate(`/login?redirectedFrom=order`);
+                        }}
                         variant="outlined"
                         sx={{
                             width: 200,

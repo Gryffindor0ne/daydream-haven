@@ -1,9 +1,13 @@
+import { useEffect } from 'react';
 import { CssBaseline } from '@mui/material';
 import ThemeProvider from '@mui/system/ThemeProvider';
-import { useEffect } from 'react';
+
 import { useAppDispatch } from '~/app/reduxHooks';
+
 import Router from '~/pages/Router';
 import theme from '~/theme';
+import Footer from '~/components/layout/Footer';
+import HeaderBar from '~/components/layout/Header';
 
 function App() {
     const dispatch = useAppDispatch();
@@ -16,7 +20,9 @@ function App() {
         <>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
+                <HeaderBar />
                 <Router />
+                <Footer />
             </ThemeProvider>
         </>
     );

@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -8,12 +11,11 @@ import Divider from '@mui/material/Divider';
 
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+
 import { axiosInstance } from '~/lib/axiosInstance';
-import { useState } from 'react';
 import BasicAlert from '~/components/BasicAlert';
-import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
-import { authState, setAuthenticated } from '~/features/auth/authSlice';
+import { useAppDispatch } from '~/app/reduxHooks';
+import { setAuthenticated } from '~/features/auth/authSlice';
 import { setAccessTokenCookie } from '~/utils/cookiesUtils';
 
 const loginSchema = Yup.object().shape({
@@ -32,7 +34,11 @@ const Login = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { isAuthenticated } = useAppSelector(authState);
+
+    const location = useLocation();
+
+    const queryPath = location?.search?.replace('?redirectedFrom=', '/');
+    const from = queryPath || location?.state?.redirectedFrom?.pathname || '/';
 
     const handleSubmit = async (values: LoginInfo) => {
         try {
@@ -45,8 +51,9 @@ const Login = () => {
                 setAccessTokenCookie(response.data.access_token);
                 // 리덕스 상태 변환
                 dispatch(setAuthenticated(true));
-                // 이전페이지로 이동
-                navigate(-1);
+                // 리다이렉트 페이지로 이동
+
+                navigate(from);
             }
         } catch (error) {
             setMessage(`이메일, 비밀번호가 맞지 않습니다. 다시 시도해주세요.`);
@@ -54,8 +61,6 @@ const Login = () => {
             console.log(error);
         }
     };
-
-    console.log(isAuthenticated);
 
     const handleClose = () => {
         setIsOpen(false);

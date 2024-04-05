@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -40,7 +40,7 @@ const HeaderBar = (props: Props) => {
         setMobileOpen((prevState) => !prevState);
     };
 
-    console.log(isAuthenticated);
+    const currentLocation = useLocation();
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -55,7 +55,14 @@ const HeaderBar = (props: Props) => {
             <List>
                 {categoryItems.map((item) => (
                     <ListItem key={item} disablePadding>
-                        <ListItemButton onClick={() => navigate(`/${item.toLowerCase()}`)} sx={{ textAlign: 'left' }}>
+                        <ListItemButton
+                            onClick={() =>
+                                navigate(`/${item.toLowerCase()}`, {
+                                    state: { redirectedFrom: currentLocation },
+                                })
+                            }
+                            sx={{ textAlign: 'left' }}
+                        >
                             <ListItemText primary={item} />
                         </ListItemButton>
                     </ListItem>
@@ -71,7 +78,9 @@ const HeaderBar = (props: Props) => {
                                     dispatch({ type: 'auth/logoutUser' });
                                     navigate(`/`);
                                 } else {
-                                    navigate(`/${item.toLowerCase()}`);
+                                    navigate(`/${item.toLowerCase()}`, {
+                                        state: { redirectedFrom: currentLocation },
+                                    });
                                 }
                             }}
                             sx={{ textAlign: 'left' }}
@@ -130,7 +139,11 @@ const HeaderBar = (props: Props) => {
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'block' } }}>
                         {categoryItems.map((item) => (
                             <Button
-                                onClick={() => navigate(`/${item.toLowerCase()}`)}
+                                onClick={() =>
+                                    navigate(`/${item.toLowerCase()}`, {
+                                        state: { redirectedFrom: currentLocation },
+                                    })
+                                }
                                 key={item}
                                 sx={{ color: '#503C3C', fontFamily: 'Merriweather', fontWeight: 300, fontSize: 14 }}
                             >
@@ -146,7 +159,9 @@ const HeaderBar = (props: Props) => {
                                         dispatch({ type: 'auth/logoutUser' });
                                         navigate(`/`);
                                     } else {
-                                        navigate(`/${item.toLowerCase()}`);
+                                        navigate(`/${item.toLowerCase()}`, {
+                                            state: { redirectedFrom: currentLocation },
+                                        });
                                     }
                                 }}
                                 key={item}

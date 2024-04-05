@@ -18,6 +18,7 @@ import { addToOrder, updateOrderTotal } from '~/features/order/orderSlice';
 import CapacityGrindSelector from '~/components/CapacityGrindSelector';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import { findPriceByCapacityAndPeriod } from '~/utils/utils';
+import { authState } from '~/features/auth/authSlice';
 
 export type OrderProductSummaryInfo = {
     id: string;
@@ -46,6 +47,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
     const dispatch = useAppDispatch();
 
     const { cartItems } = useAppSelector(cartState);
+    const { isAuthenticated } = useAppSelector(authState);
 
     //capacity와 grindSize & period를 통합
     const handleOptionChange = (
@@ -280,9 +282,10 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                 <Button
                     onClick={() => {
                         if (selectedProducts.length !== 0) {
-                            navigate(`/order`);
                             dispatch(addToOrder(selectedProducts));
                             dispatch(updateOrderTotal());
+
+                            isAuthenticated ? navigate(`/order`) : navigate(`/login?redirectedFrom=order`);
                         }
                         setShowCartGuidancePopup(true);
                     }}
