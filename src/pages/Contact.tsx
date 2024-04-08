@@ -37,7 +37,7 @@ const Contact = () => {
                     Daydream Haven 본점
                 </Typography>
                 <Typography sx={{ fontSize: 20, marginBottom: 2 }}>전화</Typography>
-                <Typography sx={{ fontSize: 15, marginBottom: 5 }}>031-383-2321</Typography>
+                <Typography sx={{ fontSize: 15, marginBottom: 5 }}>031-123-4567</Typography>
                 <Typography sx={{ fontSize: 20, marginBottom: 2 }}>주소</Typography>
                 <Typography sx={{ fontSize: 15, marginBottom: 5 }}>경기도 안양시 동안구 관악대로 213</Typography>
                 <Typography sx={{ fontSize: 20, marginBottom: 2 }}>영업시간</Typography>
