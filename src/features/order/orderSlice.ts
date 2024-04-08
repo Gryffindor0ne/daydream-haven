@@ -41,6 +41,8 @@ const orderSlice = createSlice({
         },
         clearOrder(state) {
             state.orderItems = [];
+            state.subTotal = 0;
+            state.deliveryFee = 0;
             state.totalAmount = 0;
         },
     },

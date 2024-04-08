@@ -3,6 +3,7 @@ import { takeLatest, call, put } from 'redux-saga/effects';
 import { setLoading, setAuthenticated } from './authSlice';
 import { AccessTokenValidityResponse, checkAccessTokenValidityAPI } from '~/api/api';
 import { extractAccessTokenFromCookie, removeAccessTokenFromCookie } from '~/utils/cookiesUtils';
+import { clearOrder } from '~/features/order/orderSlice';
 
 function* checkTokenExpirationSaga() {
     const accessToken = extractAccessTokenFromCookie();
@@ -26,6 +27,7 @@ function* logoutUserSaga() {
     try {
         yield call(removeAccessTokenFromCookie); // 쿠키에서 액세스토큰 삭제
         yield put(setAuthenticated(false)); // 인증 상태를 false로 업데이트
+        yield put(clearOrder()); // 주문리스트 상태 초기화 업데이트
     } catch (error) {
         console.error('Error logging out user:', error);
     }
