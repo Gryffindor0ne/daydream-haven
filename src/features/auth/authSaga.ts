@@ -7,11 +7,13 @@ import { extractAccessTokenFromCookie, removeAccessTokenFromCookie } from '~/uti
 function* checkTokenExpirationSaga() {
     const accessToken = extractAccessTokenFromCookie();
     if (accessToken === null) {
+        yield put(setAuthenticated(false));
         throw new Error('Access token is null');
     }
     try {
         yield put(setLoading(true)); // 로딩 상태를 true로 설정
         const response: AccessTokenValidityResponse = yield call(checkAccessTokenValidityAPI, accessToken); // 토큰 유효성 검사
+
         yield put(setAuthenticated(response.isAuthenticated)); // 인증 상태 업데이트
     } catch (error) {
         console.error('Error checking token validity:', error);

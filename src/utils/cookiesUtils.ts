@@ -4,8 +4,14 @@ export const setAccessTokenCookie = (accessToken: string) => {
 };
 
 export const removeAccessTokenFromCookie = () => {
-    // 만료일을 현재 시간보다 이전으로 설정하여 쿠키를 만료시킴
-    document.cookie = 'access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    const token = extractAccessTokenFromCookie();
+
+    if (token) {
+        // 만료일을 현재 시간보다 이전으로 설정하여 쿠키를 만료시킴
+        document.cookie = 'access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    } else {
+        throw new Error('Access token is null');
+    }
 };
 
 export const extractAccessTokenFromCookie = () => {
