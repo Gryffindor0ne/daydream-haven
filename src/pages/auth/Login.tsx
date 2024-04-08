@@ -15,7 +15,7 @@ import * as Yup from 'yup';
 import { axiosInstance } from '~/lib/axiosInstance';
 import BasicAlert from '~/components/BasicAlert';
 import { useAppDispatch } from '~/app/reduxHooks';
-import { setAuthenticated } from '~/features/auth/authSlice';
+import { setAuthenticated, setLoading } from '~/features/auth/authSlice';
 import { setAccessTokenCookie } from '~/utils/cookiesUtils';
 
 const loginSchema = Yup.object().shape({
@@ -41,6 +41,7 @@ const Login = () => {
     const from = queryPath || location?.state?.redirectedFrom?.pathname || '/';
 
     const handleSubmit = async (values: LoginInfo) => {
+        dispatch(setLoading(true));
         try {
             const response = await axiosInstance.post(`users/sign-in`, {
                 email: values.email,
@@ -54,11 +55,14 @@ const Login = () => {
                 // 리다이렉트 페이지로 이동
 
                 navigate(from);
+                dispatch(setLoading(false));
             }
         } catch (error) {
             setMessage(`이메일, 비밀번호가 맞지 않습니다. 다시 시도해주세요.`);
             setIsOpen(true);
             console.log(error);
+        } finally {
+            dispatch(setLoading(false)); // 비동기 작업 완료 후 항상 로딩 상태를 false로 설정합니다.
         }
     };
 

@@ -3,7 +3,7 @@ import { CssBaseline } from '@mui/material';
 import ThemeProvider from '@mui/system/ThemeProvider';
 
 import { useAppDispatch } from '~/app/reduxHooks';
-
+import LoadingIndicator from '~/components/LoadingIndicator';
 import Router from '~/pages/Router';
 import theme from '~/theme';
 import Footer from '~/components/layout/Footer';
@@ -21,6 +21,7 @@ function App() {
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <HeaderBar />
+                <LoadingIndicator />
                 <Router />
                 <Footer />
             </ThemeProvider>
