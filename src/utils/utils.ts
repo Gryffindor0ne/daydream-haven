@@ -10,3 +10,5 @@ export const findPriceByCapacityAndPeriod = (
     const priceItem = item?.plans?.find((priceItem) => priceItem?.name === capacity);
     return priceItem ? priceItem?.prices[periodIndex - 1] : undefined;
 };
+
+export const formattedPhoneNumber = (phoneNumber: string) => phoneNumber.replace(/^(\d{3})(\d{4})(\d{4})$/, '$1-$2-$3');
