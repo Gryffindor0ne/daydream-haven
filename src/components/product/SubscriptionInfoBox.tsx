@@ -4,7 +4,7 @@ import Divider from '@mui/material/Divider';
 import { useMediaQuery, useTheme } from '@mui/material';
 
 import { findPriceByCapacityAndPeriod, formattedNumber } from '~/utils/utils';
-import { ProductInfo } from '~/components/ProductsList';
+import { ProductInfo } from '~/components/product/ProductsList';
 
 const SubscriptionInfoBox = ({ item }: { item: ProductInfo | undefined }) => {
     const theme = useTheme();

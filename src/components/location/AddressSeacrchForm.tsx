@@ -25,8 +25,8 @@ const AddressSearchForm = ({ onAddressSelect }: { onAddressSelect: (address: Add
     const handleAddressSearch = () => {
         new window.daum.Postcode({
             oncomplete: (data: DaumPostcodeData) => {
-                console.log(data);
-                onAddressSelect({ zonecode: data.zonecode, address: data.address });
+                // console.log(data);
+                onAddressSelect({ postcode: data.zonecode, address: data.address });
             },
         }).open();
     };

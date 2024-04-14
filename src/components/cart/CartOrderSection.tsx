@@ -4,10 +4,11 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
+
 import { useAppSelector } from '~/app/reduxHooks';
 import { orderState } from '~/features/order/orderSlice';
-import { formattedNumber } from '~/utils/utils';
 import { authState } from '~/features/auth/authSlice';
+import { formattedNumber } from '~/utils/utils';
 
 const CartOrderSection = ({ products }: { products: string[] }) => {
     const navigate = useNavigate();

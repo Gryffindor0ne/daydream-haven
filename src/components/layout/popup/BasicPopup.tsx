@@ -5,14 +5,14 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-interface AlertProps {
+interface PopupProps {
     open: boolean;
     onClose: () => void;
     message: string;
     cartPopupClose?: (open: boolean) => void;
 }
 
-const BasicAlert: React.FC<AlertProps> = ({ open, onClose, message, cartPopupClose }: AlertProps) => {
+const BasicPopup: React.FC<PopupProps> = ({ open, onClose, message, cartPopupClose }: PopupProps) => {
     return (
         <Dialog
             open={open}
@@ -44,4 +44,4 @@ const BasicAlert: React.FC<AlertProps> = ({ open, onClose, message, cartPopupClo
     );
 };
 
-export default BasicAlert;
+export default BasicPopup;

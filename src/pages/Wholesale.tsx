@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import BasicAlert from '~/components/BasicAlert';
-import { useNavigate } from 'react-router-dom';
+
+import BasicPopup from '~/components/layout/popup/BasicPopup';
 
 const Wholesale = () => {
     const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -23,7 +24,7 @@ const Wholesale = () => {
 
     return (
         <Container maxWidth="lg">
-            {showAlert && <BasicAlert open={showAlert} onClose={handleAlertClose} message={alertMessage} />}
+            {showAlert && <BasicPopup open={showAlert} onClose={handleAlertClose} message={alertMessage} />}
             <Box sx={{ minHeight: '75vh', paddingTop: 12, marginTop: 10 }}></Box>
         </Container>
     );

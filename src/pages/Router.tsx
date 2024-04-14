@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import ProductDetail from '~/pages/ProductDetail';
 
+import ProductDetail from '~/pages/ProductDetail';
 import Home from '~/pages';
 import About from '~/pages/About';
 import Contact from '~/pages/Contact';
@@ -11,8 +11,8 @@ import ShoppingCart from '~/pages/ShoppingCart';
 import OrderPayment from '~/pages/OrderPayment';
 import Login from '~/pages/auth/Login';
 import Register from '~/pages/auth/Register';
-import PrivatedRoute from '~/pages/PrivatedRoute';
-import LoginRouteGuard from '~/pages/LoginRouteGuard';
+import PrivatedRoute from '~/pages/routes/PrivatedRoute';
+import LoginRouteGuard from '~/pages/routes/LoginRouteGuard';
 
 const Router = () => {
     return (

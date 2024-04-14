@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid';
-import Product from '~/components/Product';
+import Product from '~/components/product/Product';
 
 export type PriceItem = {
     name: string;

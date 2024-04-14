@@ -3,7 +3,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Map from '~/components/Map';
+
+import Map from '~/components/location/Map';
 
 const Contact = () => {
     const theme = useTheme();

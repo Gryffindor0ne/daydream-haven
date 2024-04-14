@@ -13,7 +13,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 import { axiosInstance } from '~/lib/axiosInstance';
-import BasicAlert from '~/components/BasicAlert';
+import BasicPopup from '~/components/layout/popup/BasicPopup';
 import { useAppDispatch } from '~/app/reduxHooks';
 import { setAuthenticated, setLoading } from '~/features/auth/authSlice';
 import { setAccessTokenCookie } from '~/utils/cookiesUtils';
@@ -72,7 +72,7 @@ const Login = () => {
 
     return (
         <Container maxWidth="xs">
-            {isOpen && <BasicAlert open={isOpen} onClose={handleClose} message={message} />}
+            {isOpen && <BasicPopup open={isOpen} onClose={handleClose} message={message} />}
 
             <Box sx={{ minHeight: '100vh', paddingTop: 20, marginTop: 10, marginBottom: 5 }}>
                 <Grid container spacing={2} justifyContent="center" alignItems="center">

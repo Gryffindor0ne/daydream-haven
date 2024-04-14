@@ -7,7 +7,7 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { formattedNumber } from '~/utils/utils';
-import { ProductInfo } from '~/components/ProductsList';
+import type { ProductInfo } from '~/components/product/ProductsList';
 
 const Dot = styled('span')({
     width: '2px',

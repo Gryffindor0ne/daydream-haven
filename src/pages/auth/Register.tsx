@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -13,7 +14,7 @@ import { Checkbox, FormControlLabel } from '@mui/material';
 
 import { requiredTerms } from '~/utils/constants';
 import { axiosInstance } from '~/lib/axiosInstance';
-import BasicAlert from '~/components/BasicAlert';
+import BasicPopup from '~/components/layout/popup/BasicPopup';
 
 type RegisterInfo = {
     email: string;
@@ -96,7 +97,7 @@ const Register = () => {
 
     return (
         <Container maxWidth="sm">
-            {isOpen && <BasicAlert open={isOpen} onClose={handleClose} message={message} />}
+            {isOpen && <BasicPopup open={isOpen} onClose={handleClose} message={message} />}
 
             <Box sx={{ minHeight: '75vh', paddingTop: 20, marginTop: 10, marginBottom: 5 }}>
                 <Grid container spacing={2} justifyContent="center" alignItems="center">

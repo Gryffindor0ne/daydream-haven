@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import { SelectChangeEvent } from '@mui/material/Select';
@@ -6,19 +7,18 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { nanoid } from 'nanoid';
 
-import { ProductInfo } from '~/components/ProductsList';
-import ProductSummaryBox from '~/components/ProductSummaryBox';
-import BasicAlert from '~/components/BasicAlert';
-import { useNavigate } from 'react-router-dom';
-import CartGuidancePopup from '~/components/CartGuidancePopup';
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
+import { ProductInfo } from '~/components/product/ProductsList';
+import ProductSummaryBox from '~/components/product/ProductSummaryBox';
+import BasicPopup from '~/components/layout/popup/BasicPopup';
+import CartGuidancePopup from '~/components/layout/popup/CartGuidancePopup';
+import DuplicateGuidancePopup from '~/components/layout/popup/DuplicateGuidancePopup';
+import CapacityGrindSelector from '~/components/common/CapacityGrindSelector';
 import { cartState, addToCart, updateCartTotal } from '~/features/cart/cartSlice';
-import DuplicateGuidancePopup from '~/components/DuplicateGuidancePopup';
 import { addToOrder, updateOrderTotal } from '~/features/order/orderSlice';
-import CapacityGrindSelector from '~/components/CapacityGrindSelector';
+import { authState } from '~/features/auth/authSlice';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import { findPriceByCapacityAndPeriod } from '~/utils/utils';
-import { authState } from '~/features/auth/authSlice';
 
 export type OrderProductSummaryInfo = {
     id: string;
@@ -208,7 +208,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
 
     return (
         <Box sx={{ marginTop: 5 }}>
-            {showAlert && <BasicAlert open={showAlert} onClose={handleAlertClose} message={alertMessage} />}
+            {showAlert && <BasicPopup open={showAlert} onClose={handleAlertClose} message={alertMessage} />}
 
             {/* 용량과 분쇄도 & 기간 선택 컴포넌트 */}
             <CapacityGrindSelector
@@ -235,7 +235,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
             {/* <------------------------------------------------------------------------> */}
 
             {showAlert && (
-                <BasicAlert
+                <BasicPopup
                     open={showAlert}
                     onClose={handleAlertClose}
                     message={alertMessage}

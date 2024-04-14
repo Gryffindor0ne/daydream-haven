@@ -5,8 +5,9 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+
 import { useAppDispatch } from '~/app/reduxHooks';
-import { OrderProductSummaryInfo } from '~/components/ProductSelectBox';
+import { OrderProductSummaryInfo } from '~/components/product/ProductSelectBox';
 import { addToCart } from '~/features/cart/cartSlice';
 
 interface PopupProps {

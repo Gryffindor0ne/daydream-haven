@@ -1,9 +1,11 @@
+import { useNavigate } from 'react-router-dom';
+
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useNavigate } from 'react-router-dom';
-import { ProductInfo } from '~/components/ProductsList';
+
+import { ProductInfo } from '~/components/product/ProductsList';
 import { findPriceByCapacityAndPeriod, formattedNumber } from '~/utils/utils';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 

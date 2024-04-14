@@ -13,9 +13,9 @@ import { styled } from '@mui/system';
 import { useAppSelector } from '~/app/reduxHooks';
 import { orderState } from '~/features/order/orderSlice';
 import { formattedNumber } from '~/utils/utils';
-import OrderItem from '~/components/OrderItem';
-import AddressSearchForm from '~/components/AddressSeacrchForm';
-import OrdererInfo from '~/components/OrdererInfo';
+import AddressSearchForm from '~/components/location/AddressSeacrchForm';
+import OrderItem from '~/components/order/OrderItem';
+import OrdererInfo from '~/components/order/OrdererInfo';
 
 // 주문결제 페이지 배경색 설정
 const OrderPaymentPaper = styled(Paper)(() => ({
@@ -23,13 +23,13 @@ const OrderPaymentPaper = styled(Paper)(() => ({
 }));
 
 export type AddressProps = {
-    zonecode: string;
+    postcode: string;
     address: string;
 };
 
 const orderSchema = Yup.object().shape({
     address: Yup.string().required('주소는 필수 입력 항목입니다.'),
-    additionalAddress: Yup.string().required('추가 주소는 필수 입력 항목입니다.'),
+    additionalAddress: Yup.string().required('상세주소는 필수 입력 항목입니다.'),
     selectedPaymentMethod: Yup.string().oneOf(['카드결제', '실시간 계좌이체', '무통장입금']),
     orderer: Yup.string().test('required-if-payment-method', '주문자명은 필수 입력 항목입니다.', function (value) {
         const selectedPaymentMethod = this.resolve(Yup.ref('selectedPaymentMethod'));
@@ -53,7 +53,7 @@ const orderSchema = Yup.object().shape({
 });
 
 type OrderProps = {
-    zonecode: string;
+    postcode: string;
     address: string;
     additionalAddress: string;
     selectedPaymentMethod: string;
@@ -68,6 +68,10 @@ const OrderPayment = () => {
     const { orderItems, subTotal, deliveryFee, totalAmount } = useAppSelector(orderState);
 
     const handleSubmit = (values: OrderProps) => {
+        // 주문 접수 api 연결
+        // 결제방법에 따른 결제 요청 api
+        // 주문 조회 api 폴링
+
         console.log('submit!!!!!!!');
         console.log(values);
     };
@@ -82,7 +86,7 @@ const OrderPayment = () => {
 
                     <Formik
                         initialValues={{
-                            zonecode: '',
+                            postcode: '',
                             address: '',
                             additionalAddress: '',
                             selectedPaymentMethod: '카드결제',
@@ -96,7 +100,6 @@ const OrderPayment = () => {
                         onSubmit={handleSubmit}
                     >
                         {({ errors, touched, values, setFieldValue, handleChange }) => {
-                            console.log(values);
                             return (
                                 <Form>
                                     <Grid container spacing={2} minHeight="100vh">
@@ -123,8 +126,8 @@ const OrderPayment = () => {
                                                         <Box>
                                                             <Field
                                                                 as={TextField}
-                                                                name="zonecode"
-                                                                value={values.zonecode}
+                                                                name="postcode"
+                                                                value={values.postcode}
                                                                 variant="outlined"
                                                                 size="small"
                                                                 sx={{ mr: 2 }}
@@ -132,7 +135,7 @@ const OrderPayment = () => {
                                                         </Box>
                                                         <AddressSearchForm
                                                             onAddressSelect={(selectedAddress: AddressProps) => {
-                                                                setFieldValue('zonecode', selectedAddress.zonecode);
+                                                                setFieldValue('postcode', selectedAddress.postcode);
                                                                 setFieldValue('address', selectedAddress.address);
                                                             }}
                                                         />
@@ -153,7 +156,7 @@ const OrderPayment = () => {
                                                         name="additionalAddress"
                                                         as={TextField}
                                                         value={values.additionalAddress}
-                                                        label="그외 주소"
+                                                        label="상세주소"
                                                         variant="outlined"
                                                         size="small"
                                                         fullWidth

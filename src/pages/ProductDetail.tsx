@@ -1,15 +1,15 @@
+import { useEffect, useState } from 'react';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { useMediaQuery, useTheme } from '@mui/material';
 
-import { useEffect, useState } from 'react';
-
 import { axiosInstance } from '~/lib/axiosInstance';
-import ProductSelectBox from '~/components/ProductSelectBox';
-import { ProductInfo } from '~/components/ProductsList';
-import ProductInfoBox from '~/components/ProductInfoBox';
-import SubscriptionInfoBox from '~/components/SubscriptionInfoBox';
+import ProductSelectBox from '~/components/product/ProductSelectBox';
+import { ProductInfo } from '~/components/product/ProductsList';
+import ProductInfoBox from '~/components/product/ProductInfoBox';
+import SubscriptionInfoBox from '~/components/product/SubscriptionInfoBox';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 
 const ProductDetail = () => {

@@ -1,8 +1,9 @@
-import Box from '@mui/material/Box';
 import { useCallback, useEffect, useState } from 'react';
 
+import Box from '@mui/material/Box';
+
 import { useAppDispatch } from '~/app/reduxHooks';
-import ProductsList from '~/components/ProductsList';
+import ProductsList from '~/components/product/ProductsList';
 import { setLoading } from '~/features/auth/authSlice';
 import { axiosInstance } from '~/lib/axiosInstance';
 

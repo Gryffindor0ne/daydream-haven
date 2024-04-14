@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-
 import { useMediaQuery, useTheme } from '@mui/material';
+
 import { categoryItems } from '~/utils/constants';
 
 const Home = () => {

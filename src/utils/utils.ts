@@ -1,4 +1,4 @@
-import { ProductInfo } from '~/components/ProductsList';
+import { ProductInfo } from '~/components/product/ProductsList';
 
 export const formattedNumber = (price: number) => new Intl.NumberFormat().format(price);
 

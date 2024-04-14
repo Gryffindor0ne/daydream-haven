@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { RootState } from '~/app/store';
-import { OrderProductSummaryInfo } from '~/components/ProductSelectBox';
+import { OrderProductSummaryInfo } from '~/components/product/ProductSelectBox';
 
 interface OrderState {
     orderItems: OrderProductSummaryInfo[];

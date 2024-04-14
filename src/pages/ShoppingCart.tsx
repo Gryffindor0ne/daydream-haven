@@ -10,9 +10,9 @@ import { IconButton } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { cartState, removeFromCart, updateCartTotal } from '~/features/cart/cartSlice';
-import CartItem from '~/components/CartItem';
 import { addToOrder, updateOrderTotal } from '~/features/order/orderSlice';
-import CartOrderSection from '~/components/CartOrderSection';
+import CartItem from '~/components/cart/CartItem';
+import CartOrderSection from '~/components/cart/CartOrderSection';
 
 const ShoppingCart = () => {
     const { cartItems, deliveryFeeCondition } = useAppSelector(cartState);

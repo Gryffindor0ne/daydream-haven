@@ -1,6 +1,7 @@
+import { useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { useCallback, useEffect, useState } from 'react';
+
 import { useAppDispatch } from '~/app/reduxHooks';
 import { setLoading } from '~/features/auth/authSlice';
 import { axiosInstance } from '~/lib/axiosInstance';
