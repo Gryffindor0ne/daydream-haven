@@ -1,14 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
+import { formattedPhoneNumber } from '~/utils/utils';
+import getUserInfoDetailAPI from '~/api/getUserInfoDetailAPI';
 import { useAppDispatch } from '~/app/reduxHooks';
 import { setLoading } from '~/features/auth/authSlice';
-import { axiosInstance } from '~/lib/axiosInstance';
-import { extractAccessTokenFromCookie } from '~/utils/cookiesUtils';
-import { formattedPhoneNumber } from '~/utils/utils';
 
-type UserInfoProps = {
+export type UserInfoProps = {
     id: string;
     email: string;
     name: string;
@@ -17,31 +16,24 @@ type UserInfoProps = {
 };
 
 const OrdererInfo = () => {
-    const accessToken = extractAccessTokenFromCookie();
-
-    const dispatch = useAppDispatch();
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
-
-    const getUserInfo = useCallback(async () => {
-        dispatch(setLoading(true));
-
-        try {
-            const { data } = await axiosInstance.get(`/users`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            });
-            setUserInfo(data);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            dispatch(setLoading(false)); // 비동기 작업 완료 후 항상 로딩 상태를 false로 설정합니다.
-        }
-    }, [accessToken, dispatch]);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        getUserInfo();
-    }, [getUserInfo]);
+        const fetchUserData = async () => {
+            dispatch(setLoading(true));
+            try {
+                const userData: UserInfoProps = await getUserInfoDetailAPI();
+                setUserInfo(userData);
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+            } finally {
+                dispatch(setLoading(false));
+            }
+        };
+
+        fetchUserData();
+    }, [dispatch]);
 
     return (
         <>

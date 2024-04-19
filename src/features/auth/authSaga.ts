@@ -1,12 +1,13 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 
 import { setLoading, setAuthenticated } from './authSlice';
-import { AccessTokenValidityResponse, checkAccessTokenValidityAPI } from '~/api/api';
+import { AccessTokenValidityResponse, checkAccessTokenValidityAPI } from '~/api/checkAccessTokenValidityAPI';
 import { extractAccessTokenFromCookie, removeAccessTokenFromCookie } from '~/utils/cookiesUtils';
 import { clearOrder } from '~/features/order/orderSlice';
 
 function* checkTokenExpirationSaga() {
     const accessToken = extractAccessTokenFromCookie();
+
     if (accessToken === null) {
         yield put(setAuthenticated(false));
         throw new Error('Access token is null');

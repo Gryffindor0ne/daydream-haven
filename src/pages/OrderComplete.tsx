@@ -1,0 +1,330 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+
+import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
+import { UserInfoProps } from '~/components/order/OrdererInfo';
+import checkOrderDetailAPI from '~/api/checkOrderDetailAPI';
+import getUserInfoDetailAPI from '~/api/getUserInfoDetailAPI';
+import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
+import { clearOrder, orderState } from '~/features/order/orderSlice';
+import { setLoading } from '~/features/auth/authSlice';
+import { PaymentDataProps } from '~/features/payment/paymentSaga';
+import { paymentState, resetPaymentState } from '~/features/payment/paymentSlice';
+import { formattedDate, formattedNumber } from '~/utils/utils';
+import { paymentMethods } from '~/utils/constants';
+
+const OrderComplete = () => {
+    const { paymentStatus, error } = useAppSelector(paymentState);
+    const { orderItems, totalAmount } = useAppSelector(orderState);
+
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const { id } = useCurrentPathAndId();
+
+    const [userInfo, setUserInfo] = useState<UserInfoProps>();
+    const [orderInfo, setOrderInfo] = useState<PaymentDataProps>();
+
+    const paymentMethodType = Object.keys(paymentMethods).find(
+        (key) => paymentMethods[key] === orderInfo?.paymentMethod,
+    );
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            dispatch(setLoading(true));
+            try {
+                const userData: UserInfoProps = await getUserInfoDetailAPI();
+
+                setUserInfo(userData);
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+            } finally {
+                dispatch(setLoading(false));
+            }
+        };
+
+        fetchUserData();
+    }, [dispatch]);
+
+    useEffect(() => {
+        const fetchOrderData = async () => {
+            dispatch(setLoading(true));
+            try {
+                const { data } = await checkOrderDetailAPI(id);
+
+                setOrderInfo(data);
+            } catch (error) {
+                console.error('Error fetching order info:', error);
+            } finally {
+                dispatch(setLoading(false));
+            }
+        };
+
+        fetchOrderData();
+    }, [dispatch, id]);
+
+    return (
+        <Container maxWidth="lg">
+            <Box sx={{ minHeight: '120vh', paddingTop: 12, marginTop: 10 }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Typography sx={{ fontSize: 34, marginBottom: 5 }}>
+                        {paymentStatus === 'success' ? '주문완료' : '주문/결제'}
+                    </Typography>
+                    <Typography sx={{ fontSize: 40, marginBottom: 15 }}>
+                        {paymentStatus === 'success'
+                            ? '주문이 정상적으로 완료되었습니다.'
+                            : '주문이 정상적으로 완료되지 않았습니다.'}
+                    </Typography>
+
+                    {paymentStatus === 'success' ? (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'flex-start',
+                                marginBottom: 5,
+                                width: 400,
+                            }}
+                        >
+                            {/* ------------------------------------- */}
+                            <Box sx={{ display: 'flex', marginY: 1 }}>
+                                <Typography
+                                    sx={{
+                                        width: 120,
+                                        fontSize: 15,
+                                        marginY: 0.5,
+                                        paddingLeft: 1,
+                                    }}
+                                >
+                                    주문자
+                                </Typography>
+
+                                <Typography
+                                    sx={{
+                                        fontSize: 15,
+                                        marginY: 0.5,
+                                        paddingX: 1,
+                                    }}
+                                >
+                                    {userInfo?.name}
+                                </Typography>
+                            </Box>
+                            {/* ------------------------------------- */}
+                            <Box sx={{ display: 'flex', marginY: 1 }}>
+                                <Typography
+                                    sx={{
+                                        width: 120,
+                                        fontSize: 15,
+                                        marginY: 0.5,
+                                        paddingLeft: 1,
+                                    }}
+                                >
+                                    주문 상품
+                                </Typography>
+
+                                <Typography
+                                    sx={{
+                                        fontSize: 15,
+                                        marginY: 0.5,
+                                        paddingX: 1,
+                                    }}
+                                >
+                                    {orderItems.length > 1
+                                        ? `${orderItems[0].name} 외 ${orderItems.length - 1} 건`
+                                        : orderItems[0].name}
+                                </Typography>
+                            </Box>
+                            {/* ------------------------------------- */}
+
+                            <Box sx={{ display: 'flex', marginY: 1 }}>
+                                <Typography
+                                    sx={{
+                                        width: 120,
+                                        fontSize: 15,
+                                        marginY: 0.5,
+                                        paddingLeft: 1,
+                                    }}
+                                >
+                                    결제 금액
+                                </Typography>
+
+                                <Typography
+                                    sx={{
+                                        fontSize: 15,
+                                        marginY: 0.5,
+                                        paddingX: 1,
+                                    }}
+                                >
+                                    {formattedNumber(totalAmount)} 원
+                                </Typography>
+                            </Box>
+                            {/* ------------------------------------- */}
+                            <Box sx={{ display: 'flex', marginY: 1 }}>
+                                <Typography
+                                    sx={{
+                                        width: 120,
+                                        fontSize: 15,
+                                        marginY: 0.5,
+                                        paddingLeft: 1,
+                                    }}
+                                >
+                                    결제 방법
+                                </Typography>
+
+                                <Typography
+                                    sx={{
+                                        fontSize: 15,
+                                        marginY: 0.5,
+                                        paddingX: 1,
+                                    }}
+                                >
+                                    {paymentMethodType}
+                                </Typography>
+                            </Box>
+                            {/* ------------------------------------- */}
+                            <Box sx={{ display: 'flex', marginY: 1 }}>
+                                <Typography
+                                    sx={{
+                                        width: 120,
+                                        fontSize: 15,
+                                        marginY: 0.5,
+                                        paddingLeft: 1,
+                                    }}
+                                >
+                                    주문 일시
+                                </Typography>
+
+                                <Typography
+                                    sx={{
+                                        fontSize: 15,
+                                        marginY: 0.5,
+                                        paddingX: 1,
+                                    }}
+                                >
+                                    {formattedDate(orderInfo?.createdAt as string)}
+                                </Typography>
+                            </Box>
+                            {/* ------------------------------------- */}
+
+                            {paymentMethodType === '무통장입금' && (
+                                <Box sx={{ marginY: 3 }}>
+                                    <Typography
+                                        sx={{
+                                            width: 400,
+                                            fontSize: 15,
+                                            marginY: 0.5,
+                                            paddingLeft: 1,
+                                        }}
+                                    >
+                                        기업은행 888-000000-01-999 (주)데이드림해븐
+                                    </Typography>
+
+                                    <Typography
+                                        sx={{
+                                            fontSize: 15,
+                                            marginY: 1,
+                                            paddingX: 1,
+                                        }}
+                                    >
+                                        주문 후 72시간 이내 미입금시 자동 취소됩니다.
+                                    </Typography>
+                                </Box>
+                            )}
+                        </Box>
+                    ) : (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'flex-start',
+                                marginBottom: 5,
+                                width: 400,
+                            }}
+                        >
+                            {/* ------------------------------------- */}
+                            <Box sx={{ display: 'flex', marginY: 1 }}>
+                                <Typography
+                                    sx={{
+                                        width: 120,
+                                        fontSize: 15,
+                                        marginY: 0.5,
+                                        paddingLeft: 1,
+                                    }}
+                                >
+                                    오류 사유
+                                </Typography>
+
+                                <Typography
+                                    sx={{
+                                        fontSize: 15,
+                                        marginY: 0.5,
+                                        paddingX: 1,
+                                    }}
+                                >
+                                    {error}
+                                </Typography>
+                            </Box>
+                            {/* ------------------------------------- */}
+
+                            <Box sx={{ marginY: 3 }}>
+                                <Typography
+                                    sx={{
+                                        width: 400,
+                                        fontSize: 15,
+                                        marginY: 0.5,
+                                        paddingLeft: 1,
+                                    }}
+                                >
+                                    오류가 발생하여 결제가 정상적으로 이루어지지 않았습니다.
+                                </Typography>
+
+                                <Typography
+                                    sx={{
+                                        fontSize: 15,
+                                        marginY: 1,
+                                        paddingX: 1,
+                                    }}
+                                >
+                                    죄송하지만, 다시 시도해 주십시오.
+                                </Typography>
+                            </Box>
+                        </Box>
+                    )}
+                    <Button
+                        onClick={() => {
+                            dispatch(clearOrder());
+                            dispatch(resetPaymentState());
+                            navigate('/');
+                        }}
+                        variant="outlined"
+                        sx={{
+                            width: 130,
+                            fontSize: 14,
+                            '&:hover': {
+                                color: '#B67352',
+                                background: '#ffffff',
+                            },
+                        }}
+                    >
+                        홈으로 가기
+                    </Button>
+                </Box>
+            </Box>
+        </Container>
+    );
+};
+
+export default OrderComplete;

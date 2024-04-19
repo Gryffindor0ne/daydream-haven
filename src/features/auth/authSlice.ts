@@ -2,7 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { RootState } from '~/app/store';
 
-const initialState = {
+type AuthState = {
+    isAuthenticated: boolean;
+    isLoading: boolean;
+};
+
+const initialState: AuthState = {
     isAuthenticated: false,
     isLoading: false,
 };

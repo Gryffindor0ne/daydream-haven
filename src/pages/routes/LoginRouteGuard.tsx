@@ -6,10 +6,9 @@ const LoginRouteGuard = () => {
     const { isAuthenticated } = useAppSelector(authState);
 
     const location = useLocation();
-    console.log(location);
+
     const queryPath = location?.search?.replace('?redirectedFrom=', '/');
     const from = queryPath || location?.state?.redirectedFrom?.pathname || '/';
-    console.log(from);
 
     return isAuthenticated ? <Navigate to={from} replace /> : <Outlet />;
 };

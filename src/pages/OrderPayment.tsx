@@ -1,5 +1,10 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+
+import PortOne from '@portone/browser-sdk/v2';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -10,12 +15,18 @@ import TextField from '@mui/material/TextField';
 import { Button, Checkbox, FormControlLabel, Paper, Radio, RadioGroup } from '@mui/material';
 import { styled } from '@mui/system';
 
-import { useAppSelector } from '~/app/reduxHooks';
+import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { orderState } from '~/features/order/orderSlice';
-import { formattedNumber } from '~/utils/utils';
+import { paymentSuccess } from '~/features/payment/paymentSlice';
 import AddressSearchForm from '~/components/location/AddressSeacrchForm';
 import OrderItem from '~/components/order/OrderItem';
-import OrdererInfo from '~/components/order/OrdererInfo';
+import OrdererInfo, { UserInfoProps } from '~/components/order/OrdererInfo';
+import { axiosInstance } from '~/lib/axiosInstance';
+import { formattedNumber } from '~/utils/utils';
+import { extractAccessTokenFromCookie } from '~/utils/cookiesUtils';
+import getUserInfoDetailAPI from '~/api/getUserInfoDetailAPI';
+import { setLoading } from '~/features/auth/authSlice';
+import { paymentMethods } from '~/utils/constants';
 
 // 주문결제 페이지 배경색 설정
 const OrderPaymentPaper = styled(Paper)(() => ({
@@ -33,7 +44,7 @@ const orderSchema = Yup.object().shape({
     selectedPaymentMethod: Yup.string().oneOf(['카드결제', '실시간 계좌이체', '무통장입금']),
     orderer: Yup.string().test('required-if-payment-method', '주문자명은 필수 입력 항목입니다.', function (value) {
         const selectedPaymentMethod = this.resolve(Yup.ref('selectedPaymentMethod'));
-        if (selectedPaymentMethod === '무통장입금' || selectedPaymentMethod === '실시간 계좌이체') {
+        if (selectedPaymentMethod === '무통장입금') {
             return !!value;
         }
         return true;
@@ -66,20 +77,93 @@ type OrderProps = {
 
 const OrderPayment = () => {
     const { orderItems, subTotal, deliveryFee, totalAmount } = useAppSelector(orderState);
+    const dispatch = useAppDispatch();
+    const accessToken = extractAccessTokenFromCookie();
+    const navigate = useNavigate();
+    const [userInfo, setUserInfo] = useState<UserInfoProps>();
 
-    const handleSubmit = (values: OrderProps) => {
+    useEffect(() => {
+        const fetchUserData = async () => {
+            dispatch(setLoading(true));
+            try {
+                const userData: UserInfoProps = await getUserInfoDetailAPI();
+                setUserInfo(userData);
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+            } finally {
+                dispatch(setLoading(false));
+            }
+        };
+
+        fetchUserData();
+    }, [dispatch]);
+
+    const handleSubmit = async (values: OrderProps) => {
         // 주문 접수 api 연결
-        // 결제방법에 따른 결제 요청 api
-        // 주문 조회 api 폴링
+        try {
+            const { data } = await axiosInstance.post(
+                `/orders`,
+                {
+                    name: userInfo!.name,
+                    address: values.address,
+                    addressDetail: values.additionalAddress,
+                    postcode: values.postcode,
+                    paymentMethod: paymentMethods[values.selectedPaymentMethod],
+                    cashReceiptRequired: values.cashReceipt,
+                    issuanceNumber: values.issuanceTargetNumber,
+                    cashReceiptRecipientName: values.orderer,
+                    accountHolderName: values.orderer,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                },
+            );
 
-        console.log('submit!!!!!!!');
-        console.log(values);
+            //포트원 가상결제 요청
+
+            if (data.id) {
+                if (data.paymentMethod !== 'deposit_without_bankbook') {
+                    const response = await PortOne.requestPayment({
+                        // Store ID 설정
+                        storeId: `${import.meta.env.VITE_PORTONE_STORE_ID}`,
+                        // 채널 키 설정
+                        channelKey: `${import.meta.env.VITE_PORTONE_CHANNEL_KEY}`,
+                        noticeUrls: [`${import.meta.env.VITE_PORTONE_WEBHOOK_URL}`],
+                        paymentId: data.id,
+                        orderName:
+                            orderItems.length > 1
+                                ? `${orderItems[0].name}외 ${orderItems.length - 1}건`
+                                : `${orderItems[0].name}`,
+                        totalAmount: totalAmount,
+                        pgProvider: 'PG_PROVIDER_TOSSPAYMENTS',
+                        currency: 'CURRENCY_KRW',
+                        payMethod: data.paymentMethod === 'card' ? 'CARD' : 'TRANSFER',
+                    });
+
+                    if (response?.paymentId) {
+                        dispatch({ type: 'payment/paymentState', paymentId: response?.paymentId });
+                    }
+                    navigate(`${data.id}`);
+                } else {
+                    // 무통장입금은 추후 입금
+                    // 결제 성공한 것으로 상태 변경
+
+                    dispatch(paymentSuccess());
+                    navigate(`${data.id}`);
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
         <OrderPaymentPaper>
             <Container maxWidth="lg">
-                <Box sx={{ minHeight: '75vh', paddingTop: 12, marginTop: 10 }}>
+                <Box sx={{ minHeight: '160vh', paddingTop: 12, marginTop: 10 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Typography sx={{ fontSize: 34, marginBottom: 5 }}>결제하기</Typography>
                     </Box>
@@ -269,103 +353,6 @@ const OrderPayment = () => {
                                                     ))}
                                                 </RadioGroup>
 
-                                                {values.selectedPaymentMethod === '실시간 계좌이체' && (
-                                                    <>
-                                                        <Field
-                                                            as={TextField}
-                                                            value={values.orderer}
-                                                            name="orderer"
-                                                            variant="outlined"
-                                                            size="small"
-                                                            fullWidth
-                                                            label="예금주명"
-                                                            sx={{ mr: 1, mt: 2 }}
-                                                            error={!!errors.orderer && touched.orderer}
-                                                            helperText={
-                                                                errors.orderer && touched.orderer ? errors.orderer : ''
-                                                            }
-                                                        />
-
-                                                        <Box
-                                                            sx={{
-                                                                display: 'flex',
-                                                                justifyContent: 'center',
-                                                                marginY: 3,
-                                                            }}
-                                                        >
-                                                            <Divider
-                                                                sx={{
-                                                                    width: '100%',
-                                                                }}
-                                                            />
-                                                        </Box>
-                                                        <RadioGroup
-                                                            name="cashReceipt"
-                                                            value={values.cashReceipt}
-                                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                                                const value = event.target.value === 'true'; // 문자열 값을 불리언으로 변환
-                                                                setFieldValue(event.target.name, value);
-                                                            }}
-                                                            row
-                                                        >
-                                                            <FormControlLabel
-                                                                value="true"
-                                                                control={<Radio />}
-                                                                label="현금영수증 신청"
-                                                            />
-                                                            <FormControlLabel
-                                                                value="false"
-                                                                control={<Radio />}
-                                                                label="신청안함"
-                                                            />
-                                                        </RadioGroup>
-
-                                                        {/* 현금영수증 신청폼 */}
-                                                        {values.cashReceipt && (
-                                                            <>
-                                                                <RadioGroup
-                                                                    name="issuanceTarget"
-                                                                    value={values.issuanceTarget}
-                                                                    onChange={handleChange}
-                                                                    row
-                                                                >
-                                                                    {['개인', '사업자'].map((target) => (
-                                                                        <FormControlLabel
-                                                                            key={target}
-                                                                            value={target}
-                                                                            control={<Radio />}
-                                                                            label={target}
-                                                                        />
-                                                                    ))}
-                                                                </RadioGroup>
-                                                                <Field
-                                                                    as={TextField}
-                                                                    value={values.issuanceTargetNumber}
-                                                                    name="issuanceTargetNumber"
-                                                                    variant="outlined"
-                                                                    size="small"
-                                                                    fullWidth
-                                                                    label={
-                                                                        values.issuanceTarget === '개인'
-                                                                            ? '전화번호 입력'
-                                                                            : '사업자번호 입력'
-                                                                    }
-                                                                    sx={{ mt: 2 }}
-                                                                    error={
-                                                                        !!errors.issuanceTargetNumber &&
-                                                                        touched.issuanceTargetNumber
-                                                                    }
-                                                                    helperText={
-                                                                        errors.issuanceTargetNumber &&
-                                                                        touched.issuanceTargetNumber
-                                                                            ? errors.issuanceTargetNumber
-                                                                            : ''
-                                                                    }
-                                                                />
-                                                            </>
-                                                        )}
-                                                    </>
-                                                )}
                                                 {values.selectedPaymentMethod === '무통장입금' && (
                                                     <>
                                                         <TextField
@@ -399,7 +386,7 @@ const OrderPayment = () => {
                                                                 color: '#8C6A5D',
                                                             }}
                                                         >
-                                                            주문 후 72시간 동안 미입금시 자동 취소됩니다.
+                                                            주문 후 72시간 이내 미입금시 자동 취소됩니다.
                                                         </Typography>
                                                         <Box
                                                             sx={{

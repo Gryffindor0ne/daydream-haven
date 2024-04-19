@@ -16,8 +16,6 @@ export const checkAccessTokenValidityAPI = async (accessToken: string): Promise<
             },
         );
 
-        console.log(response);
-
         return response.data;
     } catch (error) {
         throw new Error('액세스 토큰 유효성 확인 실패');
