@@ -1,4 +1,4 @@
-import { CircularProgress } from '@mui/material';
+import { Backdrop, CircularProgress } from '@mui/material';
 
 import { useAppSelector } from '~/app/reduxHooks';
 import { authState } from '~/features/auth/authSlice';
@@ -9,9 +9,9 @@ const LoadingIndicator = () => {
     const { loading } = useAppSelector(paymentState);
 
     return isLoading || loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <CircularProgress />
-        </div>
+        <Backdrop sx={{ background: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isLoading || loading}>
+            <CircularProgress color="primary" />
+        </Backdrop>
     ) : null;
 };
 
