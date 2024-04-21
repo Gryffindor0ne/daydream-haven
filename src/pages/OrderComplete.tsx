@@ -33,6 +33,17 @@ const OrderComplete = () => {
         (key) => paymentMethods[key] === orderInfo?.paymentMethod,
     );
 
+    // 뒤로 가기 클릭시 현재페이지로 다시 리다이렉트
+    window.onpopstate = function () {
+        // 주문 완료 페이지 URL
+        const orderCompletedUrl = `order/${id}`; // 주문 완료 페이지 URL에 맞게 수정
+        console.log(window.location.pathname);
+        // 현재 페이지 URL과 주문 완료 페이지 URL 비교
+        if (window.location.pathname !== orderCompletedUrl) {
+            window.location.href = orderCompletedUrl;
+        }
+    };
+
     useEffect(() => {
         const fetchUserData = async () => {
             dispatch(setLoading(true));
