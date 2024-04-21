@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -26,6 +26,20 @@ const OrderComplete = () => {
     const dispatch = useAppDispatch();
     const { id } = useCurrentPathAndId();
 
+    //moblie일 경우 응답을 쿼리로 받기에 따로 처리.
+    const location = useLocation();
+    const queryParams = useMemo(() => {
+        return new URLSearchParams(location.search);
+    }, [location.search]);
+
+    const paymentId = queryParams.get('paymentId');
+
+    useEffect(() => {
+        if (paymentId) {
+            dispatch({ type: 'payment/paymentState', paymentId: paymentId });
+        }
+    }, [dispatch, paymentId]);
+
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
     const [orderInfo, setOrderInfo] = useState<PaymentDataProps>();
 
@@ -37,7 +51,6 @@ const OrderComplete = () => {
     window.onpopstate = function () {
         // 주문 완료 페이지 URL
         const orderCompletedUrl = `order/${id}`; // 주문 완료 페이지 URL에 맞게 수정
-        console.log(window.location.pathname);
         // 현재 페이지 URL과 주문 완료 페이지 URL 비교
         if (window.location.pathname !== orderCompletedUrl) {
             window.location.href = orderCompletedUrl;
@@ -45,38 +58,23 @@ const OrderComplete = () => {
     };
 
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchData = async () => {
             dispatch(setLoading(true));
             try {
-                const userData: UserInfoProps = await getUserInfoDetailAPI();
-
+                const userData = await getUserInfoDetailAPI();
                 setUserInfo(userData);
-            } catch (error) {
-                console.error('Error fetching user info:', error);
-            } finally {
-                dispatch(setLoading(false));
-            }
-        };
 
-        fetchUserData();
-    }, [dispatch]);
-
-    useEffect(() => {
-        const fetchOrderData = async () => {
-            dispatch(setLoading(true));
-            try {
-                const { data } = await checkOrderDetailAPI(id);
-
+                const { data } = await checkOrderDetailAPI(paymentId ? paymentId : id);
                 setOrderInfo(data);
             } catch (error) {
-                console.error('Error fetching order info:', error);
+                console.error('Error fetching data:', error);
             } finally {
                 dispatch(setLoading(false));
             }
         };
 
-        fetchOrderData();
-    }, [dispatch, id]);
+        fetchData();
+    }, [dispatch, id, paymentId]);
 
     return (
         <Container maxWidth="lg">

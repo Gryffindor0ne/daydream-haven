@@ -124,6 +124,8 @@ const OrderPayment = () => {
 
             //포트원 가상결제 요청
 
+            console.log(data);
+
             if (data.id) {
                 if (data.paymentMethod !== 'deposit_without_bankbook') {
                     const response = await PortOne.requestPayment({
@@ -141,12 +143,18 @@ const OrderPayment = () => {
                         pgProvider: 'PG_PROVIDER_TOSSPAYMENTS',
                         currency: 'CURRENCY_KRW',
                         payMethod: data.paymentMethod === 'card' ? 'CARD' : 'TRANSFER',
+                        redirectUrl: `https://daydream-haven.vercel.app/order/${data.id}`,
                     });
+
+                    if (response?.code != null) {
+                        // 오류 발생
+                        return alert(response?.message);
+                    }
 
                     if (response?.paymentId) {
                         dispatch({ type: 'payment/paymentState', paymentId: response?.paymentId });
+                        navigate(`${data.id}`);
                     }
-                    navigate(`${data.id}`);
                 } else {
                     // 무통장입금은 추후 입금
                     // 결제 성공한 것으로 상태 변경
@@ -163,7 +171,7 @@ const OrderPayment = () => {
     return (
         <OrderPaymentPaper>
             <Container maxWidth="lg">
-                <Box sx={{ minHeight: '160vh', paddingTop: 12, marginTop: 10 }}>
+                <Box sx={{ minHeight: '200vh', paddingTop: 12, marginTop: 10 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Typography sx={{ fontSize: 34, marginBottom: 5 }}>결제하기</Typography>
                     </Box>
