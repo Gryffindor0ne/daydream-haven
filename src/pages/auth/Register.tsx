@@ -86,6 +86,11 @@ const Register = () => {
         setIsSuccess(false);
     }, []);
 
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
+        window.scrollTo(0, 0);
+    }, []);
+
     const handleClose = () => {
         setIsOpen(false);
         if (isSuccess) {

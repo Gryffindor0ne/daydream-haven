@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
@@ -69,6 +69,11 @@ const Login = () => {
     const handleClose = () => {
         setIsOpen(false);
     };
+
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <Container maxWidth="xs">

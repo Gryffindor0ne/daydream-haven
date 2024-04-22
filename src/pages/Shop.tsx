@@ -11,6 +11,11 @@ const Shop = () => {
     const dispatch = useAppDispatch();
     const [lists, setLists] = useState([]);
 
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
+        window.scrollTo(0, 0);
+    }, []);
+
     const getLists = useCallback(async () => {
         dispatch(setLoading(true));
 

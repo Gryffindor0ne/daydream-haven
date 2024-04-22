@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -11,6 +12,11 @@ const Home = () => {
     const isTablet = useMediaQuery(theme.breakpoints.up('md'));
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <Box sx={{ minHeight: '75vh' }}>

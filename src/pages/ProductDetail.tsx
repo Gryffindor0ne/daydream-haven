@@ -38,6 +38,11 @@ const ProductDetail = () => {
         getLists();
     }, [currentPath, id]);
 
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <>
             <Box sx={{ minHeight: '75vh', paddingTop: 20, paddingX: 2, marginTop: 10, marginBottom: 20 }}>

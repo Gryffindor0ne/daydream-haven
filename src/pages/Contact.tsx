@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -9,6 +11,11 @@ import Map from '~/components/location/Map';
 const Contact = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
+        window.scrollTo(0, 0);
+    }, []);
     return (
         <Container maxWidth="lg">
             <Box sx={{ paddingTop: 12, paddingX: isMobile ? 0 : 15, marginTop: 10, marginBottom: 30 }}>

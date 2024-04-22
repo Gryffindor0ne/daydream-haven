@@ -53,6 +53,11 @@ const ShoppingCart = () => {
         dispatch(updateCartTotal());
     }, [selectedProducts, cartItems, dispatch]);
 
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <Container maxWidth="lg">
             <Box sx={{ minHeight: '75vh', paddingTop: 12, marginTop: 10, marginBottom: 5 }}>

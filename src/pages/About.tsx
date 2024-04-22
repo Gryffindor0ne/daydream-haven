@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -8,6 +10,11 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 const About = () => {
     const theme = useTheme();
     const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
+        window.scrollTo(0, 0);
+    }, []);
     return (
         <Box sx={{ paddingTop: 12, paddingX: isTablet ? 0 : 15, marginTop: 10 }}>
             <Typography

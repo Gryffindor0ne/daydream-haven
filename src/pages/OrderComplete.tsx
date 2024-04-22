@@ -40,6 +40,11 @@ const OrderComplete = () => {
         }
     }, [dispatch, paymentId]);
 
+    useEffect(() => {
+        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
+        window.scrollTo(0, 0);
+    }, []);
+
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
     const [orderInfo, setOrderInfo] = useState<PaymentDataProps>();
 
