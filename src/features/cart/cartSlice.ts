@@ -61,7 +61,7 @@ const cartSlice = createSlice({
 });
 
 const checkDeliveryFee = (subTotal: number): string => {
-    return subTotal > 50000 ? '배송비 없음' : '3,000원 조건';
+    return subTotal >= 50000 ? '배송비 없음' : '3,000원 조건';
 };
 export const { addToCart, removeFromCart, updateCartTotal, updateCartItemQuantity } = cartSlice.actions;
 

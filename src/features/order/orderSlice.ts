@@ -50,7 +50,7 @@ const orderSlice = createSlice({
 });
 
 const calculateDeliveryFee = (subTotal: number): number => {
-    return subTotal > 50000 ? 0 : 3000;
+    return subTotal >= 50000 ? 0 : 3000;
 };
 
 export const { addToOrder, updateOrderTotal, removeFromOrder, clearOrder } = orderSlice.actions;
