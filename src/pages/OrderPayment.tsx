@@ -129,8 +129,6 @@ const OrderPayment = () => {
 
             //포트원 가상결제 요청
 
-            console.log(data);
-
             if (data.id) {
                 if (data.paymentMethod !== 'deposit_without_bankbook') {
                     const response = await PortOne.requestPayment({

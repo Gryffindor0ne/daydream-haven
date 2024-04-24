@@ -1,18 +1,18 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <!-- kakao map -->
-        <script
-            type="text/javascript"
-            strategy="beforeInteractive"
-            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%VITE_KAKAO_MAP_API_KEY%&libraries=services,clusterer,drawing"
-        ></script>
-        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
         <meta charset="UTF-8" />
-        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- 위치 중요 -->
+        <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover"
+        />
         <title>Daydream Haven</title>
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content="자유로운 몽상의 공간, Daydream Haven" />
+        <meta property="og:title" content="Daydream Haven" />
+        <meta property="og:description" content="자유로운 몽상의 공간, 어서오세요. Daydream Haven 입니다." />
+        <meta property="og:image" content="/assets/images/daydream-haven.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -31,6 +31,13 @@
     </head>
     <body>
         <div id="root"></div>
+        <!-- kakao map -->
+        <script
+            type="text/javascript"
+            strategy="beforeInteractive"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%VITE_KAKAO_MAP_API_KEY%&libraries=services,clusterer,drawing"
+        ></script>
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
         <script type="module" src="/src/main.tsx"></script>
     </body>
 </html>
