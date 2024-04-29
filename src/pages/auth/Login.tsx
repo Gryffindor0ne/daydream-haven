@@ -66,6 +66,28 @@ const Login = () => {
         }
     };
 
+    const handleGuestLogin = async () => {
+        dispatch(setLoading(true));
+
+        try {
+            const response = await axiosInstance.post(`users/sign-in`, {
+                email: `${import.meta.env.VITE_GUEST_EMAIL}`,
+                password: `${import.meta.env.VITE_GUEST_PASSWORD}`,
+            });
+            if (response.status === 201) {
+                setAccessTokenCookie(response.data.access_token);
+                dispatch(setAuthenticated(true));
+
+                navigate(from);
+                dispatch(setLoading(false));
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            dispatch(setLoading(false));
+        }
+    };
+
     const handleClose = () => {
         setIsOpen(false);
     };
@@ -174,6 +196,24 @@ const Login = () => {
                             >
                                 회원가입
                             </Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography
+                                onClick={handleGuestLogin}
+                                sx={{
+                                    fontWeight: 200,
+                                    fontSize: 17,
+                                    marginY: 7,
+                                    textDecoration: 'underline',
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                        color: '#B67352',
+                                    },
+                                }}
+                                align="center"
+                            >
+                                게스트 로그인
+                            </Typography>
                         </Grid>
                     </Grid>
                 </Grid>
