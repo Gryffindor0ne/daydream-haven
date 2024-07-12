@@ -20,6 +20,10 @@ const Dot = styled('span')({
 const ProductInfo = ({ item }: { item: ProductInfo }) => {
     const theme = useTheme();
     const isTablet = useMediaQuery(theme.breakpoints.up('md'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const flavor = item?.flavor;
+    const deliveryFeeNotice = `3,000원 (50,000원 이상 구매 시 무료)`;
 
     return (
         <>
@@ -54,8 +58,8 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
             <Box sx={{ display: 'flex', marginY: 1 }}>
                 <Typography
                     sx={{
-                        width: 120,
-                        fontSize: 13,
+                        width: isMobile ? 100 : 120,
+                        fontSize: isMobile ? 11 : 13,
                         marginY: 0.5,
                         paddingLeft: 1,
                     }}
@@ -67,9 +71,9 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
                         <React.Fragment key={idx}>
                             <Typography
                                 sx={{
-                                    fontSize: 13,
+                                    fontSize: isMobile ? 11 : 13,
                                     marginY: 0.5,
-                                    paddingX: 1,
+                                    paddingX: isMobile ? 0 : 1,
                                 }}
                             >
                                 {country}
@@ -83,8 +87,8 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
             <Box sx={{ display: 'flex', marginY: 1 }}>
                 <Typography
                     sx={{
-                        width: 120,
-                        fontSize: 13,
+                        width: isMobile ? 100 : 120,
+                        fontSize: isMobile ? 11 : 13,
                         marginY: 0.5,
                         paddingLeft: 1,
                     }}
@@ -94,9 +98,9 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
 
                 <Typography
                     sx={{
-                        fontSize: 13,
+                        fontSize: isMobile ? 11 : 13,
                         marginY: 0.5,
-                        paddingX: 1,
+                        paddingX: isMobile ? 0 : 1,
                     }}
                 >
                     {item?.roastingLevel}
@@ -106,8 +110,8 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
             <Box sx={{ display: 'flex', marginY: 1 }}>
                 <Typography
                     sx={{
-                        width: 120,
-                        fontSize: 13,
+                        width: isMobile ? 100 : 120,
+                        fontSize: isMobile ? 11 : 13,
                         marginY: 0.5,
                         paddingLeft: 1,
                     }}
@@ -115,18 +119,18 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
                     플레이버
                 </Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                    {item?.flavor.map((taste, idx) => (
+                    {flavor.map((taste, idx) => (
                         <React.Fragment key={idx}>
                             <Typography
                                 sx={{
-                                    fontSize: 13,
+                                    fontSize: isMobile ? 11 : 13,
                                     marginY: 0.5,
-                                    paddingX: 1,
+                                    paddingX: isMobile ? 0 : 1,
                                 }}
                             >
                                 {taste}
                             </Typography>
-                            {idx !== item.flavor.length - 1 && <Dot key={`dot_dot-${idx}`} />}
+                            {idx !== flavor.length - 1 && <Dot key={`dot_dot-${idx}`} />}
                         </React.Fragment>
                     ))}
                 </Box>
@@ -135,8 +139,8 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
             <Box sx={{ display: 'flex', marginY: 1 }}>
                 <Typography
                     sx={{
-                        width: 120,
-                        fontSize: 13,
+                        width: isMobile ? 100 : 120,
+                        fontSize: isMobile ? 11 : 13,
                         marginY: 0.5,
                         paddingLeft: 1,
                     }}
@@ -146,9 +150,9 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
 
                 <Typography
                     sx={{
-                        fontSize: 13,
+                        fontSize: isMobile ? 11 : 13,
                         marginY: 0.5,
-                        paddingX: 1,
+                        paddingX: isMobile ? 0 : 1,
                     }}
                 >
                     200g
@@ -158,8 +162,8 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
             <Box sx={{ display: 'flex', marginY: 1 }}>
                 <Typography
                     sx={{
-                        width: 120,
-                        fontSize: 13,
+                        width: isMobile ? 100 : 120,
+                        fontSize: isMobile ? 11 : 13,
                         marginY: 0.5,
                         paddingLeft: 1,
                     }}
@@ -169,9 +173,9 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
 
                 <Typography
                     sx={{
-                        fontSize: 13,
+                        fontSize: isMobile ? 11 : 13,
                         marginY: 0.5,
-                        paddingX: 1,
+                        paddingX: isMobile ? 0 : 1,
                     }}
                 >
                     매주 월, 수, 금
@@ -181,8 +185,8 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
             <Box sx={{ display: 'flex', marginY: 1 }}>
                 <Typography
                     sx={{
-                        width: 120,
-                        fontSize: 13,
+                        width: isMobile ? 100 : 120,
+                        fontSize: isMobile ? 11 : 13,
                         marginY: 0.5,
                         paddingLeft: 1,
                     }}
@@ -192,12 +196,12 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
 
                 <Typography
                     sx={{
-                        fontSize: 13,
+                        fontSize: isMobile ? 11 : 13,
                         marginY: 0.5,
-                        paddingX: 1,
+                        paddingX: isMobile ? 0 : 1,
                     }}
                 >
-                    {`3,000원 (50,000원 이상 구매 시 무료)`}
+                    {deliveryFeeNotice}
                 </Typography>
             </Box>
         </>

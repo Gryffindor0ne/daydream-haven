@@ -20,6 +20,7 @@ const ProductDetail = () => {
 
     const theme = useTheme();
     const isTablet = useMediaQuery(theme.breakpoints.up('md'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         const getLists = async () => {
@@ -75,7 +76,7 @@ const ProductDetail = () => {
                             <Grid item xs={12} sm={12} md={6}>
                                 <Box
                                     sx={{
-                                        paddingX: 5,
+                                        paddingX: isMobile ? 1 : 5,
                                         paddingY: 2,
                                         display: 'flex',
                                         flexDirection: 'column',
