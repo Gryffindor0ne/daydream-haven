@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 import { useAppSelector } from '~/app/reduxHooks';
 import { orderState } from '~/features/order/orderSlice';
@@ -15,76 +16,149 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
     const { deliveryFee, subTotal, totalAmount } = useAppSelector(orderState);
     const { isAuthenticated } = useAppSelector(authState);
 
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     return (
         <>
             <Box sx={{ display: 'flex', flexDirection: 'column', py: 7 }}>
-                <Box sx={{ borderBottom: '1px solid gray' }}>
+                <Box sx={{ borderBottom: isMobile ? '' : '1px solid gray' }}>
                     <Typography
                         variant="body2"
                         sx={{ display: 'flex', py: 2 }}
                     >{`총 주문 수량 ${products.length} 개`}</Typography>
                 </Box>
 
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        py: 5,
-                        borderBottom: '1px solid gray',
-                    }}
-                >
-                    <Box>
-                        <Typography
-                            variant="subtitle1"
-                            sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5 }}
+                {isMobile ? (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            py: 1,
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                p: 1,
+                                bgcolor: '#F5EEE6',
+                            }}
                         >
-                            {products.length !== 0 ? formattedNumber(subTotal) : 0} 원
-                        </Typography>
-                        <Typography
-                            variant="subtitle1"
-                            sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5, color: '#B99470' }}
+                            <Typography variant="subtitle1" sx={{ display: 'flex', justifyContent: 'center' }}>
+                                총 주문금액
+                            </Typography>
+                            <Typography
+                                variant="subtitle1"
+                                sx={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold' }}
+                            >
+                                {products.length !== 0 ? formattedNumber(totalAmount) : 0} 원
+                            </Typography>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                p: 1,
+                            }}
                         >
-                            상품금액
-                        </Typography>
-                    </Box>
+                            <Typography variant="subtitle2" sx={{ display: 'flex', justifyContent: 'center' }}>
+                                상품금액
+                            </Typography>
+                            <Typography variant="subtitle2" sx={{ display: 'flex', justifyContent: 'center' }}>
+                                {products.length !== 0 ? formattedNumber(subTotal) : 0} 원
+                            </Typography>
+                        </Box>
 
-                    <Typography variant="subtitle1" sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5 }}>
-                        <AddOutlinedIcon />
-                    </Typography>
-                    <Box>
-                        <Typography
-                            variant="subtitle1"
-                            sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5 }}
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                p: 1,
+                            }}
                         >
-                            {products.length !== 0 ? (deliveryFee ? '3,000원' : '무료') : '0 원'}
-                        </Typography>
-                        <Typography
-                            variant="subtitle1"
-                            sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5, color: '#B99470' }}
-                        >
-                            배송비
-                        </Typography>
+                            <Typography variant="subtitle2" sx={{ display: 'flex', justifyContent: 'center' }}>
+                                배송비
+                            </Typography>
+                            <Typography variant="subtitle2" sx={{ display: 'flex', justifyContent: 'center' }}>
+                                {products.length !== 0 ? (deliveryFee ? '3,000원' : '무료') : '0 원'}
+                            </Typography>
+                        </Box>
                     </Box>
-                    <Typography variant="subtitle1" sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5 }}>
-                        <DragHandleIcon />
-                    </Typography>
+                ) : (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            py: 5,
+                            borderBottom: '1px solid gray',
+                        }}
+                    >
+                        <Box>
+                            <Typography
+                                variant="subtitle1"
+                                sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5 }}
+                            >
+                                {products.length !== 0 ? formattedNumber(subTotal) : 0} 원
+                            </Typography>
+                            <Typography
+                                variant="subtitle1"
+                                sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5, color: '#B99470' }}
+                            >
+                                상품금액
+                            </Typography>
+                        </Box>
 
-                    <Box>
                         <Typography
                             variant="subtitle1"
                             sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5 }}
                         >
-                            {products.length !== 0 ? formattedNumber(totalAmount) : 0} 원
+                            <AddOutlinedIcon />
                         </Typography>
+                        <Box>
+                            <Typography
+                                variant="subtitle1"
+                                sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5 }}
+                            >
+                                {products.length !== 0 ? (deliveryFee ? '3,000원' : '무료') : '0 원'}
+                            </Typography>
+                            <Typography
+                                variant="subtitle1"
+                                sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5, color: '#B99470' }}
+                            >
+                                배송비
+                            </Typography>
+                        </Box>
                         <Typography
                             variant="subtitle1"
-                            sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5, color: '#B99470' }}
+                            sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5 }}
                         >
-                            총 주문금액
+                            <DragHandleIcon />
                         </Typography>
+
+                        <Box>
+                            <Typography
+                                variant="subtitle1"
+                                sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5 }}
+                            >
+                                {products.length !== 0 ? formattedNumber(totalAmount) : 0} 원
+                            </Typography>
+                            <Typography
+                                variant="subtitle1"
+                                sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5, color: '#B99470' }}
+                            >
+                                총 주문금액
+                            </Typography>
+                        </Box>
                     </Box>
-                </Box>
+                )}
             </Box>
 
             <Box
