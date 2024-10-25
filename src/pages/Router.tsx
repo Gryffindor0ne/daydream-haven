@@ -14,6 +14,7 @@ import Register from '~/pages/auth/Register';
 import PrivatedRoute from '~/pages/routes/PrivatedRoute';
 import LoginRouteGuard from '~/pages/routes/LoginRouteGuard';
 import OrderComplete from '~/pages/OrderComplete';
+import Member from '~/pages/Member';
 
 const Router = () => {
     return (
@@ -39,6 +40,9 @@ const Router = () => {
                     <Route path="/order" element={<OrderPayment />} />
                     <Route path="/order/:id" element={<OrderComplete />} />
                 </Route>
+
+                <Route path="/member/agreement" element={<Member />} />
+                <Route path="/member/privacy" element={<Member />} />
 
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
