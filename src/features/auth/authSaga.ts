@@ -10,7 +10,8 @@ function* checkTokenExpirationSaga() {
 
     if (accessToken === null) {
         yield put(setAuthenticated(false));
-        throw new Error('Access token is null');
+        yield put(setLoading(false)); // 로딩 상태를 false로 설정
+        return; // 사가 종료
     }
     try {
         yield put(setLoading(true)); // 로딩 상태를 true로 설정
@@ -35,7 +36,7 @@ function* logoutUserSaga() {
 }
 
 // 토큰 체크 액션을 감시하고, 토큰 체크 액션이 발생할 때마다 checkTokenExpirationSaga를 실행합니다.
-export function* watchLoginWithToken() {
+export function* watchCheckTokenExpiration() {
     yield takeLatest('auth/checkTokenExpiration', checkTokenExpirationSaga);
 }
 
