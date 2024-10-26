@@ -14,10 +14,17 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { Badge } from '@mui/material';
+import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 
 import { categoryItems } from '~/utils/constants';
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { authState } from '~/features/auth/authSlice';
+import { cartState } from '~/features/cart/cartSlice';
 
 interface Props {
     window?: () => Window;
@@ -28,12 +35,15 @@ const drawerWidth = 320;
 const HeaderBar = (props: Props) => {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
+    const theme = useTheme();
+    const isBrower = useMediaQuery(theme.breakpoints.up('lg'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { isAuthenticated } = useAppSelector(authState);
 
-    const userItems = [isAuthenticated ? 'LOGOUT' : 'LOGIN', 'CART'];
+    const userItems = [isAuthenticated ? 'MY PAGE' : '', isAuthenticated ? 'LOGOUT' : 'LOGIN'];
     const handleHomeButtonClick = () => navigate(`/`);
 
     const handleDrawerToggle = () => {
@@ -41,6 +51,8 @@ const HeaderBar = (props: Props) => {
     };
 
     const currentLocation = useLocation();
+    const { cartItems } = useAppSelector(cartState);
+    const cartItemCount = cartItems.length;
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -77,6 +89,10 @@ const HeaderBar = (props: Props) => {
                                 if (item === 'LOGOUT') {
                                     dispatch({ type: 'auth/logoutUser' });
                                     navigate(`/`);
+                                } else if (item === 'MY PAGE') {
+                                    navigate(`/mypage`, {
+                                        state: { redirectedFrom: currentLocation },
+                                    });
                                 } else {
                                     navigate(`/${item.toLowerCase()}`, {
                                         state: { redirectedFrom: currentLocation },
@@ -85,7 +101,14 @@ const HeaderBar = (props: Props) => {
                             }}
                             sx={{ textAlign: 'left' }}
                         >
-                            <ListItemText primary={item} />
+                            <ListItemText
+                                primary={item}
+                                primaryTypographyProps={{
+                                    fontSize: 13,
+                                    fontWeight: 200,
+                                    color: '#503C3C',
+                                }}
+                            />
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -101,19 +124,11 @@ const HeaderBar = (props: Props) => {
                 component="nav"
                 sx={{
                     boxShadow: 1,
-                    paddingY: 1,
+                    paddingY: 1.5,
                     backgroundColor: '#ffffff',
                 }}
             >
                 <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        edge="start"
-                        onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { md: 'none' }, color: '#191919' }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
                     <Typography
                         onClick={handleHomeButtonClick}
                         variant="h6"
@@ -121,13 +136,9 @@ const HeaderBar = (props: Props) => {
                         sx={{
                             fontFamily: 'Fraunces',
                             fontWeight: 700,
-                            fontSize: 28,
-                            flexGrow: 1,
-                            textAlign: 'center',
-                            '@media (min-width: 900px)': {
-                                textAlign: 'left',
-                                fontSize: 29,
-                            },
+                            fontSize: isBrower ? 27 : 20,
+                            width: '20rem',
+                            textAlign: 'left',
                             display: { sm: 'block' },
                             cursor: 'pointer',
                             color: '#191919',
@@ -136,7 +147,13 @@ const HeaderBar = (props: Props) => {
                         Daydream Haven
                     </Typography>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'block' } }}>
+                    <Box
+                        sx={{
+                            flexGrow: 20,
+                            display: { xs: 'none', lg: 'flex' },
+                            justifyContent: 'center',
+                        }}
+                    >
                         {categoryItems.map((item) => (
                             <Button
                                 onClick={() =>
@@ -145,37 +162,62 @@ const HeaderBar = (props: Props) => {
                                     })
                                 }
                                 key={item}
-                                sx={{ color: '#503C3C', fontFamily: 'Merriweather', fontWeight: 300, fontSize: 14 }}
-                            >
-                                {item}
-                            </Button>
-                        ))}
-                    </Box>
-                    <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                        {userItems.map((item) => (
-                            <Button
-                                onClick={() => {
-                                    if (item === 'LOGOUT') {
-                                        dispatch({ type: 'auth/logoutUser' });
-                                        navigate(`/`);
-                                    } else {
-                                        navigate(`/${item.toLowerCase()}`, {
-                                            state: { redirectedFrom: currentLocation },
-                                        });
-                                    }
-                                }}
-                                key={item}
                                 sx={{
                                     color: '#503C3C',
                                     fontFamily: 'Merriweather',
                                     fontWeight: 300,
-                                    fontSize: 10,
+                                    fontSize: 18,
+                                    mx: 4,
                                 }}
                             >
                                 {item}
                             </Button>
                         ))}
                     </Box>
+
+                    <Box sx={{ width: isBrower ? '20rem' : isMobile ? '10rem' : '45rem', textAlign: 'right' }}>
+                        <IconButton
+                            onClick={() =>
+                                navigate(isAuthenticated ? '/mypage' : '/login', {
+                                    state: { redirectedFrom: currentLocation },
+                                })
+                            }
+                            sx={{
+                                color: '#503C3C',
+                                width: 40, // 버튼의 너비 설정
+                                height: 40, // 버튼의 높이 설정
+                                '& .MuiSvgIcon-root': {
+                                    fontSize: 30, // 아이콘의 크기 설정
+                                },
+                            }}
+                        >
+                            <PermIdentityOutlinedIcon />
+                        </IconButton>
+                        <IconButton
+                            onClick={() => navigate('/cart', { state: { redirectedFrom: currentLocation } })}
+                            sx={{
+                                color: '#503C3C',
+                                width: 40, // 버튼의 너비 설정
+                                height: 40, // 버튼의 높이 설정
+                                '& .MuiSvgIcon-root': {
+                                    fontSize: 26, // 아이콘의 크기 설정
+                                },
+                                mr: 2,
+                            }}
+                        >
+                            <Badge badgeContent={cartItemCount} color="error">
+                                <LocalMallOutlinedIcon />
+                            </Badge>
+                        </IconButton>
+                    </Box>
+                    <IconButton
+                        color="inherit"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{ display: { lg: 'none' }, color: '#191919' }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
                 </Toolbar>
             </AppBar>
             <nav>
@@ -188,7 +230,7 @@ const HeaderBar = (props: Props) => {
                         keepMounted: true,
                     }}
                     sx={{
-                        display: { sm: 'block', md: 'none' },
+                        display: { sm: 'block', lg: 'none' },
                         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                     }}
                 >
