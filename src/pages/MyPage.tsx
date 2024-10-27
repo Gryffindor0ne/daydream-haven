@@ -7,6 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '~/app/reduxHooks';
+import useScrollToTop from '~/hooks/useScrollToTop';
 
 const MyPage = () => {
     const theme = useTheme();
@@ -15,6 +16,8 @@ const MyPage = () => {
     const navigate = useNavigate();
 
     const dispatch = useAppDispatch();
+
+    useScrollToTop();
 
     return (
         <Container maxWidth="lg" sx={{ minHeight: 1250 }}>

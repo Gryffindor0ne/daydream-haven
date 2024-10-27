@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -7,6 +5,7 @@ import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import useScrollToTop from '~/hooks/useScrollToTop';
 
 const About = () => {
     const theme = useTheme();
@@ -36,10 +35,7 @@ const About = () => {
         },
     };
 
-    useEffect(() => {
-        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
-        window.scrollTo(0, 0);
-    }, []);
+    useScrollToTop();
 
     return (
         <Container maxWidth="xl">

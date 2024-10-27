@@ -15,6 +15,7 @@ import { Checkbox, FormControlLabel } from '@mui/material';
 import { requiredTerms } from '~/utils/constants';
 import { axiosInstance } from '~/lib/axiosInstance';
 import BasicPopup from '~/components/layout/popup/BasicPopup';
+import useScrollToTop from '~/hooks/useScrollToTop';
 
 type RegisterInfo = {
     email: string;
@@ -86,10 +87,7 @@ const Register = () => {
         setIsSuccess(false);
     }, []);
 
-    useEffect(() => {
-        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
-        window.scrollTo(0, 0);
-    }, []);
+    useScrollToTop();
 
     const handleClose = () => {
         setIsOpen(false);

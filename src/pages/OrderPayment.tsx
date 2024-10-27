@@ -27,6 +27,7 @@ import { extractAccessTokenFromCookie } from '~/utils/cookiesUtils';
 import getUserInfoDetailAPI from '~/api/getUserInfoDetailAPI';
 import { setLoading } from '~/features/auth/authSlice';
 import { paymentMethods } from '~/utils/constants';
+import useScrollToTop from '~/hooks/useScrollToTop';
 
 // 주문결제 페이지 배경색 설정
 const OrderPaymentPaper = styled(Paper)(() => ({
@@ -98,10 +99,7 @@ const OrderPayment = () => {
         fetchUserData();
     }, [dispatch]);
 
-    useEffect(() => {
-        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
-        window.scrollTo(0, 0);
-    }, []);
+    useScrollToTop();
 
     const handleSubmit = async (values: OrderProps) => {
         // 주문 접수 api 연결

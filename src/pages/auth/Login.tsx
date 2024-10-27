@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
@@ -17,6 +17,7 @@ import BasicPopup from '~/components/layout/popup/BasicPopup';
 import { useAppDispatch } from '~/app/reduxHooks';
 import { setAuthenticated, setLoading } from '~/features/auth/authSlice';
 import { setAccessTokenCookie } from '~/utils/cookiesUtils';
+import useScrollToTop from '~/hooks/useScrollToTop';
 
 const loginSchema = Yup.object().shape({
     email: Yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일을 입력해주세요.'),
@@ -92,10 +93,7 @@ const Login = () => {
         setIsOpen(false);
     };
 
-    useEffect(() => {
-        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
-        window.scrollTo(0, 0);
-    }, []);
+    useScrollToTop();
 
     return (
         <Container maxWidth="xs">

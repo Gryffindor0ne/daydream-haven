@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 
 import BasicPopup from '~/components/layout/popup/BasicPopup';
+import useScrollToTop from '~/hooks/useScrollToTop';
 
 const Wholesale = () => {
     const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -12,10 +13,7 @@ const Wholesale = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
-        window.scrollTo(0, 0);
-    }, []);
+    useScrollToTop();
 
     const handleAlertClose = () => {
         setShowAlert(false);
