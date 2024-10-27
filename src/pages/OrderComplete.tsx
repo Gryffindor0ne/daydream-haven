@@ -17,6 +17,7 @@ import { PaymentDataProps } from '~/features/payment/paymentSaga';
 import { paymentState, resetPaymentState } from '~/features/payment/paymentSlice';
 import { formattedDate, formattedNumber } from '~/utils/utils';
 import { paymentMethods } from '~/utils/constants';
+import useScrollToTop from '~/hooks/useScrollToTop';
 
 const OrderComplete = () => {
     const { paymentStatus, error } = useAppSelector(paymentState);
@@ -40,10 +41,7 @@ const OrderComplete = () => {
         }
     }, [dispatch, paymentId]);
 
-    useEffect(() => {
-        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
-        window.scrollTo(0, 0);
-    }, []);
+    useScrollToTop();
 
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
     const [orderInfo, setOrderInfo] = useState<PaymentDataProps>();

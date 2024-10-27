@@ -11,6 +11,7 @@ import { ProductInfo } from '~/components/product/ProductsList';
 import ProductInfoBox from '~/components/product/ProductInfoBox';
 import SubscriptionInfoBox from '~/components/product/SubscriptionInfoBox';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
+import useScrollToTop from '~/hooks/useScrollToTop';
 
 const ProductDetail = () => {
     const { currentPath, id } = useCurrentPathAndId();
@@ -39,10 +40,7 @@ const ProductDetail = () => {
         getLists();
     }, [currentPath, id]);
 
-    useEffect(() => {
-        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
-        window.scrollTo(0, 0);
-    }, []);
+    useScrollToTop();
 
     return (
         <>

@@ -14,6 +14,7 @@ import { cartState, removeFromCart, updateCartTotal } from '~/features/cart/cart
 import { addToOrder, updateOrderTotal } from '~/features/order/orderSlice';
 import CartItem from '~/components/cart/CartItem';
 import CartOrderSection from '~/components/cart/CartOrderSection';
+import useScrollToTop from '~/hooks/useScrollToTop';
 
 const ShoppingCart = () => {
     const { cartItems, deliveryFeeCondition } = useAppSelector(cartState);
@@ -57,10 +58,7 @@ const ShoppingCart = () => {
         dispatch(updateCartTotal());
     }, [selectedProducts, cartItems, dispatch]);
 
-    useEffect(() => {
-        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
-        window.scrollTo(0, 0);
-    }, []);
+    useScrollToTop();
 
     return (
         <Container maxWidth="lg">

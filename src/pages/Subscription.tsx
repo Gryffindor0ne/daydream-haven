@@ -6,16 +6,14 @@ import { useAppDispatch } from '~/app/reduxHooks';
 import ProductsList from '~/components/product/ProductsList';
 import { setLoading } from '~/features/auth/authSlice';
 import { axiosInstance } from '~/lib/axiosInstance';
+import useScrollToTop from '~/hooks/useScrollToTop';
 
 const Subscription = () => {
     const dispatch = useAppDispatch();
 
     const [lists, setLists] = useState([]);
 
-    useEffect(() => {
-        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
-        window.scrollTo(0, 0);
-    }, []);
+    useScrollToTop();
 
     const getLists = useCallback(async () => {
         dispatch(setLoading(true));

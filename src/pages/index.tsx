@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -6,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import { useMediaQuery, useTheme } from '@mui/material';
 
 import { categoryItems } from '~/utils/constants';
+import useScrollToTop from '~/hooks/useScrollToTop';
 
 const Home = () => {
     const theme = useTheme();
@@ -13,10 +13,7 @@ const Home = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // 컴포넌트가 마운트될 때 스크롤을 맨 위로 이동
-        window.scrollTo(0, 0);
-    }, []);
+    useScrollToTop();
 
     return (
         <Box sx={{ minHeight: '75vh' }}>
