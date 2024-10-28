@@ -8,20 +8,21 @@ import Button from '@mui/material/Button';
 
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { UserInfoProps } from '~/components/order/OrdererInfo';
-import checkOrderDetailAPI from '~/api/checkOrderDetailAPI';
-import getUserInfoDetailAPI from '~/api/getUserInfoDetailAPI';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import { clearOrder, orderState } from '~/features/order/orderSlice';
-import { setLoading } from '~/features/auth/authSlice';
 import { PaymentDataProps } from '~/features/payment/paymentSaga';
 import { paymentState, resetPaymentState } from '~/features/payment/paymentSlice';
 import { formattedDate, formattedNumber } from '~/utils/utils';
 import { paymentMethods } from '~/utils/constants';
 import useScrollToTop from '~/hooks/useScrollToTop';
+import useFetchUserInfo from '~/hooks/useFetchUserInfo';
+import useFetchOrderInfo from '~/hooks/useFetchOrderInfo';
 
 const OrderComplete = () => {
     const { paymentStatus, error } = useAppSelector(paymentState);
     const { orderItems, totalAmount } = useAppSelector(orderState);
+
+    useScrollToTop();
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -41,8 +42,6 @@ const OrderComplete = () => {
         }
     }, [dispatch, paymentId]);
 
-    useScrollToTop();
-
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
     const [orderInfo, setOrderInfo] = useState<PaymentDataProps>();
 
@@ -60,24 +59,11 @@ const OrderComplete = () => {
         }
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            dispatch(setLoading(true));
-            try {
-                const userData = await getUserInfoDetailAPI();
-                setUserInfo(userData);
+    // 유저 정보 호출
+    useFetchUserInfo({ setUserInfo });
 
-                const { data } = await checkOrderDetailAPI(paymentId ? paymentId : id);
-                setOrderInfo(data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                dispatch(setLoading(false));
-            }
-        };
-
-        fetchData();
-    }, [dispatch, id, paymentId]);
+    // 주문 정보 호출
+    useFetchOrderInfo({ id: paymentId ?? id, setOrderInfo });
 
     return (
         <Container maxWidth="lg">

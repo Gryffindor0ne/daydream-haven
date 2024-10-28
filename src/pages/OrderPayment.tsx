@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -24,10 +24,9 @@ import OrdererInfo, { UserInfoProps } from '~/components/order/OrdererInfo';
 import { axiosInstance } from '~/lib/axiosInstance';
 import { formattedNumber } from '~/utils/utils';
 import { extractAccessTokenFromCookie } from '~/utils/cookiesUtils';
-import getUserInfoDetailAPI from '~/api/getUserInfoDetailAPI';
-import { setLoading } from '~/features/auth/authSlice';
 import { paymentMethods } from '~/utils/constants';
 import useScrollToTop from '~/hooks/useScrollToTop';
+import useFetchUserInfo from '~/hooks/useFetchUserInfo';
 
 // 주문결제 페이지 배경색 설정
 const OrderPaymentPaper = styled(Paper)(() => ({
@@ -83,21 +82,7 @@ const OrderPayment = () => {
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            dispatch(setLoading(true));
-            try {
-                const userData: UserInfoProps = await getUserInfoDetailAPI();
-                setUserInfo(userData);
-            } catch (error) {
-                console.error('Error fetching user info:', error);
-            } finally {
-                dispatch(setLoading(false));
-            }
-        };
-
-        fetchUserData();
-    }, [dispatch]);
+    useFetchUserInfo({ setUserInfo });
 
     useScrollToTop();
 

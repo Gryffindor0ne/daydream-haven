@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import { formattedPhoneNumber } from '~/utils/utils';
-import getUserInfoDetailAPI from '~/api/getUserInfoDetailAPI';
-import { useAppDispatch } from '~/app/reduxHooks';
-import { setLoading } from '~/features/auth/authSlice';
+
+import useFetchUserData from '~/hooks/useFetchUserInfo';
 
 export type UserInfoProps = {
     id: string;
@@ -17,23 +16,8 @@ export type UserInfoProps = {
 
 const OrdererInfo = () => {
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
-    const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            dispatch(setLoading(true));
-            try {
-                const userData: UserInfoProps = await getUserInfoDetailAPI();
-                setUserInfo(userData);
-            } catch (error) {
-                console.error('Error fetching user info:', error);
-            } finally {
-                dispatch(setLoading(false));
-            }
-        };
-
-        fetchUserData();
-    }, [dispatch]);
+    useFetchUserData({ setUserInfo });
 
     return (
         <>
