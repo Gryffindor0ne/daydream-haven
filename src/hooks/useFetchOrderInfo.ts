@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import checkOrderDetailAPI from '~/api/checkOrderDetailAPI';
+import getOrderDetailsAPI from '~/api/getOrderDetailsAPI';
 import { useAppDispatch } from '~/app/reduxHooks';
 import { setLoading } from '~/features/auth/authSlice';
 import { PaymentDataProps } from '~/features/payment/paymentSaga';
@@ -16,7 +16,7 @@ const useFetchOrderInfo = ({ id, setOrderInfo }: FetchOrderInfoProps) => {
         const fetchOrderInfo = async () => {
             dispatch(setLoading(true));
             try {
-                const response = await checkOrderDetailAPI(id);
+                const response = await getOrderDetailsAPI(id);
                 if (response && response.data) {
                     setOrderInfo(response.data);
                 }

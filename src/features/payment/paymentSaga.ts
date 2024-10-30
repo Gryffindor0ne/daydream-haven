@@ -2,7 +2,7 @@ import { call, delay, put, takeLatest } from 'redux-saga/effects';
 import { AxiosRequestConfig } from 'axios';
 
 import { fetchData, paymentFailure, paymentSuccess } from '~/features/payment/paymentSlice';
-import checkOrderDetailAPI from '~/api/checkOrderDetailAPI';
+import getOrderDetailsAPI from '~/api/getOrderDetailsAPI';
 
 type PaymentProps = {
     paymentId: string;
@@ -41,7 +41,7 @@ function* paymentStateSaga(action: PaymentProps) {
     try {
         while (true) {
             yield put(fetchData()); // 로딩 상태를 true로 설정
-            const response: PaymentApiResponse = yield call(checkOrderDetailAPI, action.paymentId);
+            const response: PaymentApiResponse = yield call(getOrderDetailsAPI, action.paymentId);
 
             if (response.data.status === 'completed') {
                 yield put(paymentSuccess()); // 성공 액션 디스패치
