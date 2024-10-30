@@ -3,7 +3,7 @@ import { axiosInstance } from '~/lib/axiosInstance';
 
 const getProductsAPI = async () => {
     try {
-        const { data } = await axiosInstance.get(`/products`);
+        const { data } = await axiosInstance.get(`/products/legacy`);
         return data;
     } catch (error) {
         let message = '상품 정보 조회 중 오류가 발생했습니다.';
