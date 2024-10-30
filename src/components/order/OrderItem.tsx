@@ -7,9 +7,9 @@ import { formattedNumber } from '~/utils/utils';
 
 const OrderItem = ({ item }: { item: OrderProductSummaryInfo }) => {
     return (
-        <Box sx={{ display: 'flex', py: 0.5, borderBottom: '1px solid #F4EDCC' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, paddingY: 3 }}>
-                <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', paddingX: 3 }}>
+        <Box sx={{ display: 'flex', py: 0.5, border: '1px solid #F4EDCC' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', py: 3 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', px: 3 }}>
                     <Box
                         sx={{
                             width: 70,
@@ -26,23 +26,21 @@ const OrderItem = ({ item }: { item: OrderProductSummaryInfo }) => {
                     </Box>
                 </Box>
                 <Box sx={{ flex: 3, display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="body1" sx={{ display: 'flex' }}>
+                    <Typography variant="h6" sx={{ display: 'flex', mb: 0.5 }}>
                         {item.name}
                     </Typography>
                     {item.period ? (
-                        <Typography variant="body2" sx={{ display: 'flex' }}>
+                        <Typography variant="body2" sx={{ display: 'flex', color: '#AB886D', mb: 0.7 }}>
                             {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]} / ${PERIOD_OPTIONS[parseInt(item.period)]}`}
                         </Typography>
                     ) : (
-                        <Typography variant="body2" sx={{ display: 'flex' }}>
-                            {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]}`}
+                        <Typography variant="body2" sx={{ display: 'flex', color: '#AB886D', mb: 0.7 }}>
+                            {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]} -  ${item.quantity}개`}
                         </Typography>
                     )}
-                </Box>
 
-                <Typography variant="body2" sx={{ flex: 1.5, display: 'flex', justifyContent: 'center' }}>
-                    {`${formattedNumber(item.price)}원`}
-                </Typography>
+                    <Typography variant="body1">{`${formattedNumber(item.price)}원`}</Typography>
+                </Box>
             </Box>
         </Box>
     );

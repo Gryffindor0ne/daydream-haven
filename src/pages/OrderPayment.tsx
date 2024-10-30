@@ -183,8 +183,8 @@ const OrderPayment = () => {
                                     <Grid container spacing={2} minHeight="100vh">
                                         {/* 파트1 부분 */}
                                         <Grid item xs={12} sm={12} md={8}>
-                                            <Box sx={{ py: 3, bgcolor: '#ffffff' }}>
-                                                <Typography variant="h6" sx={{ display: 'flex', px: 5 }}>
+                                            <Box sx={{ pt: 3, bgcolor: '#ffffff' }}>
+                                                <Typography variant="h6" sx={{ display: 'flex', px: 5, pb: 3 }}>
                                                     주문 상품 정보
                                                 </Typography>
                                                 {orderItems.map((item, idx) => (
