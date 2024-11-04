@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
@@ -23,7 +23,7 @@ import { useTheme } from '@mui/material/styles';
 
 import { categoryItems } from '~/utils/constants';
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
-import { authState } from '~/features/auth/authSlice';
+import { authState, setLoading } from '~/features/auth/authSlice';
 import { cartState } from '~/features/cart/cartSlice';
 
 interface Props {
@@ -53,6 +53,22 @@ const HeaderBar = (props: Props) => {
     const currentLocation = useLocation();
     const { cartItems } = useAppSelector(cartState);
     const cartItemCount = cartItems.length;
+
+    const handleClick = useCallback(() => {
+        const currentPath = location.pathname;
+        const redirectTo = isAuthenticated ? '/mypage' : '/login';
+
+        if (currentPath !== redirectTo) {
+            dispatch(setLoading(true));
+
+            navigate(redirectTo, {
+                state: {
+                    redirectedFrom: isAuthenticated ? '/' : '/mypage',
+                },
+            });
+            dispatch(setLoading(false));
+        }
+    }, [dispatch, isAuthenticated, navigate]);
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -177,11 +193,7 @@ const HeaderBar = (props: Props) => {
 
                     <Box sx={{ width: isBrower ? '20rem' : isMobile ? '10rem' : '45rem', textAlign: 'right' }}>
                         <IconButton
-                            onClick={() =>
-                                navigate(isAuthenticated ? '/mypage' : '/login', {
-                                    state: { redirectedFrom: currentLocation },
-                                })
-                            }
+                            onClick={handleClick}
                             sx={{
                                 color: '#503C3C',
                                 width: 40, // 버튼의 너비 설정

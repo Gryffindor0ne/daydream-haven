@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -41,10 +41,6 @@ const Login = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const location = useLocation();
-
-    const queryPath = location?.search?.replace('?redirectedFrom=', '/');
-    const from = queryPath || location?.state?.redirectedFrom?.pathname || '/';
     const errorMessage = '이메일, 비밀번호가 맞지 않습니다. 다시 시도해주세요.';
 
     const buttonHeight = isMobile ? 45 : 60;
@@ -57,14 +53,11 @@ const Login = () => {
             if (response.status === 201) {
                 setAccessTokenCookie(response.data.access_token);
                 dispatch(setAuthenticated(true));
-                navigate(from);
             }
         } catch (error) {
             setMessage(errorMessage);
             setIsOpen(true);
             console.log(error);
-        } finally {
-            dispatch(setLoading(false));
         }
     };
 

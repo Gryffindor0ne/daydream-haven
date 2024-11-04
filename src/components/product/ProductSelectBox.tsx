@@ -285,7 +285,9 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                             dispatch(addToOrder(selectedProducts));
                             dispatch(updateOrderTotal());
 
-                            isAuthenticated ? navigate(`/order`) : navigate(`/login?redirectedFrom=order`);
+                            isAuthenticated
+                                ? navigate(`/order`)
+                                : navigate(`/login`, { state: { redirectedFrom: '/order' } });
                         }
                         setShowCartGuidancePopup(true);
                     }}

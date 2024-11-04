@@ -11,11 +11,11 @@ import ShoppingCart from '~/pages/ShoppingCart';
 import OrderPayment from '~/pages/OrderPayment';
 import Login from '~/pages/auth/Login';
 import Register from '~/pages/auth/Register';
-import PrivatedRoute from '~/pages/routes/PrivatedRoute';
-import LoginRouteGuard from '~/pages/routes/LoginRouteGuard';
 import OrderComplete from '~/pages/OrderComplete';
 import Member from '~/pages/Member';
 import MyPage from '~/pages/MyPage';
+import UnauthenticatedRoute from '~/pages/routes/UnauthenticatedRoute';
+import AuthenticatedRoute from '~/pages/routes/AuthenticatedRoute';
 
 const Router = () => {
     return (
@@ -29,15 +29,14 @@ const Router = () => {
                 <Route path="/subscription" element={<Subscription />} />
                 <Route path="/subscription/:id" element={<ProductDetail />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/cart" element={<ShoppingCart />} />
 
-                <Route element={<LoginRouteGuard />}>
+                <Route element={<UnauthenticatedRoute />}>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                 </Route>
 
-                <Route path="/cart" element={<ShoppingCart />} />
-
-                <Route element={<PrivatedRoute />}>
+                <Route element={<AuthenticatedRoute />}>
                     <Route path="/mypage" element={<MyPage />} />
                     <Route path="/order" element={<OrderPayment />} />
                     <Route path="/order/:id" element={<OrderComplete />} />

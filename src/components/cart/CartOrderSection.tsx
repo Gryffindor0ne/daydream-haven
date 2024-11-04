@@ -173,7 +173,11 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
                 {products.length !== 0 && (
                     <Button
                         onClick={() => {
-                            isAuthenticated ? navigate(`/order`) : navigate(`/login?redirectedFrom=order`);
+                            if (isAuthenticated) {
+                                navigate('/order');
+                            } else {
+                                navigate('/login', { state: { redirectedFrom: '/order' } });
+                            }
                         }}
                         variant="outlined"
                         sx={{

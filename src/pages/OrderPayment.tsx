@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -27,6 +27,7 @@ import { extractAccessTokenFromCookie } from '~/utils/cookiesUtils';
 import { paymentMethods } from '~/utils/constants';
 import useScrollToTop from '~/hooks/useScrollToTop';
 import useFetchUserInfo from '~/hooks/useFetchUserInfo';
+import { setLoading } from '~/features/auth/authSlice';
 
 // 주문결제 페이지 배경색 설정
 const OrderPaymentPaper = styled(Paper)(() => ({
@@ -85,6 +86,14 @@ const OrderPayment = () => {
     useFetchUserInfo({ setUserInfo });
 
     useScrollToTop();
+
+    useEffect(() => {
+        if (orderItems.length === 0) {
+            // 카트에 아이템이 없으면 카트 페이지로 리디렉션
+            navigate('/cart');
+        }
+        dispatch(setLoading(!userInfo));
+    }, [navigate, orderItems, userInfo, dispatch]);
 
     const handleSubmit = async (values: OrderProps) => {
         // 주문 접수 api 연결
@@ -157,329 +166,323 @@ const OrderPayment = () => {
     return (
         <OrderPaymentPaper>
             <Container maxWidth="lg">
-                <Box sx={{ minHeight: '200vh', paddingTop: 12, marginTop: 10 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Typography sx={{ fontSize: 34, marginBottom: 5 }}>결제하기</Typography>
-                    </Box>
+                {userInfo ? (
+                    <Box sx={{ minHeight: '100vh', paddingTop: 12, marginTop: 10 }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Typography sx={{ fontSize: 34, marginBottom: 5 }}>결제하기</Typography>
+                        </Box>
 
-                    <Formik
-                        initialValues={{
-                            postcode: '',
-                            address: '',
-                            additionalAddress: '',
-                            selectedPaymentMethod: '카드결제',
-                            orderer: '',
-                            cashReceipt: false,
-                            issuanceTarget: '개인',
-                            issuanceTargetNumber: '',
-                            paymentAgreed: false,
-                        }}
-                        validationSchema={orderSchema}
-                        onSubmit={handleSubmit}
-                    >
-                        {({ errors, touched, values, setFieldValue, handleChange }) => {
-                            return (
-                                <Form>
-                                    <Grid container spacing={2} minHeight="100vh">
-                                        {/* 파트1 부분 */}
-                                        <Grid item xs={12} sm={12} md={8}>
-                                            <Box sx={{ pt: 3, bgcolor: '#ffffff' }}>
-                                                <Typography variant="h6" sx={{ display: 'flex', px: 5, pb: 3 }}>
-                                                    주문 상품 정보
-                                                </Typography>
-                                                {orderItems.map((item, idx) => (
-                                                    <OrderItem item={item} key={idx} />
-                                                ))}
-                                            </Box>
-                                            {/* 주문자정보 */}
-                                            <OrdererInfo />
-
-                                            {/* 배송정보 */}
-                                            <Box sx={{ marginY: 3, py: 3, bgcolor: '#ffffff' }}>
-                                                <Typography variant="h6" sx={{ px: 5 }}>
-                                                    배송 정보
-                                                </Typography>
-                                                <Box sx={{ px: 5, py: 2 }}>
-                                                    <Box sx={{ display: 'flex' }}>
-                                                        <Box>
-                                                            <Field
-                                                                as={TextField}
-                                                                name="postcode"
-                                                                value={values.postcode}
-                                                                variant="outlined"
-                                                                size="small"
-                                                                sx={{ mr: 2 }}
-                                                            />
-                                                        </Box>
-                                                        <AddressSearchForm
-                                                            onAddressSelect={(selectedAddress: AddressProps) => {
-                                                                setFieldValue('postcode', selectedAddress.postcode);
-                                                                setFieldValue('address', selectedAddress.address);
-                                                            }}
-                                                        />
-                                                    </Box>
-
-                                                    <Field
-                                                        name="address"
-                                                        as={TextField}
-                                                        value={values.address}
-                                                        variant="outlined"
-                                                        size="small"
-                                                        fullWidth
-                                                        sx={{ mr: 1, mt: 2 }}
-                                                        error={!!errors.address}
-                                                        helperText={errors.address}
-                                                    />
-                                                    <Field
-                                                        name="additionalAddress"
-                                                        as={TextField}
-                                                        value={values.additionalAddress}
-                                                        label="상세주소"
-                                                        variant="outlined"
-                                                        size="small"
-                                                        fullWidth
-                                                        sx={{ mr: 1, mt: 2 }}
-                                                        error={errors.additionalAddress && touched.additionalAddress}
-                                                        helperText={
-                                                            errors.additionalAddress && touched.additionalAddress
-                                                                ? errors.additionalAddress
-                                                                : ''
-                                                        }
-                                                    />
-                                                </Box>
-                                            </Box>
-                                        </Grid>
-
-                                        {/* 파트2 부분 */}
-                                        <Grid item xs={12} sm={12} md={4}>
-                                            {/* 주문 금액 정보 */}
-
-                                            <Box sx={{ marginBottom: 3, bgcolor: '#ffffff', p: 3 }}>
-                                                <Typography variant="h6" sx={{ display: 'flex', pb: 2 }}>
-                                                    주문 요약
-                                                </Typography>
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        flexDirection: 'row',
-                                                        justifyContent: 'space-between',
-                                                    }}
-                                                >
-                                                    <Typography
-                                                        variant="subtitle1"
-                                                        sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
-                                                    >
-                                                        상품금액
+                        <Formik
+                            initialValues={{
+                                postcode: '',
+                                address: '',
+                                additionalAddress: '',
+                                selectedPaymentMethod: '카드결제',
+                                orderer: '',
+                                cashReceipt: false,
+                                issuanceTarget: '개인',
+                                issuanceTargetNumber: '',
+                                paymentAgreed: false,
+                            }}
+                            validationSchema={orderSchema}
+                            onSubmit={handleSubmit}
+                        >
+                            {({ errors, touched, values, setFieldValue, handleChange }) => {
+                                return (
+                                    <Form>
+                                        <Grid container spacing={2} minHeight="100vh">
+                                            {/* 파트1 부분 */}
+                                            <Grid item xs={12} sm={12} md={8}>
+                                                <Box sx={{ pt: 3, bgcolor: '#ffffff' }}>
+                                                    <Typography variant="h6" sx={{ display: 'flex', px: 5, pb: 3 }}>
+                                                        주문 상품 정보
                                                     </Typography>
-                                                    <Typography
-                                                        variant="subtitle1"
-                                                        sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
-                                                    >
-                                                        {formattedNumber(subTotal)} 원
-                                                    </Typography>
-                                                </Box>
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        flexDirection: 'row',
-                                                        justifyContent: 'space-between',
-                                                    }}
-                                                >
-                                                    <Typography
-                                                        variant="subtitle1"
-                                                        sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
-                                                    >
-                                                        배송비
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="subtitle1"
-                                                        sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
-                                                    >
-                                                        {deliveryFee ? '3,000원' : '무료'}
-                                                    </Typography>
-                                                </Box>
-                                                <Box sx={{ display: 'flex', justifyContent: 'center', marginY: 1 }}>
-                                                    <Divider
-                                                        sx={{
-                                                            width: '100%',
-                                                        }}
-                                                    />
-                                                </Box>
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        flexDirection: 'row',
-                                                        justifyContent: 'space-between',
-                                                    }}
-                                                >
-                                                    <Typography
-                                                        variant="subtitle1"
-                                                        sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
-                                                    >
-                                                        최종 결제금액
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="subtitle1"
-                                                        sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
-                                                    >
-                                                        {formattedNumber(totalAmount)} 원
-                                                    </Typography>
-                                                </Box>
-                                            </Box>
-
-                                            {/* 결제수단 정보 */}
-                                            <Box sx={{ marginBottom: 3, bgcolor: '#ffffff', p: 3 }}>
-                                                <Typography variant="h6" sx={{ display: 'flex', pb: 2 }}>
-                                                    결제 수단
-                                                </Typography>
-                                                <RadioGroup
-                                                    name="selectedPaymentMethod"
-                                                    value={values.selectedPaymentMethod}
-                                                    onChange={handleChange}
-                                                >
-                                                    {['카드결제', '실시간 계좌이체', '무통장입금'].map((option) => (
-                                                        <FormControlLabel
-                                                            key={option}
-                                                            value={option}
-                                                            control={<Radio />}
-                                                            label={option}
-                                                        />
+                                                    {orderItems.map((item, idx) => (
+                                                        <OrderItem item={item} key={idx} />
                                                     ))}
-                                                </RadioGroup>
+                                                </Box>
+                                                {/* 주문자정보 */}
+                                                {userInfo && <OrdererInfo userInfo={userInfo} />}
 
-                                                {values.selectedPaymentMethod === '무통장입금' && (
-                                                    <>
-                                                        <TextField
-                                                            value="기업은행 888-000000-01-999 (주)데이드림해븐"
-                                                            name="account"
-                                                            variant="outlined"
-                                                            size="small"
-                                                            fullWidth
-                                                            sx={{ mr: 1, mt: 2 }}
-                                                        />
-                                                        <Field
-                                                            as={TextField}
-                                                            value={values.orderer}
-                                                            name="orderer"
-                                                            variant="outlined"
-                                                            size="small"
-                                                            fullWidth
-                                                            label="입금자명"
-                                                            sx={{ mr: 1, mt: 2 }}
-                                                            error={!!errors.orderer && touched.orderer}
-                                                            helperText={
-                                                                errors.orderer && touched.orderer ? errors.orderer : ''
-                                                            }
-                                                        />
-                                                        <Typography
-                                                            variant="subtitle2"
-                                                            sx={{
-                                                                display: 'flex',
-                                                                justifyContent: 'center',
-                                                                py: 2,
-                                                                color: '#8C6A5D',
-                                                            }}
-                                                        >
-                                                            주문 후 72시간 이내 미입금시 자동 취소됩니다.
-                                                        </Typography>
-                                                        <Box
-                                                            sx={{
-                                                                display: 'flex',
-                                                                justifyContent: 'center',
-                                                                marginY: 2,
-                                                            }}
-                                                        >
-                                                            <Divider
-                                                                sx={{
-                                                                    width: '100%',
+                                                {/* 배송정보 */}
+                                                <Box sx={{ marginY: 3, py: 3, bgcolor: '#ffffff' }}>
+                                                    <Typography variant="h6" sx={{ px: 5 }}>
+                                                        배송 정보
+                                                    </Typography>
+                                                    <Box sx={{ px: 5, py: 2 }}>
+                                                        <Box sx={{ display: 'flex' }}>
+                                                            <Box>
+                                                                <Field
+                                                                    as={TextField}
+                                                                    name="postcode"
+                                                                    value={values.postcode}
+                                                                    variant="outlined"
+                                                                    size="small"
+                                                                    sx={{ mr: 2 }}
+                                                                />
+                                                            </Box>
+                                                            <AddressSearchForm
+                                                                onAddressSelect={(selectedAddress: AddressProps) => {
+                                                                    setFieldValue('postcode', selectedAddress.postcode);
+                                                                    setFieldValue('address', selectedAddress.address);
                                                                 }}
                                                             />
                                                         </Box>
-                                                        <RadioGroup
-                                                            name="cashReceipt"
-                                                            value={values.cashReceipt}
-                                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                                                const value = event.target.value === 'true'; // 문자열 값을 불리언으로 변환
-                                                                setFieldValue(event.target.name, value);
-                                                            }}
-                                                            row
-                                                        >
-                                                            <FormControlLabel
-                                                                value="true"
-                                                                control={<Radio />}
-                                                                label="현금영수증 신청"
-                                                            />
-                                                            <FormControlLabel
-                                                                value="false"
-                                                                control={<Radio />}
-                                                                label="신청안함"
-                                                            />
-                                                        </RadioGroup>
 
-                                                        {/* 현금영수증 신청폼 */}
-                                                        {values.cashReceipt && (
-                                                            <>
-                                                                <RadioGroup
-                                                                    name="issuanceTarget"
-                                                                    value={values.issuanceTarget}
-                                                                    onChange={handleChange}
-                                                                    row
-                                                                >
-                                                                    {['개인', '사업자'].map((target) => (
-                                                                        <FormControlLabel
-                                                                            key={target}
-                                                                            value={target}
-                                                                            control={<Radio />}
-                                                                            label={target}
-                                                                        />
-                                                                    ))}
-                                                                </RadioGroup>
-                                                                <Field
-                                                                    as={TextField}
-                                                                    value={values.issuanceTargetNumber}
-                                                                    name="issuanceTargetNumber"
-                                                                    variant="outlined"
-                                                                    size="small"
-                                                                    fullWidth
-                                                                    label={
-                                                                        values.issuanceTarget === '개인'
-                                                                            ? '전화번호 입력'
-                                                                            : '사업자번호 입력'
-                                                                    }
-                                                                    sx={{ mt: 2 }}
-                                                                    error={
-                                                                        !!errors.issuanceTargetNumber &&
-                                                                        touched.issuanceTargetNumber
-                                                                    }
-                                                                    helperText={
-                                                                        errors.issuanceTargetNumber &&
-                                                                        touched.issuanceTargetNumber
-                                                                            ? errors.issuanceTargetNumber
-                                                                            : ''
-                                                                    }
-                                                                />
-                                                            </>
-                                                        )}
-                                                    </>
-                                                )}
-                                            </Box>
-                                            {/* 결제 동의 확인 */}
-                                            <Box sx={{ marginBottom: 3, bgcolor: '#ffffff', p: 3 }}>
-                                                <FormControlLabel
-                                                    label="전체 동의"
-                                                    control={
-                                                        <Checkbox
-                                                            name="paymentAgreed"
-                                                            color="primary"
+                                                        <Field
+                                                            name="address"
+                                                            as={TextField}
+                                                            value={values.address}
+                                                            variant="outlined"
                                                             size="small"
-                                                            checked={values.paymentAgreed}
-                                                            onChange={handleChange}
+                                                            fullWidth
+                                                            sx={{ mr: 1, mt: 2 }}
+                                                            error={!!errors.address}
+                                                            helperText={errors.address}
                                                         />
-                                                    }
-                                                />
-                                                <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
+                                                        <Field
+                                                            name="additionalAddress"
+                                                            as={TextField}
+                                                            value={values.additionalAddress}
+                                                            label="상세주소"
+                                                            variant="outlined"
+                                                            size="small"
+                                                            fullWidth
+                                                            sx={{ mr: 1, mt: 2 }}
+                                                            error={
+                                                                errors.additionalAddress && touched.additionalAddress
+                                                            }
+                                                            helperText={
+                                                                errors.additionalAddress && touched.additionalAddress
+                                                                    ? errors.additionalAddress
+                                                                    : ''
+                                                            }
+                                                        />
+                                                    </Box>
+                                                </Box>
+                                            </Grid>
+
+                                            {/* 파트2 부분 */}
+                                            <Grid item xs={12} sm={12} md={4}>
+                                                {/* 주문 금액 정보 */}
+
+                                                <Box sx={{ marginBottom: 3, bgcolor: '#ffffff', p: 3 }}>
+                                                    <Typography variant="h6" sx={{ display: 'flex', pb: 2 }}>
+                                                        주문 요약
+                                                    </Typography>
+                                                    <Box
+                                                        sx={{
+                                                            display: 'flex',
+                                                            flexDirection: 'row',
+                                                            justifyContent: 'space-between',
+                                                        }}
+                                                    >
+                                                        <Typography
+                                                            variant="subtitle1"
+                                                            sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
+                                                        >
+                                                            상품금액
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="subtitle1"
+                                                            sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
+                                                        >
+                                                            {formattedNumber(subTotal)} 원
+                                                        </Typography>
+                                                    </Box>
+                                                    <Box
+                                                        sx={{
+                                                            display: 'flex',
+                                                            flexDirection: 'row',
+                                                            justifyContent: 'space-between',
+                                                        }}
+                                                    >
+                                                        <Typography
+                                                            variant="subtitle1"
+                                                            sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
+                                                        >
+                                                            배송비
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="subtitle1"
+                                                            sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
+                                                        >
+                                                            {deliveryFee ? '3,000원' : '무료'}
+                                                        </Typography>
+                                                    </Box>
+                                                    <Box sx={{ display: 'flex', justifyContent: 'center', marginY: 1 }}>
+                                                        <Divider
+                                                            sx={{
+                                                                width: '100%',
+                                                            }}
+                                                        />
+                                                    </Box>
+                                                    <Box
+                                                        sx={{
+                                                            display: 'flex',
+                                                            flexDirection: 'row',
+                                                            justifyContent: 'space-between',
+                                                        }}
+                                                    >
+                                                        <Typography
+                                                            variant="subtitle1"
+                                                            sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
+                                                        >
+                                                            최종 결제금액
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="subtitle1"
+                                                            sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
+                                                        >
+                                                            {formattedNumber(totalAmount)} 원
+                                                        </Typography>
+                                                    </Box>
+                                                </Box>
+
+                                                {/* 결제수단 정보 */}
+                                                <Box sx={{ marginBottom: 3, bgcolor: '#ffffff', p: 3 }}>
+                                                    <Typography variant="h6" sx={{ display: 'flex', pb: 2 }}>
+                                                        결제 수단
+                                                    </Typography>
+                                                    <RadioGroup
+                                                        name="selectedPaymentMethod"
+                                                        value={values.selectedPaymentMethod}
+                                                        onChange={handleChange}
+                                                    >
+                                                        {['카드결제', '실시간 계좌이체', '무통장입금'].map((option) => (
+                                                            <FormControlLabel
+                                                                key={option}
+                                                                value={option}
+                                                                control={<Radio />}
+                                                                label={option}
+                                                            />
+                                                        ))}
+                                                    </RadioGroup>
+
+                                                    {values.selectedPaymentMethod === '무통장입금' && (
+                                                        <>
+                                                            <TextField
+                                                                value="기업은행 888-000000-01-999 (주)데이드림해븐"
+                                                                name="account"
+                                                                variant="outlined"
+                                                                size="small"
+                                                                fullWidth
+                                                                sx={{ mr: 1, mt: 2 }}
+                                                            />
+                                                            <Field
+                                                                as={TextField}
+                                                                value={values.orderer}
+                                                                name="orderer"
+                                                                variant="outlined"
+                                                                size="small"
+                                                                fullWidth
+                                                                label="입금자명"
+                                                                sx={{ mr: 1, mt: 2 }}
+                                                                error={!!errors.orderer && touched.orderer}
+                                                                helperText={
+                                                                    errors.orderer && touched.orderer
+                                                                        ? errors.orderer
+                                                                        : ''
+                                                                }
+                                                            />
+                                                            <Typography
+                                                                variant="subtitle2"
+                                                                sx={{
+                                                                    display: 'flex',
+                                                                    justifyContent: 'center',
+                                                                    py: 2,
+                                                                    color: '#8C6A5D',
+                                                                }}
+                                                            >
+                                                                주문 후 72시간 이내 미입금시 자동 취소됩니다.
+                                                            </Typography>
+                                                            <Box
+                                                                sx={{
+                                                                    display: 'flex',
+                                                                    justifyContent: 'center',
+                                                                    marginY: 2,
+                                                                }}
+                                                            >
+                                                                <Divider
+                                                                    sx={{
+                                                                        width: '100%',
+                                                                    }}
+                                                                />
+                                                            </Box>
+                                                            <RadioGroup
+                                                                name="cashReceipt"
+                                                                value={values.cashReceipt}
+                                                                onChange={(
+                                                                    event: React.ChangeEvent<HTMLInputElement>,
+                                                                ) => {
+                                                                    const value = event.target.value === 'true'; // 문자열 값을 불리언으로 변환
+                                                                    setFieldValue(event.target.name, value);
+                                                                }}
+                                                                row
+                                                            >
+                                                                <FormControlLabel
+                                                                    value="true"
+                                                                    control={<Radio />}
+                                                                    label="현금영수증 신청"
+                                                                />
+                                                                <FormControlLabel
+                                                                    value="false"
+                                                                    control={<Radio />}
+                                                                    label="신청안함"
+                                                                />
+                                                            </RadioGroup>
+
+                                                            {/* 현금영수증 신청폼 */}
+                                                            {values.cashReceipt && (
+                                                                <>
+                                                                    <RadioGroup
+                                                                        name="issuanceTarget"
+                                                                        value={values.issuanceTarget}
+                                                                        onChange={handleChange}
+                                                                        row
+                                                                    >
+                                                                        {['개인', '사업자'].map((target) => (
+                                                                            <FormControlLabel
+                                                                                key={target}
+                                                                                value={target}
+                                                                                control={<Radio />}
+                                                                                label={target}
+                                                                            />
+                                                                        ))}
+                                                                    </RadioGroup>
+                                                                    <Field
+                                                                        as={TextField}
+                                                                        value={values.issuanceTargetNumber}
+                                                                        name="issuanceTargetNumber"
+                                                                        variant="outlined"
+                                                                        size="small"
+                                                                        fullWidth
+                                                                        label={
+                                                                            values.issuanceTarget === '개인'
+                                                                                ? '전화번호 입력'
+                                                                                : '사업자번호 입력'
+                                                                        }
+                                                                        sx={{ mt: 2 }}
+                                                                        error={
+                                                                            !!errors.issuanceTargetNumber &&
+                                                                            touched.issuanceTargetNumber
+                                                                        }
+                                                                        helperText={
+                                                                            errors.issuanceTargetNumber &&
+                                                                            touched.issuanceTargetNumber
+                                                                                ? errors.issuanceTargetNumber
+                                                                                : ''
+                                                                        }
+                                                                    />
+                                                                </>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </Box>
+                                                {/* 결제 동의 확인 */}
+                                                <Box sx={{ marginBottom: 3, bgcolor: '#ffffff', p: 3 }}>
                                                     <FormControlLabel
-                                                        label="구매조건 확인 및 결제진행에 동의"
+                                                        label="전체 동의"
                                                         control={
                                                             <Checkbox
                                                                 name="paymentAgreed"
@@ -490,42 +493,58 @@ const OrderPayment = () => {
                                                             />
                                                         }
                                                     />
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
+                                                        <FormControlLabel
+                                                            label="구매조건 확인 및 결제진행에 동의"
+                                                            control={
+                                                                <Checkbox
+                                                                    name="paymentAgreed"
+                                                                    color="primary"
+                                                                    size="small"
+                                                                    checked={values.paymentAgreed}
+                                                                    onChange={handleChange}
+                                                                />
+                                                            }
+                                                        />
+                                                    </Box>
+                                                    <Box sx={{ color: 'red', fontSize: 12, m: 1 }}>
+                                                        <ErrorMessage
+                                                            name={`paymentAgreed`}
+                                                            component="div"
+                                                            className="error"
+                                                        />
+                                                    </Box>
                                                 </Box>
-                                                <Box sx={{ color: 'red', fontSize: 12, m: 1 }}>
-                                                    <ErrorMessage
-                                                        name={`paymentAgreed`}
-                                                        component="div"
-                                                        className="error"
-                                                    />
-                                                </Box>
-                                            </Box>
-                                            <Box>
-                                                <Button
-                                                    type="submit"
-                                                    variant="outlined"
-                                                    sx={{
-                                                        width: '100%',
-                                                        height: 50,
-                                                        fontSize: 16,
-                                                        color: '#ffffff',
-                                                        background: '#B67352',
-
-                                                        '&:hover': {
+                                                <Box>
+                                                    <Button
+                                                        type="submit"
+                                                        variant="outlined"
+                                                        sx={{
+                                                            width: '100%',
+                                                            height: 50,
+                                                            fontSize: 16,
                                                             color: '#ffffff',
                                                             background: '#B67352',
-                                                        },
-                                                    }}
-                                                >
-                                                    결제하기
-                                                </Button>
-                                            </Box>
+
+                                                            '&:hover': {
+                                                                color: '#ffffff',
+                                                                background: '#B67352',
+                                                            },
+                                                        }}
+                                                    >
+                                                        결제하기
+                                                    </Button>
+                                                </Box>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
-                                </Form>
-                            );
-                        }}
-                    </Formik>
-                </Box>
+                                    </Form>
+                                );
+                            }}
+                        </Formik>
+                    </Box>
+                ) : (
+                    <Box sx={{ minHeight: '100vh' }}></Box>
+                )}
             </Container>
         </OrderPaymentPaper>
     );
