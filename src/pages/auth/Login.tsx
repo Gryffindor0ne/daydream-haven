@@ -58,6 +58,7 @@ const Login = () => {
             setMessage(errorMessage);
             setIsOpen(true);
             console.log(error);
+            dispatch(setLoading(false)); // 로그인 오류시 로딩상태 false 변경
         }
     };
 
