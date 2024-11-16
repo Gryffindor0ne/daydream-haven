@@ -1,33 +1,42 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { MutableRefObject, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 declare global {
     interface Window {
         kakao: any;
     }
 }
+
 function Map() {
-    const mapRef = useRef<HTMLElement | null>(null);
-
-    const initMap = () => {
-        const container = document.getElementById('map');
-        const options = {
-            center: new window.kakao.maps.LatLng(37.40048795010311, 126.94674883318096),
-            level: 2,
-        };
-
-        const map = new window.kakao.maps.Map(container as HTMLElement, options);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (mapRef as MutableRefObject<any>).current = map;
-        const marker = new kakao.maps.Marker({ position: map.getCenter() });
-        marker.setMap(map);
-    };
+    const mapRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        window.kakao.maps.load(() => initMap());
-    }, [mapRef]);
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAP_API_KEY}&autoload=false`;
+        document.head.appendChild(script);
 
-    return <div id="map" style={{ width: '900px', height: '600px' }}></div>;
+        script.onload = () => {
+            window.kakao.maps.load(() => {
+                if (!mapRef.current) return;
+
+                const options = {
+                    center: new window.kakao.maps.LatLng(37.40048795010311, 126.94674883318096),
+                    level: 2,
+                };
+
+                const map = new window.kakao.maps.Map(mapRef.current, options);
+                const marker = new window.kakao.maps.Marker({ position: map.getCenter() });
+                marker.setMap(map);
+            });
+        };
+
+        return () => {
+            document.head.removeChild(script);
+        };
+    }, []);
+
+    return <div ref={mapRef} style={{ width: '900px', height: '600px' }}></div>;
 }
 
 export default Map;
