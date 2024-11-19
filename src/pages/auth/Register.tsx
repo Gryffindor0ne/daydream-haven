@@ -42,7 +42,7 @@ const registerSchema = Yup.object().shape({
     username: Yup.string()
         .matches(/^[가-힣]{2,5}$/, '한글로 입력해주세요.')
         .min(2, '2글자 이상 5글자 이하로 입력해주세요')
-        .max(4, '2글자 이상 5글자 이하로 입력해주세요')
+        .max(5, '2글자 이상 5글자 이하로 입력해주세요')
         .required('이름은 필수 입력 항목입니다.'),
     phoneNumber: Yup.string()
         .matches(/^[0-9]+$/, '전화번호는 숫자로만 입력해야 합니다.')
