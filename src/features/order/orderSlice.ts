@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from '~/app/store';
-import { OrderProductSummaryInfo } from '~/components/product/ProductSelectBox';
+import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
 
 interface OrderState {
-    orderItems: OrderProductSummaryInfo[];
+    orderItems: OrderItemSummaryInfo[];
     subTotal: number;
     deliveryFee: number;
     totalAmount: number;
@@ -21,7 +21,7 @@ const orderSlice = createSlice({
     name: 'order',
     initialState,
     reducers: {
-        addToOrder: (state, action: PayloadAction<OrderProductSummaryInfo[]>) => {
+        addToOrder: (state, action: PayloadAction<OrderItemSummaryInfo[]>) => {
             state.orderItems = action.payload;
         },
         updateOrderTotal(state) {

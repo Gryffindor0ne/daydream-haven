@@ -7,12 +7,12 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 
 import { useAppDispatch } from '~/app/reduxHooks';
-import { OrderProductSummaryInfo } from '~/components/product/ProductSelectBox';
+import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
 import { addToCart } from '~/features/cart/cartSlice';
 
 interface PopupProps {
     open: boolean;
-    products: OrderProductSummaryInfo[];
+    products: OrderItemSummaryInfo[];
     onClose: () => void;
     showCartGuidancePopup: (open: boolean) => void;
 }

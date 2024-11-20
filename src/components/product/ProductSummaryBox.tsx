@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
-import { OrderProductSummaryInfo } from '~/components/product/ProductSelectBox';
+import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
 import QuantityButton from '~/components/common/QuantityButton';
 import { formattedNumber } from '~/utils/utils';
 import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
@@ -14,7 +14,7 @@ const ProductSummaryBox = ({
     onDelete,
     onQuantityChange,
 }: {
-    product: OrderProductSummaryInfo;
+    product: OrderItemSummaryInfo;
     onDelete: () => void;
     onQuantityChange: (newQuantity: number) => void;
 }) => {

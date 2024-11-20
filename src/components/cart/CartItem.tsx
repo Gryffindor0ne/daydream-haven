@@ -4,14 +4,14 @@ import Checkbox from '@mui/material/Checkbox';
 import { useMediaQuery, useTheme } from '@mui/material';
 
 import { useAppDispatch } from '~/app/reduxHooks';
-import { OrderProductSummaryInfo } from '~/components/product/ProductSelectBox';
+import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
 import QuantityButton from '~/components/common/QuantityButton';
 import { updateCartItemQuantity } from '~/features/cart/cartSlice';
 import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
 import { formattedNumber } from '~/utils/utils';
 
 type CartItemProps = {
-    item: OrderProductSummaryInfo;
+    item: OrderItemSummaryInfo;
     deliveryFeeCondition: string;
     checked: boolean;
     handler: () => void;

@@ -104,7 +104,7 @@ const CapacityGrindSelector = ({
                             <em>분쇄도를 선택하세요</em>
                         </MenuItem>
                         {GRINDSIZE_SET.map((grindSize, idx) => (
-                            <MenuItem key={idx} value={idx} sx={{ fontSize: 12 }}>
+                            <MenuItem key={idx} value={String(idx)} sx={{ fontSize: 12 }}>
                                 {grindSize}
                             </MenuItem>
                         ))}
@@ -148,7 +148,7 @@ const CapacityGrindSelector = ({
                                 <em>기간을 선택하세요</em>
                             </MenuItem>
                             {PERIOD_OPTIONS.map((period, idx) => (
-                                <MenuItem key={idx} value={idx} sx={{ fontSize: 12 }}>
+                                <MenuItem key={idx} value={String(idx)} sx={{ fontSize: 12 }}>
                                     {period}
                                 </MenuItem>
                             ))}

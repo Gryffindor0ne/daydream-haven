@@ -28,6 +28,7 @@ import { paymentMethods } from '~/utils/constants';
 import useScrollToTop from '~/hooks/useScrollToTop';
 import useFetchUserInfo from '~/hooks/useFetchUserInfo';
 import { setLoading } from '~/features/auth/authSlice';
+import axios from 'axios';
 
 // 주문결제 페이지 배경색 설정
 const OrderPaymentPaper = styled(Paper)(() => ({
@@ -76,6 +77,13 @@ type OrderProps = {
     paymentAgreed: boolean;
 };
 
+export interface OrderItemProps {
+    productId: string;
+    quantity: number;
+    grindSize: string;
+    capacity: string;
+}
+
 const OrderPayment = () => {
     const { orderItems, subTotal, deliveryFee, totalAmount } = useAppSelector(orderState);
     const dispatch = useAppDispatch();
@@ -95,26 +103,38 @@ const OrderPayment = () => {
         dispatch(setLoading(!userInfo));
     }, [navigate, orderItems, userInfo, dispatch]);
 
+    const orderProductsList: OrderItemProps[] = orderItems.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        grindSize: item.grindSize,
+        capacity: item.capacity,
+    }));
+
     const handleSubmit = async (values: OrderProps) => {
         // 주문 접수 api 연결
         try {
             const { data } = await axiosInstance.post(
                 `/orders`,
                 {
-                    name: userInfo!.name,
-                    address: values.address,
-                    addressDetail: values.additionalAddress,
-                    postcode: values.postcode,
-                    paymentMethod: paymentMethods[values.selectedPaymentMethod],
-                    cashReceiptRequired: values.cashReceipt,
-                    issuanceNumber: values.issuanceTargetNumber,
-                    cashReceiptRecipientName: values.orderer,
-                    accountHolderName: values.orderer,
+                    items: orderProductsList,
+                    paymentInfo: {
+                        paymentMethod: paymentMethods[values.selectedPaymentMethod],
+                        cashReceiptRequired: values.cashReceipt,
+                        issuanceNumber: values.issuanceTargetNumber,
+                        cashReceiptRecipientName: values.orderer,
+                        accountHolderName: values.orderer,
+                    },
+                    deliveryInfo: {
+                        name: userInfo!.name,
+                        address: values.address,
+                        addressDetail: values.additionalAddress,
+                        postcode: values.postcode,
+                    },
                 },
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
-                        'Content-Type': 'multipart/form-data',
+                        'Content-Type': 'application/json',
                     },
                 },
             );
@@ -122,7 +142,7 @@ const OrderPayment = () => {
             //포트원 가상결제 요청
 
             if (data.id) {
-                if (data.paymentMethod !== 'deposit_without_bankbook') {
+                if (data.paymentInfo.paymentMethod !== 'deposit_without_bankbook') {
                     const response = await PortOne.requestPayment({
                         // Store ID 설정
                         storeId: `${import.meta.env.VITE_PORTONE_STORE_ID}`,
@@ -137,7 +157,7 @@ const OrderPayment = () => {
                         totalAmount: totalAmount,
                         pgProvider: 'PG_PROVIDER_TOSSPAYMENTS',
                         currency: 'CURRENCY_KRW',
-                        payMethod: data.paymentMethod === 'card' ? 'CARD' : 'TRANSFER',
+                        payMethod: data.paymentInfo.paymentMethod === 'card' ? 'CARD' : 'TRANSFER',
                         redirectUrl: `https://daydream-haven.vercel.app/order/${data.id}`,
                     });
 
@@ -159,7 +179,14 @@ const OrderPayment = () => {
                 }
             }
         } catch (error) {
-            console.log(error);
+            if (axios.isAxiosError(error)) {
+                // 여기서 error는 AxiosError 타입으로 추론됩니다.
+                console.error('Error response data:', error.response?.data);
+                console.error('Error response status:', error.response?.status);
+            } else {
+                // 다른 종류의 에러 처리
+                console.error('Unexpected error:', error);
+            }
         }
     };
 

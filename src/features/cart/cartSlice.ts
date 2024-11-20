@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from '~/app/store';
-import { OrderProductSummaryInfo } from '~/components/product/ProductSelectBox';
+import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
 
 export type CartState = {
-    cartItems: OrderProductSummaryInfo[];
+    cartItems: OrderItemSummaryInfo[];
     subTotal: number;
     deliveryFeeCondition: string;
 };
@@ -19,7 +19,7 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        addToCart: (state, action: PayloadAction<OrderProductSummaryInfo[]>) => {
+        addToCart: (state, action: PayloadAction<OrderItemSummaryInfo[]>) => {
             action.payload.forEach((newProduct) => {
                 const existingProductIndex = state.cartItems.findIndex(
                     (product) =>
@@ -54,7 +54,7 @@ const cartSlice = createSlice({
             state.subTotal = subTotal;
             state.deliveryFeeCondition = deliveryFeeCondition;
         },
-        removeFromCart: (state, action: PayloadAction<OrderProductSummaryInfo[]>) => {
+        removeFromCart: (state, action: PayloadAction<OrderItemSummaryInfo[]>) => {
             state.cartItems = action.payload;
         },
     },

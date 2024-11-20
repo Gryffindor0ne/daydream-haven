@@ -20,7 +20,7 @@ import { authState } from '~/features/auth/authSlice';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import { findPriceByCapacityAndPeriod } from '~/utils/utils';
 
-export type OrderProductSummaryInfo = {
+export type OrderItemSummaryInfo = {
     id: string;
     name: string;
     price: number;
@@ -29,19 +29,20 @@ export type OrderProductSummaryInfo = {
     period?: string;
     quantity: number;
     thumbnail: string;
+    productId: string;
 };
 
 const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
     const [capacity, setCapacity] = useState<string>('');
     const [grindSize, setGrindSize] = useState<string>('');
     const [period, setPeriod] = useState<string>('');
-    const [selectedProducts, setSelectedProducts] = useState<OrderProductSummaryInfo[]>([]);
+    const [selectedProducts, setSelectedProducts] = useState<OrderItemSummaryInfo[]>([]);
     const [showAlert, setShowAlert] = useState<boolean>(false);
     const [showCartGuidancePopup, setShowCartGuidancePopup] = useState<boolean>(false);
     const [showDuplicateGuidancePopup, setShowDuplicateGuidancePopup] = useState<boolean>(false);
     const [alertMessage, setAlertMessage] = useState('');
 
-    const { currentPath } = useCurrentPathAndId();
+    const { currentPath, id } = useCurrentPathAndId();
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -70,7 +71,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
     };
 
     const addProduct = useCallback(() => {
-        let newProduct: OrderProductSummaryInfo;
+        let newProduct: OrderItemSummaryInfo;
         if (currentPath === 'subscription') {
             const newPrice = findPriceByCapacityAndPeriod(product, capacity, parseInt(period))!;
             newProduct = {
@@ -82,6 +83,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                 period: period,
                 quantity: 1,
                 thumbnail: product.detailImages[0],
+                productId: id,
             };
         } else {
             newProduct = {
@@ -92,21 +94,22 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                 grindSize: grindSize,
                 quantity: 1,
                 thumbnail: product.detailImages[0],
+                productId: id,
             };
         }
 
         setSelectedProducts((prevProducts) => [...prevProducts, newProduct]);
-    }, [currentPath, product, capacity, period, grindSize]);
+    }, [currentPath, product, capacity, period, grindSize, id]);
 
-    const handleDelete = (productId: string) => {
-        setSelectedProducts((prevProducts) => prevProducts.filter((product) => product.id !== productId));
+    const handleDelete = (orderItemId: string) => {
+        setSelectedProducts((prevProducts) => prevProducts.filter((product) => product.id !== orderItemId));
     };
 
-    const handleQuantityChange = (productId: string, newQuantity: number) => {
+    const handleQuantityChange = (orderItemId: string, newQuantity: number) => {
         if (currentPath === 'subscription') {
             setSelectedProducts((prevProducts) => {
                 return prevProducts.map((item) => {
-                    if (item.id === productId && item.period) {
+                    if (item.id === orderItemId && item.period) {
                         const newPrice = findPriceByCapacityAndPeriod(product, item.capacity, parseInt(item.period))!;
                         return { ...item, price: newPrice * newQuantity, quantity: newQuantity };
                     }
@@ -116,7 +119,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
         } else {
             setSelectedProducts((prevProducts) => {
                 return prevProducts.map((item) => {
-                    if (item.id === productId) {
+                    if (item.id === orderItemId) {
                         const capacity = item.capacity;
                         const newPrice = capacity === '200' ? product.price : product.price * 2;
                         return { ...item, price: newPrice * newQuantity, quantity: newQuantity };
@@ -128,7 +131,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
     };
 
     const findDuplicateProducts = () => {
-        const duplicates: OrderProductSummaryInfo[] = [];
+        const duplicates: OrderItemSummaryInfo[] = [];
 
         if (currentPath === 'subscription') {
             selectedProducts.forEach((selectedProduct) => {

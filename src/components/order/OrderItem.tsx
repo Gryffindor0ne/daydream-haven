@@ -1,11 +1,11 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import { OrderProductSummaryInfo } from '~/components/product/ProductSelectBox';
+import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
 import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
 import { formattedNumber } from '~/utils/utils';
 
-const OrderItem = ({ item }: { item: OrderProductSummaryInfo }) => {
+const OrderItem = ({ item }: { item: OrderItemSummaryInfo }) => {
     return (
         <Box sx={{ display: 'flex', py: 0.5, border: '1px solid #F4EDCC' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', py: 3 }}>

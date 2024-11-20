@@ -46,7 +46,7 @@ const OrderComplete = () => {
     const [orderInfo, setOrderInfo] = useState<PaymentDataProps>();
 
     const paymentMethodType = Object.keys(paymentMethods).find(
-        (key) => paymentMethods[key] === orderInfo?.paymentMethod,
+        (key) => paymentMethods[key] === orderInfo?.paymentInfo.paymentMethod,
     );
 
     // 뒤로 가기 클릭시 현재페이지로 다시 리다이렉트

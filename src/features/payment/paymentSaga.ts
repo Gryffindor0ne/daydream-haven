@@ -3,6 +3,7 @@ import { AxiosRequestConfig } from 'axios';
 
 import { fetchData, paymentFailure, paymentSuccess } from '~/features/payment/paymentSlice';
 import getOrderDetailsAPI from '~/api/getOrderDetailsAPI';
+import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
 
 type PaymentProps = {
     paymentId: string;
@@ -18,18 +19,27 @@ export interface AxiosResponse<T> {
     request: XMLHttpRequest;
 }
 
-export interface PaymentDataProps {
-    id: string;
-    status: string;
+export interface PaymentInfo {
+    paymentMethod: string;
+    cashReceiptRequired: boolean;
+    issuanceNumber: string;
+    cashReceiptRecipientName: string | null;
+    accountHolderName: string | null;
+}
+
+interface DeliveryInfo {
     name: string;
     address: string;
     addressDetail: string;
     postcode: string;
-    paymentMethod: string;
-    cashReceiptRequired: boolean;
-    issuanceNumber: string | '';
-    cashReceiptRecipientName: string | null;
-    accountHolderName: string | null;
+}
+
+export interface PaymentDataProps {
+    id: string;
+    status: string;
+    items: OrderItemSummaryInfo[];
+    paymentInfo: PaymentInfo;
+    deliveryInfo: DeliveryInfo;
     createdAt: string;
     updatedAt: string;
 }
