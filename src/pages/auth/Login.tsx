@@ -53,6 +53,9 @@ const Login = () => {
             if (response.status === 201) {
                 setAccessTokenCookie(response.data.access_token);
                 dispatch(setAuthenticated(true));
+
+                // 로그인시 주문내역 호출
+                dispatch({ type: 'allOrders/fetchAllOrders' });
             }
         } catch (error) {
             setMessage(errorMessage);

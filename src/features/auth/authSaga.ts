@@ -4,6 +4,7 @@ import { setLoading, setAuthenticated } from './authSlice';
 import { AccessTokenValidityResponse, checkAccessTokenValidityAPI } from '~/api/checkAccessTokenValidityAPI';
 import { extractAccessTokenFromCookie, removeAccessTokenFromCookie } from '~/utils/cookiesUtils';
 import { clearOrder } from '~/features/order/orderSlice';
+import { clearAllOrders } from '~/features/order/allOrdersSlice';
 
 function* checkTokenExpirationSaga() {
     const accessToken = extractAccessTokenFromCookie();
@@ -20,6 +21,7 @@ function* checkTokenExpirationSaga() {
         yield put(setAuthenticated(response.isAuthenticated)); // 인증 상태 업데이트
     } catch (error) {
         console.error('Error checking token validity:', error);
+        yield put(setAuthenticated(false)); // 인증 상태를 false로 설정
     } finally {
         yield put(setLoading(false)); // 로딩 상태를 false로 설정
     }
@@ -30,6 +32,7 @@ function* logoutUserSaga() {
         yield call(removeAccessTokenFromCookie); // 쿠키에서 액세스토큰 삭제
         yield put(setAuthenticated(false)); // 인증 상태를 false로 업데이트
         yield put(clearOrder()); // 주문리스트 상태 초기화 업데이트
+        yield put(clearAllOrders()); // 사용자 주문기록 내역삭제
     } catch (error) {
         console.error('Error logging out user:', error);
     }

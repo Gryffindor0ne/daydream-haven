@@ -42,6 +42,14 @@ const OrderComplete = () => {
         }
     }, [dispatch, paymentId]);
 
+    // 주문 성공시 주문내역 호출
+
+    useEffect(() => {
+        if (paymentStatus === 'success') {
+            dispatch({ type: 'allOrders/fetchAllOrders' });
+        }
+    }, [dispatch, paymentStatus]);
+
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
     const [orderInfo, setOrderInfo] = useState<PaymentDataProps>();
 
