@@ -6,7 +6,7 @@ const getOrderDetailsAPI = async (paymentId: string) => {
     const accessToken = extractAccessTokenFromCookie();
 
     try {
-        const response = await axiosInstance.get(`orders/${paymentId}/legacy`, {
+        const response = await axiosInstance.get(`orders/${paymentId}`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
