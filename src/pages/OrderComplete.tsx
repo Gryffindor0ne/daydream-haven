@@ -17,10 +17,11 @@ import { paymentMethods } from '~/utils/constants';
 import useScrollToTop from '~/hooks/useScrollToTop';
 import useFetchUserInfo from '~/hooks/useFetchUserInfo';
 import useFetchOrderInfo from '~/hooks/useFetchOrderInfo';
+import { removeFromCart } from '~/features/cart/cartSlice';
 
 const OrderComplete = () => {
     const { paymentStatus, error } = useAppSelector(paymentState);
-    const { orderItems, totalAmount } = useAppSelector(orderState);
+    const { orderItems, totalAmount, directOrder } = useAppSelector(orderState);
 
     useScrollToTop();
 
@@ -46,9 +47,12 @@ const OrderComplete = () => {
 
     useEffect(() => {
         if (paymentStatus === 'success') {
+            if (!directOrder) {
+                dispatch(removeFromCart([]));
+            }
             dispatch({ type: 'allOrders/fetchAllOrders' });
         }
-    }, [dispatch, paymentStatus]);
+    }, [directOrder, dispatch, paymentStatus]);
 
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
     const [orderInfo, setOrderInfo] = useState<PaymentDataProps>();

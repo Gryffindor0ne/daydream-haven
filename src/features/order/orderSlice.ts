@@ -8,6 +8,7 @@ interface OrderState {
     subTotal: number;
     deliveryFee: number;
     totalAmount: number;
+    directOrder: boolean;
 }
 
 const initialState: OrderState = {
@@ -15,6 +16,7 @@ const initialState: OrderState = {
     subTotal: 0,
     deliveryFee: 0,
     totalAmount: 0,
+    directOrder: false,
 };
 
 const orderSlice = createSlice({
@@ -46,6 +48,9 @@ const orderSlice = createSlice({
             state.deliveryFee = 0;
             state.totalAmount = 0;
         },
+        updateDirectOrder(state, action: PayloadAction<boolean>) {
+            state.directOrder = action.payload;
+        },
     },
 });
 
@@ -53,7 +58,7 @@ const calculateDeliveryFee = (subTotal: number): number => {
     return subTotal >= 50000 ? 0 : 3000;
 };
 
-export const { addToOrder, updateOrderTotal, removeFromOrder, clearOrder } = orderSlice.actions;
+export const { addToOrder, updateOrderTotal, removeFromOrder, clearOrder, updateDirectOrder } = orderSlice.actions;
 
 export const orderState = (state: RootState): OrderState => state.order;
 

@@ -6,13 +6,15 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { useMediaQuery, useTheme } from '@mui/material';
 
-import { useAppSelector } from '~/app/reduxHooks';
-import { orderState } from '~/features/order/orderSlice';
+import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
+import { orderState, updateDirectOrder } from '~/features/order/orderSlice';
 import { authState } from '~/features/auth/authSlice';
 import { formattedNumber } from '~/utils/utils';
 
 const CartOrderSection = ({ products }: { products: string[] }) => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
     const { deliveryFee, subTotal, totalAmount } = useAppSelector(orderState);
     const { isAuthenticated } = useAppSelector(authState);
 
@@ -173,6 +175,7 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
                 {products.length !== 0 && (
                     <Button
                         onClick={() => {
+                            dispatch(updateDirectOrder(false));
                             if (isAuthenticated) {
                                 navigate('/order');
                             } else {

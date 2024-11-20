@@ -15,7 +15,7 @@ import CartGuidancePopup from '~/components/layout/popup/CartGuidancePopup';
 import DuplicateGuidancePopup from '~/components/layout/popup/DuplicateGuidancePopup';
 import CapacityGrindSelector from '~/components/common/CapacityGrindSelector';
 import { cartState, addToCart, updateCartTotal } from '~/features/cart/cartSlice';
-import { addToOrder, updateOrderTotal } from '~/features/order/orderSlice';
+import { addToOrder, updateDirectOrder, updateOrderTotal } from '~/features/order/orderSlice';
 import { authState } from '~/features/auth/authSlice';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import { findPriceByCapacityAndPeriod } from '~/utils/utils';
@@ -287,6 +287,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                         if (selectedProducts.length !== 0) {
                             dispatch(addToOrder(selectedProducts));
                             dispatch(updateOrderTotal());
+                            dispatch(updateDirectOrder(true));
 
                             isAuthenticated
                                 ? navigate(`/order`)
