@@ -23,3 +23,12 @@ export const formattedDate = (isoDateString: string) => {
     const formattedDateString = `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
     return formattedDateString;
 };
+
+export const formatDateToDots = (isoDateString: string) => {
+    const dateObject = new Date(isoDateString);
+    const year = dateObject.getFullYear();
+    const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+    const day = dateObject.getDate().toString().padStart(2, '0');
+
+    return `${year}. ${month}. ${day}`;
+};

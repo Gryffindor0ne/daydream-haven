@@ -17,8 +17,9 @@ export type ProductInfo = {
     roastingLevel: string;
     origin: string[];
     flavor: string[];
-    largeCapacity: number;
     productComposition?: string[];
+    bulkOrderAvailable: boolean;
+    isVisible: boolean;
 };
 
 const ProductsList = ({ lists }: { lists: ProductInfo[] }) => {

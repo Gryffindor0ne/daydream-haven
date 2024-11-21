@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import getOrderDetailsAPI from '~/api/getOrderDetailsAPI';
 import { useAppDispatch } from '~/app/reduxHooks';
 import { setLoading } from '~/features/auth/authSlice';
-import { PaymentDataProps } from '~/features/payment/paymentSaga';
+import { OrderDetailProps } from '~/features/payment/paymentSaga';
 
 type FetchOrderInfoProps = {
     id: string;
-    setOrderInfo: React.Dispatch<React.SetStateAction<PaymentDataProps | undefined>>;
+    setOrderInfo: React.Dispatch<React.SetStateAction<OrderDetailProps | undefined>>;
 };
 
 const useFetchOrderInfo = ({ id, setOrderInfo }: FetchOrderInfoProps) => {

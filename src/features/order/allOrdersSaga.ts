@@ -1,7 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { fetchAllOrdersFailure, fetchAllOrdersSuccess, fetchAllOrdersRequest } from './allOrdersSlice';
 import getAllOrdersAPI from '~/api/getAllOrdersAPI';
-import { PaymentDataProps } from '~/features/payment/paymentSaga';
+import { OrderDetailProps } from '~/features/payment/paymentSaga';
 import { RootState } from '~/app/store';
 
 const selectIsAuthenticated = (state: RootState) => state.auth.isAuthenticated; // 인증 상태 확인
@@ -17,7 +17,7 @@ function* fetchAllOrdersSaga() {
 
         // 항상 API 호출
         yield put(fetchAllOrdersRequest());
-        const history: PaymentDataProps[] = yield call(getAllOrdersAPI);
+        const history: OrderDetailProps[] = yield call(getAllOrdersAPI);
 
         yield put(fetchAllOrdersSuccess(history));
     } catch (error) {

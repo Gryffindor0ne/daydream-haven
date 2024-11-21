@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { UserInfoProps } from '~/components/order/OrdererInfo';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import { clearOrder, orderState } from '~/features/order/orderSlice';
-import { PaymentDataProps } from '~/features/payment/paymentSaga';
+import { OrderDetailProps } from '~/features/payment/paymentSaga';
 import { paymentState, resetPaymentState } from '~/features/payment/paymentSlice';
 import { formattedDate, formattedNumber } from '~/utils/utils';
 import { paymentMethods } from '~/utils/constants';
@@ -55,7 +55,7 @@ const OrderComplete = () => {
     }, [directOrder, dispatch, paymentStatus]);
 
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
-    const [orderInfo, setOrderInfo] = useState<PaymentDataProps>();
+    const [orderInfo, setOrderInfo] = useState<OrderDetailProps>();
 
     const paymentMethodType = Object.keys(paymentMethods).find(
         (key) => paymentMethods[key] === orderInfo?.paymentInfo.paymentMethod,

@@ -34,7 +34,7 @@ interface DeliveryInfo {
     postcode: string;
 }
 
-export interface PaymentDataProps {
+export interface OrderDetailProps {
     id: string;
     status: string;
     items: OrderItemSummaryInfo[];
@@ -44,7 +44,7 @@ export interface PaymentDataProps {
     updatedAt: string;
 }
 
-type PaymentApiResponse = AxiosResponse<PaymentDataProps>;
+type PaymentApiResponse = AxiosResponse<OrderDetailProps>;
 
 // 폴링을 위한 saga 로직
 function* paymentStateSaga(action: PaymentProps) {

@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '~/app/store';
-import { PaymentDataProps } from '~/features/payment/paymentSaga';
+import { OrderDetailProps } from '~/features/payment/paymentSaga';
 
 interface AllOrdersState {
-    allOrders: PaymentDataProps[];
+    allOrders: OrderDetailProps[];
     loading: boolean;
     error: string | null;
 }
@@ -22,7 +22,7 @@ const allOrdersSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        fetchAllOrdersSuccess(state, action: PayloadAction<PaymentDataProps[]>) {
+        fetchAllOrdersSuccess(state, action: PayloadAction<OrderDetailProps[]>) {
             state.allOrders = action.payload;
             state.loading = false;
         },
@@ -37,13 +37,8 @@ const allOrdersSlice = createSlice({
     },
 });
 
-export const {
-    fetchAllOrdersRequest,
-    fetchAllOrdersSuccess,
-    fetchAllOrdersFailure,
-
-    clearAllOrders,
-} = allOrdersSlice.actions;
+export const { fetchAllOrdersRequest, fetchAllOrdersSuccess, fetchAllOrdersFailure, clearAllOrders } =
+    allOrdersSlice.actions;
 export const allOrdersState = (state: RootState): AllOrdersState => state.allOrders;
 const allOrdersReducer = allOrdersSlice.reducer;
 export default allOrdersReducer;
