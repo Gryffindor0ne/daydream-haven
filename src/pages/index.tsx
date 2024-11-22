@@ -22,41 +22,38 @@ const Home = () => {
                 sx={{
                     marginTop: 10,
                     maxWidth: '100%',
-                    height: 'auto',
+                    width: '100%',
+                    height: '70vh',
                     '@media (min-width: 900px)': {
                         overflow: 'hidden',
                     },
                     '& img': {
                         width: '100%',
-                        marginBottom: isTablet ? '-80%' : '0%',
+                        height: '100%',
                         objectFit: 'cover',
-                        filter: 'grayscale(100%)',
-                        transition: 'filter 0.3s ease-in-out',
-                        '&:hover': {
-                            filter: 'brightness(150%)',
-                        },
                     },
                     cursor: 'pointer',
                 }}
             >
                 <img
-                    src="https://images.unsplash.com/photo-1529177648130-52a2690bbb1e?q=80&w=3174&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt="haven"
+                    src="https://images.unsplash.com/photo-1718809050181-6d69747916bb?q=80&w=3570&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="coffee-life"
                 />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Typography
                     sx={{
-                        marginTop: 18,
+                        marginTop: isTablet ? 18 : 8,
                         fontSize: isTablet ? 20 : 15,
                         fontWeight: 400,
+                        px: isTablet ? 0 : 2,
                     }}
                 >
                     Daydream Haven은 커피를 통해 모든 이들의 쉼을 응원합니다.
                 </Typography>
                 <Typography
                     sx={{
-                        marginTop: 3,
+                        marginTop: isTablet ? 3 : 5,
                         marginBottom: 18,
                         fontSize: isTablet ? 17 : 14,
                     }}
@@ -68,7 +65,8 @@ const Home = () => {
                 onClick={() => navigate(`/${categoryItems[1].toLowerCase()}`)}
                 sx={{
                     maxWidth: '100%',
-                    height: 'auto',
+                    width: '100%',
+                    height: '80vh',
                     '@media (max-width: 900px)': {
                         width: '100vw',
                         height: '0vh',
@@ -77,11 +75,6 @@ const Home = () => {
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        filter: 'none',
-                        transition: 'filter 0.3s ease-in-out',
-                        '&:hover': {
-                            filter: 'grayscale(100%)',
-                        },
                     },
                     cursor: 'pointer',
                 }}
@@ -89,6 +82,7 @@ const Home = () => {
                 <img
                     src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                     alt="coffee-drip"
+                    loading="lazy"
                 />
             </Box>
             <Box sx={{ display: isTablet ? 'flex' : 'none', flexDirection: 'column', alignItems: 'center' }}>
@@ -135,7 +129,8 @@ const Home = () => {
                 onClick={() => navigate(`/${categoryItems[2].toLowerCase()}`)}
                 sx={{
                     maxWidth: '100%',
-                    height: 'auto',
+                    width: '100%',
+                    height: '80vh',
                     '@media (max-width: 900px)': {
                         width: '100vw',
                         height: '0vh',
@@ -145,11 +140,6 @@ const Home = () => {
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        filter: 'none',
-                        transition: 'filter 0.3s ease-in-out',
-                        '&:hover': {
-                            filter: 'grayscale(100%)',
-                        },
                     },
                     cursor: 'pointer',
                 }}
@@ -157,6 +147,7 @@ const Home = () => {
                 <img
                     src="https://images.unsplash.com/photo-1511537190424-bbbab87ac5eb?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                     alt="coffee-roasting"
+                    loading="lazy"
                 />
             </Box>
 
@@ -194,7 +185,8 @@ const Home = () => {
                 onClick={() => navigate(`/${categoryItems[3].toLowerCase()}`)}
                 sx={{
                     maxWidth: '100%',
-                    height: 'auto',
+                    width: '100%',
+                    height: '80vh',
                     '@media (max-width: 900px)': {
                         width: '100vw',
                         height: '0vh',
@@ -203,11 +195,6 @@ const Home = () => {
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        filter: 'none',
-                        transition: 'filter 0.3s ease-in-out',
-                        '&:hover': {
-                            filter: 'grayscale(100%)',
-                        },
                     },
                     cursor: 'pointer',
                 }}
@@ -215,6 +202,7 @@ const Home = () => {
                 <img
                     src="https://images.unsplash.com/photo-1605882174146-a464b70cf691?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                     alt="coffee-delivering"
+                    loading="lazy"
                 />
             </Box>
 
