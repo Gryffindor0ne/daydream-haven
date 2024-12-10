@@ -9,12 +9,11 @@ import orderReducer from '~/features/order/orderSlice';
 import authReducer from '~/features/auth/authSlice';
 import rootSaga from '~/app/rootSaga';
 import paymentReducer from '~/features/payment/paymentSlice';
-import allOrdersReducer from '~/features/order/allOrdersSlice';
 
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['cart', 'order', 'auth', 'payment', 'allOrders'],
+    whitelist: ['cart', 'order', 'auth', 'payment'],
 };
 
 const rootReducer = combineReducers({
@@ -22,7 +21,6 @@ const rootReducer = combineReducers({
     cart: cartReducer,
     order: orderReducer,
     payment: paymentReducer,
-    allOrders: allOrdersReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

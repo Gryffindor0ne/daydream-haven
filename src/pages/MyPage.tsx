@@ -8,57 +8,75 @@ import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
+import { useAppDispatch } from '~/app/reduxHooks';
 import useScrollToTop from '~/hooks/useScrollToTop';
 import { UserInfoProps } from '~/components/order/OrdererInfo';
 import useFetchUserInfo from '~/hooks/useFetchUserInfo';
 import { setLoading } from '~/features/auth/authSlice';
 import OrderList from '~/components/order/OrderList';
-import { allOrdersState } from '~/features/order/allOrdersSlice';
+
 import { ProductInfo } from '~/components/product/ProductsList';
 import useFetchProductInfo from '~/hooks/useFecthProductInfo';
 import { OrderDetailProps } from '~/features/payment/paymentSaga';
 import { transformOrdersWithProducts } from '~/utils/orderTransform';
 import useFetchSubscriptionInfo from '~/hooks/useFetchSubscriptionInfo';
+import getAllOrderAPI from '~/api/getAllOrderAPI';
 
 const MyPage = () => {
     const theme = useTheme();
     const isTabletOrMobile = useMediaQuery(theme.breakpoints.down('lg'));
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { allOrders } = useAppSelector(allOrdersState);
 
     useScrollToTop();
 
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
+    const [allOrders, setAllOrders] = useState<OrderDetailProps[]>([]);
     const [productInfo, setProductInfo] = useState<ProductInfo[]>([]);
     const [subscriptionInfo, setSubscriptionInfo] = useState<ProductInfo[]>([]);
     const [productIds, setProductIds] = useState<string>('');
     const [subscriptionIds, setSubscriptionIds] = useState<string>('');
     const [transformedOrders, setTransformedOrders] = useState<OrderDetailProps[]>([]);
 
-    useEffect(() => {
-        dispatch(setLoading(!userInfo));
-    }, [dispatch, userInfo]);
+    const extractItemIds = (orders: OrderDetailProps[], type: string) =>
+        orders.flatMap((order) => order.items.filter((item) => item.type === type).map((item) => item.id));
 
     useFetchUserInfo({ setUserInfo });
 
     useEffect(() => {
-        if (allOrders) {
-            const productIds = allOrders.flatMap((order) => {
-                return order.items.filter((item) => item.type === 'product').map((item) => item.id);
-            });
+        dispatch(setLoading(!userInfo));
+    }, [dispatch, userInfo]);
 
-            const subscriptionIds = allOrders.flatMap((order) => {
-                return order.items.filter((item) => item.type === 'subscription').map((item) => item.id);
-            });
+    useEffect(() => {
+        const fetchAllOrderInfo = async () => {
+            dispatch(setLoading(true));
+            try {
+                const response = await getAllOrderAPI();
 
-            if (productIds.length !== 0) {
-                setProductIds(productIds.join(','));
+                if (response) {
+                    setAllOrders(response);
+                }
+            } catch (error) {
+                console.error('Error fetching all order info:', error);
+            } finally {
+                dispatch(setLoading(false));
+            }
+        };
+
+        fetchAllOrderInfo();
+    }, [dispatch, setAllOrders]);
+
+    useEffect(() => {
+        if (allOrders.length > 0) {
+            const productIds = extractItemIds(allOrders, 'product').join(',');
+            const subscriptionIds = extractItemIds(allOrders, 'subscription').join(',');
+
+            if (productIds) {
+                setProductIds(productIds);
             }
 
-            if (subscriptionIds.length !== 0) {
-                setSubscriptionIds(subscriptionIds.join(','));
+            if (subscriptionIds) {
+                setSubscriptionIds(subscriptionIds);
             }
         }
     }, [allOrders]);
@@ -70,7 +88,7 @@ const MyPage = () => {
     useFetchSubscriptionInfo({ subscriptionIds, setSubscriptionInfo });
 
     useEffect(() => {
-        if (productInfo && allOrders) {
+        if ((allOrders.length > 0 && productInfo.length > 0) || subscriptionInfo.length > 0) {
             // 주문 내역 변환
             const newOrders = transformOrdersWithProducts(allOrders, productInfo, subscriptionInfo);
             setTransformedOrders(newOrders);
@@ -135,7 +153,7 @@ const MyPage = () => {
                     >
                         주문 목록
                     </Typography>
-                    {transformedOrders.length > 0 ? <OrderList orders={transformedOrders} /> : <EmptyOrderMessage />}
+                    {allOrders.length > 0 ? <OrderList orders={transformedOrders} /> : <EmptyOrderMessage />}
                 </>
             )}
         </Container>

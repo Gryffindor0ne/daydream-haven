@@ -2,7 +2,7 @@ import axios from 'axios';
 import { axiosInstance } from '~/lib/axiosInstance';
 import { extractAccessTokenFromCookie } from '~/utils/cookiesUtils';
 
-const getAllOrdersAPI = async () => {
+const getAllOrderAPI = async () => {
     const accessToken = extractAccessTokenFromCookie();
 
     try {
@@ -23,4 +23,4 @@ const getAllOrdersAPI = async () => {
         throw error;
     }
 };
-export default getAllOrdersAPI;
+export default getAllOrderAPI;
