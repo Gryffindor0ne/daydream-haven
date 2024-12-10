@@ -19,6 +19,7 @@ import { ProductInfo } from '~/components/product/ProductsList';
 import useFetchProductInfo from '~/hooks/useFecthProductInfo';
 import { OrderDetailProps } from '~/features/payment/paymentSaga';
 import { transformOrdersWithProducts } from '~/utils/orderTransform';
+import useFetchSubscriptionInfo from '~/hooks/useFetchSubscriptionInfo';
 
 const MyPage = () => {
     const theme = useTheme();
@@ -31,7 +32,9 @@ const MyPage = () => {
 
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
     const [productInfo, setProductInfo] = useState<ProductInfo[]>([]);
-    const [ids, setIds] = useState<string>('');
+    const [subscriptionInfo, setSubscriptionInfo] = useState<ProductInfo[]>([]);
+    const [productIds, setProductIds] = useState<string>('');
+    const [subscriptionIds, setSubscriptionIds] = useState<string>('');
     const [transformedOrders, setTransformedOrders] = useState<OrderDetailProps[]>([]);
 
     useEffect(() => {
@@ -43,25 +46,36 @@ const MyPage = () => {
     useEffect(() => {
         if (allOrders) {
             const productIds = allOrders.flatMap((order) => {
-                return order.items.map((item) => item.productId);
+                return order.items.filter((item) => item.type === 'product').map((item) => item.id);
+            });
+
+            const subscriptionIds = allOrders.flatMap((order) => {
+                return order.items.filter((item) => item.type === 'subscription').map((item) => item.id);
             });
 
             if (productIds.length !== 0) {
-                setIds(productIds.join(','));
+                setProductIds(productIds.join(','));
+            }
+
+            if (subscriptionIds.length !== 0) {
+                setSubscriptionIds(subscriptionIds.join(','));
             }
         }
     }, [allOrders]);
 
     // 상품 정보 가져오기
-    useFetchProductInfo({ ids, setProductInfo });
+    useFetchProductInfo({ productIds, setProductInfo });
+
+    // 구독 정보 가져오기
+    useFetchSubscriptionInfo({ subscriptionIds, setSubscriptionInfo });
 
     useEffect(() => {
         if (productInfo && allOrders) {
             // 주문 내역 변환
-            const newOrders = transformOrdersWithProducts(allOrders, productInfo);
+            const newOrders = transformOrdersWithProducts(allOrders, productInfo, subscriptionInfo);
             setTransformedOrders(newOrders);
         }
-    }, [allOrders, productInfo]);
+    }, [allOrders, productInfo, subscriptionInfo]);
 
     const handleLogout = () => {
         dispatch({ type: 'auth/logoutUser' });

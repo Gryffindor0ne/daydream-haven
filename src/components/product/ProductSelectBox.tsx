@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import { SelectChangeEvent } from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import { nanoid } from 'nanoid';
 
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { ProductInfo } from '~/components/product/ProductsList';
@@ -29,7 +28,7 @@ export type OrderItemSummaryInfo = {
     period?: string;
     quantity: number;
     thumbnail: string;
-    productId: string;
+    type?: string;
 };
 
 const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
@@ -75,7 +74,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
         if (currentPath === 'subscription') {
             const newPrice = findPriceByCapacityAndPeriod(product, capacity, parseInt(period))!;
             newProduct = {
-                id: nanoid(),
+                id,
                 name: product.name,
                 price: newPrice,
                 capacity: capacity,
@@ -83,18 +82,16 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                 period: period,
                 quantity: 1,
                 thumbnail: product.detailImages[0],
-                productId: id,
             };
         } else {
             newProduct = {
-                id: nanoid(),
+                id,
                 name: product.name,
                 price: capacity === '200' ? product.price : product.price * 2,
                 capacity: capacity,
                 grindSize: grindSize,
                 quantity: 1,
                 thumbnail: product.detailImages[0],
-                productId: id,
             };
         }
 

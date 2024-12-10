@@ -5,7 +5,7 @@ import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
 import { formattedNumber } from '~/utils/utils';
 
 export interface OrderHistoryProps {
-    productId: string;
+    id: string;
     quantity: number;
     grindSize: string;
     capacity: string;

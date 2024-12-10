@@ -78,10 +78,11 @@ type OrderProps = {
 };
 
 export interface OrderItemProps {
-    productId: string;
+    id: string;
     quantity: number;
     grindSize: string;
     capacity: string;
+    period?: string;
 }
 
 const OrderPayment = () => {
@@ -104,10 +105,11 @@ const OrderPayment = () => {
     }, [navigate, orderItems, userInfo, dispatch]);
 
     const orderProductsList: OrderItemProps[] = orderItems.map((item) => ({
-        productId: item.productId,
+        id: item.id,
         quantity: item.quantity,
         grindSize: item.grindSize,
         capacity: item.capacity,
+        period: item.period ?? undefined,
     }));
 
     const handleSubmit = async (values: OrderProps) => {
@@ -224,8 +226,8 @@ const OrderPayment = () => {
                                                     <Typography variant="h6" sx={{ display: 'flex', px: 5, pb: 3 }}>
                                                         주문 상품 정보
                                                     </Typography>
-                                                    {orderItems.map((item, idx) => (
-                                                        <OrderItem item={item} key={idx} />
+                                                    {orderItems.map((item) => (
+                                                        <OrderItem item={item} key={item.id} />
                                                     ))}
                                                 </Box>
                                                 {/* 주문자정보 */}

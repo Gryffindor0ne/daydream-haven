@@ -1,25 +1,25 @@
 import { useEffect } from 'react';
-import getProductDetailAPI from '~/api/getProductDetailAPI';
+import getSubscriptionDetailAPI from '~/api/getSubscriptionDetailAPI';
 import { useAppDispatch } from '~/app/reduxHooks';
 import { ProductInfo } from '~/components/product/ProductsList';
 import { setLoading } from '~/features/auth/authSlice';
 
 type FetchProductInfoProps = {
-    productIds: string;
-    setProductInfo: React.Dispatch<React.SetStateAction<ProductInfo[]>>;
+    subscriptionIds: string;
+    setSubscriptionInfo: React.Dispatch<React.SetStateAction<ProductInfo[]>>;
 };
 
-const useFetchProductInfo = ({ productIds, setProductInfo }: FetchProductInfoProps) => {
+const useFetchSubscriptionInfo = ({ subscriptionIds, setSubscriptionInfo }: FetchProductInfoProps) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         const fetchProductInfo = async () => {
             dispatch(setLoading(true));
             try {
-                const response = await getProductDetailAPI(productIds);
+                const response = await getSubscriptionDetailAPI(subscriptionIds);
 
                 if (response) {
-                    setProductInfo(response);
+                    setSubscriptionInfo(response);
                 }
             } catch (error) {
                 console.error('Error fetching order info:', error);
@@ -28,10 +28,10 @@ const useFetchProductInfo = ({ productIds, setProductInfo }: FetchProductInfoPro
             }
         };
 
-        if (productIds) {
+        if (subscriptionIds) {
             fetchProductInfo();
         }
-    }, [dispatch, productIds, setProductInfo]);
+    }, [dispatch, subscriptionIds, setSubscriptionInfo]);
 };
 
-export default useFetchProductInfo;
+export default useFetchSubscriptionInfo;
