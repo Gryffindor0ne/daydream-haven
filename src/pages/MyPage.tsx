@@ -109,11 +109,18 @@ const MyPage = () => {
         <Container maxWidth="lg" sx={{ minHeight: 1400 }}>
             {userInfo && (
                 <>
-                    <Box sx={{ pt: isTabletOrMobile ? 15 : 25, px: isTabletOrMobile ? 1 : 2, mb: 8 }}>
+                    <Box
+                        sx={{
+                            pt: isTabletOrMobile ? 15 : 25,
+                            px: isTabletOrMobile ? 1 : 2,
+                            mb: isTabletOrMobile ? 4 : 8,
+                        }}
+                    >
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Typography
                                 sx={{
-                                    fontSize: 25,
+                                    fontSize: isTabletOrMobile ? 20 : 25,
+                                    pl: isTabletOrMobile ? 1 : 0,
                                 }}
                             >
                                 마이 페이지
@@ -124,7 +131,7 @@ const MyPage = () => {
                                     color: '#503C3C',
                                     fontFamily: 'Merriweather',
                                     fontWeight: 400,
-                                    fontSize: 14,
+                                    fontSize: isTabletOrMobile ? 10 : 14,
                                     background: '#F4EDCC',
                                 }}
                             >
@@ -160,7 +167,7 @@ const MyPage = () => {
                                 container
                                 columns={{ xs: 2, sm: 2, md: 12 }}
                                 sx={{
-                                    mt: 5,
+                                    mt: isTabletOrMobile ? 2 : 5,
                                     px: 4,
                                     py: isTabletOrMobile ? 3 : 7,
                                     background: '#F4EDCC',
