@@ -37,23 +37,23 @@ const ProductSummaryBox = ({
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                marginTop: 2,
-                marginBottom: 1,
-                padding: 2,
+                mt: 2,
+                mb: 1,
+                p: 2,
                 background: '#F4EDCC',
             }}
         >
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                 <Box sx={{ px: 2 }}>
-                    <Typography sx={{ fontSize: 10, marginRight: 2 }}>{product.name}</Typography>
+                    <Typography sx={{ fontSize: 10, mr: 2 }}>{product.name}</Typography>
 
                     {currentPath === 'subscription' ? (
-                        <Typography sx={{ fontSize: 16, marginRight: 2 }}>
+                        <Typography sx={{ fontSize: 16, mr: 2 }}>
                             {`${product.capacity}g / ${GRINDSIZE_SET[parseInt(product.grindSize)]} /
                             ${PERIOD_OPTIONS[parseInt(product.period as string)]}`}
                         </Typography>
                     ) : (
-                        <Typography sx={{ fontSize: 16, marginRight: 2 }}>
+                        <Typography sx={{ fontSize: 16, mr: 2 }}>
                             {`${product.capacity}g / ${GRINDSIZE_SET[parseInt(product.grindSize)]}`}
                         </Typography>
                     )}
@@ -70,7 +70,7 @@ const ProductSummaryBox = ({
                     onIncrease={() => handleQuantityChange(product.quantity + 1)}
                     onDecrease={() => handleQuantityChange(product.quantity - 1)}
                 />
-                <Typography sx={{ fontSize: 18, marginRight: 2 }}>{formattedNumber(product?.price)}원</Typography>
+                <Typography sx={{ fontSize: 18, mr: 2 }}>{formattedNumber(product?.price)}원</Typography>
             </Box>
         </Box>
     );

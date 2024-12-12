@@ -2,16 +2,14 @@ import { useNavigate } from 'react-router-dom';
 
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { ProductInfo } from '~/components/product/ProductsList';
 import { findPriceByCapacityAndPeriod, formattedNumber } from '~/utils/utils';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const Product = (content: ProductInfo) => {
-    const theme = useTheme();
-    const isBrowser = useMediaQuery(theme.breakpoints.down('lg'));
+    const { isTabletOrMobile } = useResponsiveLayout();
 
     const navigate = useNavigate();
 
@@ -22,9 +20,9 @@ const Product = (content: ProductInfo) => {
     return (
         <Box
             sx={{
-                paddingTop: 2,
-                paddingX: isBrowser ? 1 : 3,
-                paddingBottom: isBrowser ? 3 : 4,
+                pt: 2,
+                px: isTabletOrMobile ? 1 : 3,
+                pb: isTabletOrMobile ? 3 : 4,
             }}
         >
             <Box
@@ -52,9 +50,9 @@ const Product = (content: ProductInfo) => {
                 sx={{
                     fontFamily: 'Gowun Batang',
                     fontSize: 16,
-                    marginTop: 1.5,
-                    marginBottom: 0.5,
-                    paddingX: 2,
+                    mt: 1.5,
+                    mb: 0.5,
+                    px: 2,
                     cursor: 'pointer',
                 }}
             >
@@ -62,11 +60,11 @@ const Product = (content: ProductInfo) => {
             </Typography>
 
             {currentPath === 'subscription' ? (
-                <Typography sx={{ fontFamily: 'Gowun Batang', fontSize: 14, paddingX: 2 }}>
+                <Typography sx={{ fontFamily: 'Gowun Batang', fontSize: 14, px: 2 }}>
                     {`${formattedNumber(price200 as number)}원`}
                 </Typography>
             ) : (
-                <Typography sx={{ fontFamily: 'Gowun Batang', fontSize: 14, paddingX: 2 }}>
+                <Typography sx={{ fontFamily: 'Gowun Batang', fontSize: 14, px: 2 }}>
                     {`${formattedNumber(content.price)}원`}
                 </Typography>
             )}

@@ -32,7 +32,7 @@ const Subscription = () => {
     }, [getSubscriptions]);
 
     return (
-        <Box sx={{ minHeight: '75vh', paddingTop: 12, paddingX: 2, marginTop: 10, marginBottom: 22 }}>
+        <Box sx={{ minHeight: '75vh', pt: 12, px: 2, mt: 10, mb: 22 }}>
             {subscriptions.length !== 0 && <ProductsList lists={subscriptions} />}
         </Box>
     );

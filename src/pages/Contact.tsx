@@ -1,21 +1,19 @@
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Map from '~/components/location/Map';
 import useScrollToTop from '~/hooks/useScrollToTop';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const Contact = () => {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const { isMobile } = useResponsiveLayout();
 
     useScrollToTop();
 
     return (
         <Container maxWidth="lg">
-            <Box sx={{ paddingTop: 12, paddingX: isMobile ? 0 : 15, marginTop: 10, marginBottom: 30 }}>
+            <Box sx={{ pt: 12, px: isMobile ? 0 : 15, mt: 10, mb: 30 }}>
                 <Box
                     sx={{
                         maxWidth: '100%',
@@ -35,22 +33,22 @@ const Contact = () => {
                 <Typography
                     sx={{
                         fontSize: 25,
-                        marginTop: 10,
-                        marginBottom: 8,
+                        mt: 10,
+                        mb: 8,
                     }}
                 >
                     Daydream Haven 본점
                 </Typography>
-                <Typography sx={{ fontSize: 20, marginBottom: 2 }}>전화</Typography>
-                <Typography sx={{ fontSize: 15, marginBottom: 5 }}>031-123-4567</Typography>
-                <Typography sx={{ fontSize: 20, marginBottom: 2 }}>주소</Typography>
-                <Typography sx={{ fontSize: 15, marginBottom: 5 }}>경기도 안양시 동안구 관악대로 213</Typography>
-                <Typography sx={{ fontSize: 20, marginBottom: 2 }}>영업시간</Typography>
-                <Typography sx={{ fontSize: 15, marginBottom: 1 }}>평일 오전 9시 ~ 오후 7시 </Typography>
-                <Typography sx={{ fontSize: 15, marginBottom: 5 }}> (주말, 공휴일 오전 10시 ~ 오후 7시)</Typography>
-                <Typography sx={{ fontSize: 20, marginBottom: 2 }}>이메일</Typography>
-                <Typography sx={{ fontSize: 15, marginBottom: 1 }}>contact@daydreamhaven.com</Typography>
-                <Box sx={{ marginTop: 10 }}>
+                <Typography sx={{ fontSize: 20, mb: 2 }}>전화</Typography>
+                <Typography sx={{ fontSize: 15, mb: 5 }}>031-123-4567</Typography>
+                <Typography sx={{ fontSize: 20, mb: 2 }}>주소</Typography>
+                <Typography sx={{ fontSize: 15, mb: 5 }}>경기도 안양시 동안구 관악대로 213</Typography>
+                <Typography sx={{ fontSize: 20, mb: 2 }}>영업시간</Typography>
+                <Typography sx={{ fontSize: 15, mb: 1 }}>평일 오전 9시 ~ 오후 7시 </Typography>
+                <Typography sx={{ fontSize: 15, mb: 5 }}> (주말, 공휴일 오전 10시 ~ 오후 7시)</Typography>
+                <Typography sx={{ fontSize: 20, mb: 2 }}>이메일</Typography>
+                <Typography sx={{ fontSize: 15, mb: 1 }}>contact@daydreamhaven.com</Typography>
+                <Box sx={{ mt: 10 }}>
                     <Map />
                 </Box>
             </Box>

@@ -25,7 +25,7 @@ const CartGuidancePopup: React.FC<PopupProps> = ({ open, onClose }: PopupProps) 
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginTop: 2,
+                    mt: 2,
                 }}
             >
                 장바구니 담기
@@ -41,7 +41,7 @@ const CartGuidancePopup: React.FC<PopupProps> = ({ open, onClose }: PopupProps) 
                 <Grid
                     container
                     spacing={4}
-                    sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 2 }}
+                    sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}
                 >
                     <Grid item>
                         <Button

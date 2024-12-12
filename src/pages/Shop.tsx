@@ -33,7 +33,7 @@ const Shop = () => {
     }, [getProducts]);
 
     return (
-        <Box sx={{ minHeight: '75vh', paddingTop: 12, paddingX: 2, marginTop: 10, marginBottom: 22 }}>
+        <Box sx={{ minHeight: '75vh', pt: 12, px: 2, mt: 10, mb: 22 }}>
             {products.length !== 0 && <ProductsList lists={products} />}
         </Box>
     );

@@ -4,12 +4,12 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
-import { useMediaQuery, useTheme } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { orderState, updateDirectOrder } from '~/features/order/orderSlice';
 import { authState } from '~/features/auth/authSlice';
 import { formattedNumber } from '~/utils/utils';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const CartOrderSection = ({ products }: { products: string[] }) => {
     const navigate = useNavigate();
@@ -18,8 +18,7 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
     const { deliveryFee, subTotal, totalAmount } = useAppSelector(orderState);
     const { isAuthenticated } = useAppSelector(authState);
 
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const { isMobile } = useResponsiveLayout();
 
     return (
         <>

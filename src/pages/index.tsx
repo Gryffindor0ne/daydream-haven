@@ -2,14 +2,13 @@ import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { useMediaQuery, useTheme } from '@mui/material';
 
 import { categoryItems } from '~/utils/constants';
 import useScrollToTop from '~/hooks/useScrollToTop';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const Home = () => {
-    const theme = useTheme();
-    const isTablet = useMediaQuery(theme.breakpoints.up('md'));
+    const { isTablet } = useResponsiveLayout();
 
     const navigate = useNavigate();
 
@@ -20,7 +19,7 @@ const Home = () => {
             <Box
                 onClick={() => navigate(`/${categoryItems[0].toLowerCase()}`)}
                 sx={{
-                    marginTop: 10,
+                    mt: 10,
                     maxWidth: '100%',
                     width: '100%',
                     height: '70vh',
@@ -43,7 +42,7 @@ const Home = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Typography
                     sx={{
-                        marginTop: isTablet ? 18 : 8,
+                        mt: isTablet ? 18 : 8,
                         fontSize: isTablet ? 20 : 15,
                         fontWeight: 400,
                         px: isTablet ? 0 : 2,
@@ -53,8 +52,8 @@ const Home = () => {
                 </Typography>
                 <Typography
                     sx={{
-                        marginTop: isTablet ? 3 : 5,
-                        marginBottom: 18,
+                        mt: isTablet ? 3 : 5,
+                        mb: 18,
                         fontSize: isTablet ? 17 : 14,
                     }}
                 >
@@ -88,8 +87,8 @@ const Home = () => {
             <Box sx={{ display: isTablet ? 'flex' : 'none', flexDirection: 'column', alignItems: 'center' }}>
                 <Typography
                     sx={{
-                        marginTop: 18,
-                        marginBottom: 3,
+                        mt: 18,
+                        mb: 3,
                         fontSize: isTablet ? 22 : 15,
                         fontWeight: 400,
                     }}
@@ -98,7 +97,7 @@ const Home = () => {
                 </Typography>
                 <Typography
                     sx={{
-                        marginTop: 2,
+                        mt: 2,
                         fontSize: isTablet ? 17 : 14,
                     }}
                 >
@@ -106,7 +105,7 @@ const Home = () => {
                 </Typography>
                 <Typography
                     sx={{
-                        marginTop: 1,
+                        mt: 1,
                         fontSize: isTablet ? 17 : 14,
                     }}
                 >
@@ -115,8 +114,8 @@ const Home = () => {
                 <Typography
                     onClick={() => navigate(`/${categoryItems[1].toLowerCase()}`)}
                     sx={{
-                        marginTop: 5,
-                        marginBottom: 18,
+                        mt: 5,
+                        mb: 18,
                         fontFamily: 'Gowun Batang',
                         fontSize: isTablet ? 14 : 11,
                         cursor: 'pointer',
@@ -154,8 +153,8 @@ const Home = () => {
             <Box sx={{ display: isTablet ? 'flex' : 'none', flexDirection: 'column', alignItems: 'center' }}>
                 <Typography
                     sx={{
-                        marginTop: 18,
-                        marginBottom: 3,
+                        mt: 18,
+                        mb: 3,
                         fontSize: isTablet ? 22 : 15,
                         fontWeight: 400,
                     }}
@@ -164,7 +163,7 @@ const Home = () => {
                 </Typography>
                 <Typography
                     sx={{
-                        marginTop: 2,
+                        mt: 2,
                         fontSize: isTablet ? 17 : 14,
                     }}
                 >
@@ -172,8 +171,8 @@ const Home = () => {
                 </Typography>
                 <Typography
                     sx={{
-                        marginTop: 5,
-                        marginBottom: 18,
+                        mt: 5,
+                        mb: 18,
                         fontSize: isTablet ? 14 : 11,
                         fontFamily: 'Gowun Batang',
                     }}
@@ -209,8 +208,8 @@ const Home = () => {
             <Box sx={{ display: isTablet ? 'flex' : 'none', flexDirection: 'column', alignItems: 'center' }}>
                 <Typography
                     sx={{
-                        marginTop: 18,
-                        marginBottom: 3,
+                        mt: 18,
+                        mb: 3,
                         fontSize: isTablet ? 22 : 15,
                         fontWeight: 400,
                     }}
@@ -219,7 +218,7 @@ const Home = () => {
                 </Typography>
                 <Typography
                     sx={{
-                        marginTop: 2,
+                        mt: 2,
                         fontSize: isTablet ? 17 : 14,
                     }}
                 >
@@ -228,8 +227,8 @@ const Home = () => {
                 <Typography
                     onClick={() => navigate(`/${categoryItems[3].toLowerCase()}`)}
                     sx={{
-                        marginTop: 5,
-                        marginBottom: 18,
+                        mt: 5,
+                        mb: 18,
                         fontSize: isTablet ? 14 : 11,
                         fontFamily: 'Gowun Batang',
                         cursor: 'pointer',

@@ -15,7 +15,7 @@ const QuantityButton = ({ quantity, onIncrease, onDecrease }: QuantityButtonProp
             <IconButton onClick={onDecrease} aria-label="Decrease quantity">
                 <RemoveCircleOutlined />
             </IconButton>
-            <Typography sx={{ marginX: 2 }}>{quantity}</Typography>
+            <Typography sx={{ mx: 2 }}>{quantity}</Typography>
             <IconButton onClick={onIncrease} aria-label="Increase quantity">
                 <AddCircleOutlined />
             </IconButton>

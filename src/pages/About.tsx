@@ -3,14 +3,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+
 import useScrollToTop from '~/hooks/useScrollToTop';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const About = () => {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const isTabletOrMobile = useMediaQuery(theme.breakpoints.down('lg'));
+    const { isTabletOrMobile, isMobile } = useResponsiveLayout();
 
     const commonLayoutStyle = {
         display: 'flex',
@@ -58,7 +56,7 @@ const About = () => {
                         fontFamily: 'Gowun Batang',
                         fontSize: isMobile ? 15 : 22,
                         mb: 15,
-                        paddingX: { xs: 3, md: 2 },
+                        px: { xs: 3, md: 2 },
                     }}
                 >
                     몽상가의 안식처
@@ -202,7 +200,7 @@ const About = () => {
                                 overflow: 'hidden',
                                 position: 'relative',
                                 maxWidth: { xs: '80%', lg: '100%' },
-                                margin: '0 auto', // 가운데 정렬
+                                m: '0 auto', // 가운데 정렬
                             }}
                         >
                             <img

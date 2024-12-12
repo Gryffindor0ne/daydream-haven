@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { IconButton } from '@mui/material';
-import { useMediaQuery, useTheme } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { cartState, removeFromCart, updateCartTotal } from '~/features/cart/cartSlice';
@@ -15,14 +14,13 @@ import { addToOrder, updateOrderTotal } from '~/features/order/orderSlice';
 import CartItem from '~/components/cart/CartItem';
 import CartOrderSection from '~/components/cart/CartOrderSection';
 import useScrollToTop from '~/hooks/useScrollToTop';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const ShoppingCart = () => {
     const { cartItems, deliveryFeeCondition } = useAppSelector(cartState);
     const dispatch = useAppDispatch();
     const [allChecked, setAllChecked] = useState(false);
-
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const { isMobile } = useResponsiveLayout();
 
     //id값 모음
     const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
@@ -62,8 +60,8 @@ const ShoppingCart = () => {
 
     return (
         <Container maxWidth="lg">
-            <Box sx={{ minHeight: '75vh', paddingTop: 12, marginTop: isMobile ? 2 : 10, marginBottom: 5 }}>
-                <Typography sx={{ fontSize: 25, marginBottom: isMobile ? 2 : 5 }}>장바구니</Typography>
+            <Box sx={{ minHeight: '75vh', pt: 12, mt: isMobile ? 2 : 10, mb: 5 }}>
+                <Typography sx={{ fontSize: 25, mb: isMobile ? 2 : 5 }}>장바구니</Typography>
 
                 {isMobile ? (
                     <Box sx={{ display: 'flex', py: 0.5, borderBottom: '1px solid #F4EDCC' }}></Box>
@@ -95,7 +93,7 @@ const ShoppingCart = () => {
                     </Box>
                 )}
 
-                <Box sx={{ marginBottom: 2, borderBottom: '1px solid #F4EDCC' }}>
+                <Box sx={{ mb: 2, borderBottom: '1px solid #F4EDCC' }}>
                     {cartItems.length !== 0 ? (
                         cartItems.map((cartItem) => (
                             <CartItem

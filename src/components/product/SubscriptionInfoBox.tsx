@@ -1,14 +1,13 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import { useMediaQuery, useTheme } from '@mui/material';
 
 import { findPriceByCapacityAndPeriod, formattedNumber } from '~/utils/utils';
 import { ProductInfo } from '~/components/product/ProductsList';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const SubscriptionInfoBox = ({ item }: { item: ProductInfo | undefined }) => {
-    const theme = useTheme();
-    const isTablet = useMediaQuery(theme.breakpoints.up('md'));
+    const { isTablet } = useResponsiveLayout();
 
     if (!item) {
         return null;
@@ -21,9 +20,9 @@ const SubscriptionInfoBox = ({ item }: { item: ProductInfo | undefined }) => {
             <Typography
                 sx={{
                     fontSize: 25,
-                    marginTop: isTablet ? 0 : 5,
-                    marginBottom: 1,
-                    paddingX: 2,
+                    mt: isTablet ? 0 : 5,
+                    mb: 1,
+                    px: 2,
                 }}
             >
                 {item?.name}
@@ -32,14 +31,14 @@ const SubscriptionInfoBox = ({ item }: { item: ProductInfo | undefined }) => {
                 <Typography
                     sx={{
                         fontSize: 15,
-                        marginY: 1,
-                        paddingX: 2,
+                        my: 1,
+                        px: 2,
                     }}
                 >
                     {`${formattedNumber(price200 as number)}원`}
                 </Typography>
             )}
-            <Box sx={{ display: 'flex', justifyContent: 'center', marginY: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>
                 <Divider
                     sx={{
                         width: '95%',
@@ -51,14 +50,14 @@ const SubscriptionInfoBox = ({ item }: { item: ProductInfo | undefined }) => {
             <Typography
                 sx={{
                     fontSize: 13,
-                    marginY: 0.5,
-                    paddingLeft: 1,
+                    my: 0.5,
+                    pl: 1,
                 }}
             >
                 {`Daydream Haven의 블랜드 ${item.productComposition!.length}종을 매주 목요일 배송합니다.`}
             </Typography>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', marginY: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>
                 <Divider
                     sx={{
                         width: '95%',
@@ -66,21 +65,21 @@ const SubscriptionInfoBox = ({ item }: { item: ProductInfo | undefined }) => {
                 />
             </Box>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', marginY: 1 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', my: 1 }}>
                 {item.productComposition?.map((product, idx) => (
                     <Typography
                         key={idx}
                         sx={{
                             fontSize: 13,
-                            marginY: 0.5,
-                            paddingX: 1,
+                            my: 0.5,
+                            px: 1,
                         }}
                     >
                         {product}
                     </Typography>
                 ))}
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center', marginY: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>
                 <Divider
                     sx={{
                         width: '95%',

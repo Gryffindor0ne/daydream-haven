@@ -4,14 +4,12 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import { requiredTerms } from '~/utils/constants';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const Member = () => {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const { isTablet } = useResponsiveLayout();
 
     const { id } = useCurrentPathAndId();
     const getContent = () => {
@@ -25,12 +23,12 @@ const Member = () => {
 
     return (
         <Container maxWidth="lg">
-            <Box sx={{ paddingTop: 10, paddingX: isMobile ? 0 : 15, marginBottom: 30 }}>
+            <Box sx={{ pt: 10, px: isTablet ? 0 : 1, mb: 30 }}>
                 <Typography
                     sx={{
                         fontSize: 25,
-                        marginTop: 10,
-                        marginBottom: 6,
+                        mt: 10,
+                        mb: 6,
                         ml: 2,
                     }}
                 >

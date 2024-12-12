@@ -207,7 +207,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
     }, [showCartGuidancePopup, selectedProducts]);
 
     return (
-        <Box sx={{ marginTop: 5 }}>
+        <Box sx={{ mt: 5 }}>
             {showAlert && <BasicPopup open={showAlert} onClose={handleAlertClose} message={alertMessage} />}
 
             {/* 용량과 분쇄도 & 기간 선택 컴포넌트 */}
@@ -256,7 +256,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                 />
             )}
 
-            <Stack direction="row" spacing={2} sx={{ marginTop: 5, height: 50 }}>
+            <Stack direction="row" spacing={2} sx={{ mt: 5, height: 50 }}>
                 <Button
                     onClick={() => {
                         if (findDuplicateProducts().length !== 0) {

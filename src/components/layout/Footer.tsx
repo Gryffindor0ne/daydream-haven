@@ -5,10 +5,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+
 import { Link, Tooltip } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const Icons = {
     INSTAGRAM: 'instagram',
@@ -18,8 +18,7 @@ const Icons = {
 type IconType = (typeof Icons)[keyof typeof Icons];
 
 const Footer = () => {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const { isMobile } = useResponsiveLayout();
 
     const commonFooterTextAlign = isMobile ? 'center' : 'left';
     const commonIconSize = { fontSize: isMobile ? '1.7rem' : '1.5rem' };
@@ -52,7 +51,7 @@ const Footer = () => {
             sx={{
                 width: '100vw',
                 height: 'auto',
-                padding: 5,
+                p: 5,
                 background: '#212121',
                 color: '#B3A398',
             }}
@@ -124,7 +123,7 @@ const Footer = () => {
                                 tooltip: {
                                     sx: {
                                         fontSize: '1rem',
-                                        padding: '10px 15px',
+                                        p: '10px 15px',
                                     },
                                 },
                             }}
@@ -146,7 +145,7 @@ const Footer = () => {
                                 tooltip: {
                                     sx: {
                                         fontSize: '1rem',
-                                        padding: '10px 15px',
+                                        p: '10px 15px',
                                     },
                                 },
                             }}

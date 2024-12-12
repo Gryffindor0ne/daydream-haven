@@ -6,27 +6,24 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { useAppDispatch } from '~/app/reduxHooks';
-import useScrollToTop from '~/hooks/useScrollToTop';
-import { UserInfoProps } from '~/components/order/OrdererInfo';
-import useFetchUserInfo from '~/hooks/useFetchUserInfo';
-import { setLoading } from '~/features/auth/authSlice';
-import OrderList from '~/components/order/OrderList';
-
-import { ProductInfo } from '~/components/product/ProductsList';
-import useFetchProductInfo from '~/hooks/useFecthProductInfo';
-import { OrderDetailProps } from '~/features/payment/paymentSaga';
-import { transformOrdersWithProducts } from '~/utils/orderTransform';
-import useFetchSubscriptionInfo from '~/hooks/useFetchSubscriptionInfo';
 import getAllOrderAPI from '~/api/getAllOrderAPI';
+import { useAppDispatch } from '~/app/reduxHooks';
+import { UserInfoProps } from '~/components/order/OrdererInfo';
+import { ProductInfo } from '~/components/product/ProductsList';
+import OrderList from '~/components/order/OrderList';
+import { setLoading } from '~/features/auth/authSlice';
+import { OrderDetailProps } from '~/features/payment/paymentSaga';
 import { formattedNumber } from '~/utils/utils';
+import { transformOrdersWithProducts } from '~/utils/orderTransform';
+import useScrollToTop from '~/hooks/useScrollToTop';
+import useFetchUserInfo from '~/hooks/useFetchUserInfo';
+import useFetchSubscriptionInfo from '~/hooks/useFetchSubscriptionInfo';
+import useFetchProductInfo from '~/hooks/useFecthProductInfo';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const MyPage = () => {
-    const theme = useTheme();
-    const isTabletOrMobile = useMediaQuery(theme.breakpoints.down('lg'));
+    const { isTabletOrMobile } = useResponsiveLayout();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 

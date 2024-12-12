@@ -102,7 +102,7 @@ const Register = () => {
         <Container maxWidth="sm">
             {isOpen && <BasicPopup open={isOpen} onClose={handleClose} message={message} />}
 
-            <Box sx={{ minHeight: '75vh', paddingTop: 20, marginTop: 10, marginBottom: 5 }}>
+            <Box sx={{ minHeight: '75vh', pt: 20, mt: 10, mb: 5 }}>
                 <Grid container spacing={2} justifyContent="center" alignItems="center">
                     <Grid item xs={12}>
                         <Typography
@@ -111,14 +111,14 @@ const Register = () => {
                                 fontWeight: 700,
                                 fontSize: 36,
                                 color: '#191919',
-                                marginBottom: 6,
+                                mb: 6,
                             }}
                             align="center"
                             gutterBottom
                         >
                             Daydream Haven
                         </Typography>
-                        <Typography variant="h5" align="center" gutterBottom sx={{ marginBottom: 5 }}>
+                        <Typography variant="h5" align="center" gutterBottom sx={{ mb: 5 }}>
                             회원가입
                         </Typography>
 
@@ -209,7 +209,7 @@ const Register = () => {
                                                 />
                                             </Grid>
                                             {/* 필수 약관 전체 동의 체크박스 */}
-                                            <Grid item xs={12} sx={{ marginTop: 3 }}>
+                                            <Grid item xs={12} sx={{ mt: 3 }}>
                                                 <FormControlLabel
                                                     control={
                                                         <Checkbox
@@ -339,7 +339,7 @@ const Register = () => {
                                                     sx={{
                                                         height: 60,
                                                         fontSize: 16,
-                                                        marginBottom: 20,
+                                                        mb: 20,
                                                         '&:hover': {
                                                             color: '#ffffff',
                                                             background: '#B67352',

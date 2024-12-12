@@ -16,7 +16,7 @@ export type UserInfoProps = {
 const OrdererInfo = ({ userInfo }: { userInfo: UserInfoProps }) => {
     return (
         <>
-            <Box sx={{ marginY: 3, py: 3, bgcolor: '#ffffff' }}>
+            <Box sx={{ my: 3, py: 3, bgcolor: '#ffffff' }}>
                 <Typography variant="h6" sx={{ display: 'flex', px: 5, pb: 3 }}>
                     주문자 정보
                 </Typography>

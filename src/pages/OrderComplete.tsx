@@ -80,7 +80,7 @@ const OrderComplete = () => {
     return (
         <Container maxWidth="lg">
             {userInfo ? (
-                <Box sx={{ minHeight: '120vh', paddingTop: 12, marginTop: 10 }}>
+                <Box sx={{ minHeight: '120vh', pt: 12, mt: 10 }}>
                     <Box
                         sx={{
                             display: 'flex',
@@ -89,10 +89,10 @@ const OrderComplete = () => {
                             alignItems: 'center',
                         }}
                     >
-                        <Typography sx={{ fontSize: 34, marginBottom: 5 }}>
+                        <Typography sx={{ fontSize: 34, mb: 5 }}>
                             {paymentStatus === 'success' ? '주문완료' : '주문/결제'}
                         </Typography>
-                        <Typography sx={{ fontSize: 40, marginBottom: 15 }}>
+                        <Typography sx={{ fontSize: 40, mb: 15 }}>
                             {paymentStatus === 'success'
                                 ? '주문이 정상적으로 완료되었습니다.'
                                 : '주문이 정상적으로 완료되지 않았습니다.'}
@@ -105,18 +105,18 @@ const OrderComplete = () => {
                                     flexDirection: 'column',
                                     justifyContent: 'center',
                                     alignItems: 'flex-start',
-                                    marginBottom: 5,
+                                    mb: 5,
                                     width: 400,
                                 }}
                             >
                                 {/* ------------------------------------- */}
-                                <Box sx={{ display: 'flex', marginY: 1 }}>
+                                <Box sx={{ display: 'flex', my: 1 }}>
                                     <Typography
                                         sx={{
                                             width: 120,
                                             fontSize: 15,
-                                            marginY: 0.5,
-                                            paddingLeft: 1,
+                                            my: 0.5,
+                                            pl: 1,
                                         }}
                                     >
                                         주문자
@@ -125,21 +125,21 @@ const OrderComplete = () => {
                                     <Typography
                                         sx={{
                                             fontSize: 15,
-                                            marginY: 0.5,
-                                            paddingX: 1,
+                                            my: 0.5,
+                                            px: 1,
                                         }}
                                     >
                                         {userInfo?.name}
                                     </Typography>
                                 </Box>
                                 {/* ------------------------------------- */}
-                                <Box sx={{ display: 'flex', marginY: 1 }}>
+                                <Box sx={{ display: 'flex', my: 1 }}>
                                     <Typography
                                         sx={{
                                             width: 120,
                                             fontSize: 15,
-                                            marginY: 0.5,
-                                            paddingLeft: 1,
+                                            my: 0.5,
+                                            pl: 1,
                                         }}
                                     >
                                         주문 상품
@@ -148,8 +148,8 @@ const OrderComplete = () => {
                                     <Typography
                                         sx={{
                                             fontSize: 15,
-                                            marginY: 0.5,
-                                            paddingX: 1,
+                                            my: 0.5,
+                                            px: 1,
                                         }}
                                     >
                                         {orderItems.length > 1
@@ -159,13 +159,13 @@ const OrderComplete = () => {
                                 </Box>
                                 {/* ------------------------------------- */}
 
-                                <Box sx={{ display: 'flex', marginY: 1 }}>
+                                <Box sx={{ display: 'flex', my: 1 }}>
                                     <Typography
                                         sx={{
                                             width: 120,
                                             fontSize: 15,
-                                            marginY: 0.5,
-                                            paddingLeft: 1,
+                                            my: 0.5,
+                                            pl: 1,
                                         }}
                                     >
                                         결제 금액
@@ -174,21 +174,21 @@ const OrderComplete = () => {
                                     <Typography
                                         sx={{
                                             fontSize: 15,
-                                            marginY: 0.5,
-                                            paddingX: 1,
+                                            my: 0.5,
+                                            px: 1,
                                         }}
                                     >
                                         {formattedNumber(totalAmount)} 원
                                     </Typography>
                                 </Box>
                                 {/* ------------------------------------- */}
-                                <Box sx={{ display: 'flex', marginY: 1 }}>
+                                <Box sx={{ display: 'flex', my: 1 }}>
                                     <Typography
                                         sx={{
                                             width: 120,
                                             fontSize: 15,
-                                            marginY: 0.5,
-                                            paddingLeft: 1,
+                                            my: 0.5,
+                                            pl: 1,
                                         }}
                                     >
                                         결제 방법
@@ -197,21 +197,21 @@ const OrderComplete = () => {
                                     <Typography
                                         sx={{
                                             fontSize: 15,
-                                            marginY: 0.5,
-                                            paddingX: 1,
+                                            my: 0.5,
+                                            px: 1,
                                         }}
                                     >
                                         {paymentMethodType}
                                     </Typography>
                                 </Box>
                                 {/* ------------------------------------- */}
-                                <Box sx={{ display: 'flex', marginY: 1 }}>
+                                <Box sx={{ display: 'flex', my: 1 }}>
                                     <Typography
                                         sx={{
                                             width: 120,
                                             fontSize: 15,
-                                            marginY: 0.5,
-                                            paddingLeft: 1,
+                                            my: 0.5,
+                                            pl: 1,
                                         }}
                                     >
                                         주문 일시
@@ -220,8 +220,8 @@ const OrderComplete = () => {
                                     <Typography
                                         sx={{
                                             fontSize: 15,
-                                            marginY: 0.5,
-                                            paddingX: 1,
+                                            my: 0.5,
+                                            px: 1,
                                         }}
                                     >
                                         {formattedDate(orderInfo?.createdAt as string)}
@@ -230,13 +230,13 @@ const OrderComplete = () => {
                                 {/* ------------------------------------- */}
 
                                 {paymentMethodType === '무통장입금' && (
-                                    <Box sx={{ marginY: 3 }}>
+                                    <Box sx={{ my: 3 }}>
                                         <Typography
                                             sx={{
                                                 width: 400,
                                                 fontSize: 15,
-                                                marginY: 0.5,
-                                                paddingLeft: 1,
+                                                my: 0.5,
+                                                pl: 1,
                                             }}
                                         >
                                             기업은행 888-000000-01-999 (주)데이드림해븐
@@ -245,8 +245,8 @@ const OrderComplete = () => {
                                         <Typography
                                             sx={{
                                                 fontSize: 15,
-                                                marginY: 1,
-                                                paddingX: 1,
+                                                my: 1,
+                                                px: 1,
                                             }}
                                         >
                                             주문 후 72시간 이내 미입금시 자동 취소됩니다.
@@ -261,18 +261,18 @@ const OrderComplete = () => {
                                     flexDirection: 'column',
                                     justifyContent: 'center',
                                     alignItems: 'flex-start',
-                                    marginBottom: 5,
+                                    mb: 5,
                                     width: 400,
                                 }}
                             >
                                 {/* ------------------------------------- */}
-                                <Box sx={{ display: 'flex', marginY: 1 }}>
+                                <Box sx={{ display: 'flex', my: 1 }}>
                                     <Typography
                                         sx={{
                                             width: 120,
                                             fontSize: 15,
-                                            marginY: 0.5,
-                                            paddingLeft: 1,
+                                            my: 0.5,
+                                            pl: 1,
                                         }}
                                     >
                                         오류 사유
@@ -281,8 +281,8 @@ const OrderComplete = () => {
                                     <Typography
                                         sx={{
                                             fontSize: 15,
-                                            marginY: 0.5,
-                                            paddingX: 1,
+                                            my: 0.5,
+                                            px: 1,
                                         }}
                                     >
                                         {error}
@@ -290,13 +290,13 @@ const OrderComplete = () => {
                                 </Box>
                                 {/* ------------------------------------- */}
 
-                                <Box sx={{ marginY: 3 }}>
+                                <Box sx={{ my: 3 }}>
                                     <Typography
                                         sx={{
                                             width: 400,
                                             fontSize: 15,
-                                            marginY: 0.5,
-                                            paddingLeft: 1,
+                                            my: 0.5,
+                                            pl: 1,
                                         }}
                                     >
                                         오류가 발생하여 결제가 정상적으로 이루어지지 않았습니다.
@@ -305,8 +305,8 @@ const OrderComplete = () => {
                                     <Typography
                                         sx={{
                                             fontSize: 15,
-                                            marginY: 1,
-                                            paddingX: 1,
+                                            my: 1,
+                                            px: 1,
                                         }}
                                     >
                                         죄송하지만, 다시 시도해 주십시오.

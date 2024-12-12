@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
-import { useMediaQuery, useTheme } from '@mui/material';
 
 import { useAppDispatch } from '~/app/reduxHooks';
 import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
@@ -9,6 +8,7 @@ import QuantityButton from '~/components/common/QuantityButton';
 import { updateCartItemQuantity } from '~/features/cart/cartSlice';
 import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
 import { formattedNumber } from '~/utils/utils';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 type CartItemProps = {
     item: OrderItemSummaryInfo;
@@ -20,8 +20,7 @@ type CartItemProps = {
 const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProps) => {
     const dispatch = useAppDispatch();
 
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const { isMobile } = useResponsiveLayout();
 
     const handleQuantityChange = (newQuantity: number) => {
         const productId = item.id;
@@ -47,7 +46,7 @@ const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProp
                     alignItems: 'center',
                     flexDirection: isMobile ? 'column' : 'row',
                     flexGrow: 1,
-                    paddingY: 3,
+                    py: 3,
                 }}
             >
                 <Box sx={{ flex: 1.5, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
@@ -56,7 +55,7 @@ const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProp
                             flex: 1,
                             display: 'flex',
                             flexDirection: 'column',
-                            paddingX: 3,
+                            px: 3,
                             py: 2,
                             width: 180,
                         }}

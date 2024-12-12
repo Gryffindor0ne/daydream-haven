@@ -18,13 +18,11 @@ import { Badge } from '@mui/material';
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-
 import { categoryItems } from '~/utils/constants';
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { authState, setLoading } from '~/features/auth/authSlice';
 import { cartState } from '~/features/cart/cartSlice';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 interface Props {
     window?: () => Window;
@@ -35,9 +33,8 @@ const drawerWidth = 320;
 const HeaderBar = (props: Props) => {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
-    const theme = useTheme();
-    const isBrower = useMediaQuery(theme.breakpoints.up('lg'));
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const { isMobile, isBrower } = useResponsiveLayout();
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -140,7 +137,7 @@ const HeaderBar = (props: Props) => {
                 component="nav"
                 sx={{
                     boxShadow: 1,
-                    paddingY: 1.5,
+                    py: 1.5,
                     backgroundColor: '#ffffff',
                 }}
             >

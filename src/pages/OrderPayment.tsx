@@ -196,9 +196,9 @@ const OrderPayment = () => {
         <OrderPaymentPaper>
             <Container maxWidth="lg">
                 {userInfo ? (
-                    <Box sx={{ minHeight: '100vh', paddingTop: 12, marginTop: 10 }}>
+                    <Box sx={{ minHeight: '100vh', pt: 12, mt: 10 }}>
                         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Typography sx={{ fontSize: 34, marginBottom: 5 }}>결제하기</Typography>
+                            <Typography sx={{ fontSize: 34, mb: 5 }}>결제하기</Typography>
                         </Box>
 
                         <Formik
@@ -234,7 +234,7 @@ const OrderPayment = () => {
                                                 {userInfo && <OrdererInfo userInfo={userInfo} />}
 
                                                 {/* 배송정보 */}
-                                                <Box sx={{ marginY: 3, py: 3, bgcolor: '#ffffff' }}>
+                                                <Box sx={{ my: 3, py: 3, bgcolor: '#ffffff' }}>
                                                     <Typography variant="h6" sx={{ px: 5 }}>
                                                         배송 정보
                                                     </Typography>
@@ -295,7 +295,7 @@ const OrderPayment = () => {
                                             <Grid item xs={12} sm={12} md={4}>
                                                 {/* 주문 금액 정보 */}
 
-                                                <Box sx={{ marginBottom: 3, bgcolor: '#ffffff', p: 3 }}>
+                                                <Box sx={{ mb: 3, bgcolor: '#ffffff', p: 3 }}>
                                                     <Typography variant="h6" sx={{ display: 'flex', pb: 2 }}>
                                                         주문 요약
                                                     </Typography>
@@ -339,7 +339,7 @@ const OrderPayment = () => {
                                                             {deliveryFee ? '3,000원' : '무료'}
                                                         </Typography>
                                                     </Box>
-                                                    <Box sx={{ display: 'flex', justifyContent: 'center', marginY: 1 }}>
+                                                    <Box sx={{ display: 'flex', justifyContent: 'center', my: 1 }}>
                                                         <Divider
                                                             sx={{
                                                                 width: '100%',
@@ -369,7 +369,7 @@ const OrderPayment = () => {
                                                 </Box>
 
                                                 {/* 결제수단 정보 */}
-                                                <Box sx={{ marginBottom: 3, bgcolor: '#ffffff', p: 3 }}>
+                                                <Box sx={{ mb: 3, bgcolor: '#ffffff', p: 3 }}>
                                                     <Typography variant="h6" sx={{ display: 'flex', pb: 2 }}>
                                                         결제 수단
                                                     </Typography>
@@ -429,7 +429,7 @@ const OrderPayment = () => {
                                                                 sx={{
                                                                     display: 'flex',
                                                                     justifyContent: 'center',
-                                                                    marginY: 2,
+                                                                    my: 2,
                                                                 }}
                                                             >
                                                                 <Divider
@@ -509,7 +509,7 @@ const OrderPayment = () => {
                                                     )}
                                                 </Box>
                                                 {/* 결제 동의 확인 */}
-                                                <Box sx={{ marginBottom: 3, bgcolor: '#ffffff', p: 3 }}>
+                                                <Box sx={{ mb: 3, bgcolor: '#ffffff', p: 3 }}>
                                                     <FormControlLabel
                                                         label="전체 동의"
                                                         control={

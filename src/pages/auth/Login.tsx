@@ -8,18 +8,17 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
+import getLoginToken from '~/api/getLoginTokenAPI';
 import BasicPopup from '~/components/layout/popup/BasicPopup';
 import { useAppDispatch } from '~/app/reduxHooks';
 import { setAuthenticated, setLoading } from '~/features/auth/authSlice';
 import { setAccessTokenCookie } from '~/utils/cookiesUtils';
 import useScrollToTop from '~/hooks/useScrollToTop';
-import getLoginToken from '~/api/getLoginTokenAPI';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const loginSchema = Yup.object().shape({
     email: Yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일을 입력해주세요.'),
@@ -32,8 +31,7 @@ export type LoginInfo = {
 };
 
 const Login = () => {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const { isMobile } = useResponsiveLayout();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
@@ -92,7 +90,7 @@ const Login = () => {
                                 fontWeight: 700,
                                 fontSize: isMobile ? 25 : 36,
                                 color: '#191919',
-                                marginBottom: 6,
+                                mb: 6,
                             }}
                             align="center"
                             gutterBottom
@@ -155,7 +153,7 @@ const Login = () => {
                             )}
                         </Formik>
                         <Grid item xs={12}>
-                            <Box sx={{ display: 'flex', justifyContent: 'center', marginY: 3 }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>
                                 <Divider
                                     sx={{
                                         width: '90%',
@@ -187,7 +185,7 @@ const Login = () => {
                                 sx={{
                                     fontWeight: 400,
                                     fontSize: 18,
-                                    marginY: 7,
+                                    my: 7,
                                     textDecoration: 'underline',
                                     cursor: 'pointer',
                                     '&:hover': {

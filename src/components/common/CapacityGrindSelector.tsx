@@ -53,13 +53,13 @@ const CapacityGrindSelector = ({
 
     return (
         <>
-            <FormControl sx={{ marginY: 2, maxWidth: 450, width: '100%' }}>
+            <FormControl sx={{ my: 2, maxWidth: 450, width: '100%' }}>
                 <Typography
                     sx={{
                         width: 120,
                         fontSize: 13,
-                        marginY: 0.5,
-                        paddingLeft: 1,
+                        my: 0.5,
+                        pl: 1,
                     }}
                 >
                     용량
@@ -82,13 +82,13 @@ const CapacityGrindSelector = ({
                     ))}
                 </Select>
             </FormControl>
-            <FormControl sx={{ marginY: 2, maxWidth: 450, width: '100%' }}>
+            <FormControl sx={{ my: 2, maxWidth: 450, width: '100%' }}>
                 <Typography
                     sx={{
                         width: 120,
                         fontSize: 13,
-                        marginY: 0.5,
-                        paddingLeft: 1,
+                        my: 0.5,
+                        pl: 1,
                     }}
                 >
                     분쇄도
@@ -126,13 +126,13 @@ const CapacityGrindSelector = ({
             </FormControl>
 
             {currentPath === 'subscription' && (
-                <FormControl sx={{ marginY: 2, maxWidth: 450, width: '100%' }}>
+                <FormControl sx={{ my: 2, maxWidth: 450, width: '100%' }}>
                     <Typography
                         sx={{
                             width: 120,
                             fontSize: 13,
-                            marginY: 0.5,
-                            paddingLeft: 1,
+                            my: 0.5,
+                            pl: 1,
                         }}
                     >
                         기간
