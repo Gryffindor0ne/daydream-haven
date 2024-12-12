@@ -22,11 +22,11 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
 
     return (
         <>
-            <Box sx={{ display: 'flex', flexDirection: 'column', py: 7 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', py: isMobile ? 3 : 7 }}>
                 <Box sx={{ borderBottom: isMobile ? '' : '1px solid gray' }}>
                     <Typography
                         variant="body2"
-                        sx={{ display: 'flex', py: 2 }}
+                        sx={{ display: 'flex', py: 2, pl: 1 }}
                     >{`총 주문 수량 ${products.length} 개`}</Typography>
                 </Box>
 
@@ -48,12 +48,11 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
                                 bgcolor: '#F5EEE6',
                             }}
                         >
-                            <Typography variant="subtitle1" sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Typography sx={{ display: 'flex', justifyContent: 'center', fontSize: 13 }}>
                                 총 주문금액
                             </Typography>
                             <Typography
-                                variant="subtitle1"
-                                sx={{ display: 'flex', justifyContent: 'center', fontWeight: 'bold' }}
+                                sx={{ display: 'flex', justifyContent: 'center', fontSize: 13, fontWeight: 'bold' }}
                             >
                                 {products.length !== 0 ? formattedNumber(totalAmount) : 0} 원
                             </Typography>
@@ -67,10 +66,10 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
                                 p: 1,
                             }}
                         >
-                            <Typography variant="subtitle2" sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Typography sx={{ display: 'flex', justifyContent: 'center', fontSize: 12 }}>
                                 상품금액
                             </Typography>
-                            <Typography variant="subtitle2" sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Typography sx={{ display: 'flex', justifyContent: 'center', fontSize: 12 }}>
                                 {products.length !== 0 ? formattedNumber(subTotal) : 0} 원
                             </Typography>
                         </Box>
@@ -84,10 +83,16 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
                                 p: 1,
                             }}
                         >
-                            <Typography variant="subtitle2" sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Typography
+                                variant="subtitle2"
+                                sx={{ display: 'flex', justifyContent: 'center', fontSize: 12 }}
+                            >
                                 배송비
                             </Typography>
-                            <Typography variant="subtitle2" sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Typography
+                                variant="subtitle2"
+                                sx={{ display: 'flex', justifyContent: 'center', fontSize: 12 }}
+                            >
                                 {products.length !== 0 ? (deliveryFee ? '3,000원' : '무료') : '0 원'}
                             </Typography>
                         </Box>
@@ -168,7 +173,7 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    py: 5,
+                    py: isMobile ? 0 : 5,
                 }}
             >
                 {products.length !== 0 && (
@@ -183,9 +188,9 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
                         }}
                         variant="outlined"
                         sx={{
-                            width: 200,
-                            height: 50,
-                            fontSize: 16,
+                            width: isMobile ? 120 : 200,
+                            height: isMobile ? 30 : 50,
+                            fontSize: isMobile ? 11 : 16,
                             color: '#ffffff',
                             background: '#B67352',
 
@@ -203,9 +208,9 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
                         onClick={() => navigate(`/shop`)}
                         variant="outlined"
                         sx={{
-                            width: 200,
-                            height: 50,
-                            fontSize: 16,
+                            width: isMobile ? 120 : 200,
+                            height: isMobile ? 30 : 50,
+                            fontSize: isMobile ? 11 : 16,
                             '&:hover': {
                                 color: '#B67352',
                                 background: '#ffffff',

@@ -81,7 +81,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                 grindSize: grindSize,
                 period: period,
                 quantity: 1,
-                thumbnail: product.detailImages[0],
+                thumbnail: product.thumbnail,
             };
         } else {
             newProduct = {
@@ -91,7 +91,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                 capacity: capacity,
                 grindSize: grindSize,
                 quantity: 1,
-                thumbnail: product.detailImages[0],
+                thumbnail: product.thumbnail,
             };
         }
 
