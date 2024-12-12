@@ -9,6 +9,8 @@ export type UserInfoProps = {
     name: string;
     phoneNumber: string;
     address: string | null;
+    totalPurchaseAmount: number;
+    totalPurchaseCount: number;
 };
 
 const OrdererInfo = ({ userInfo }: { userInfo: UserInfoProps }) => {
