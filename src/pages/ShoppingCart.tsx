@@ -60,8 +60,8 @@ const ShoppingCart = () => {
 
     return (
         <Container maxWidth="lg">
-            <Box sx={{ minHeight: '75vh', pt: 12, mt: isMobile ? 2 : 10, mb: 5 }}>
-                <Typography sx={{ fontSize: 25, mb: isMobile ? 2 : 5 }}>장바구니</Typography>
+            <Box sx={{ minHeight: '80vh', pt: 12, mt: isMobile ? 2 : 10, mb: 5 }}>
+                <Typography sx={{ fontSize: isMobile ? 20 : 25, mb: isMobile ? 2 : 5 }}>장바구니</Typography>
 
                 {isMobile ? (
                     <Box sx={{ display: 'flex', py: 0.5, borderBottom: '1px solid #F4EDCC' }}></Box>
@@ -123,8 +123,8 @@ const ShoppingCart = () => {
                             onClick={handleAllItemChange}
                             variant="outlined"
                             sx={{
-                                width: 130,
-                                fontSize: 14,
+                                width: isMobile ? 110 : 130,
+                                fontSize: isMobile ? 12 : 14,
                                 '&:hover': {
                                     color: '#B67352',
                                     background: '#ffffff',
@@ -138,8 +138,8 @@ const ShoppingCart = () => {
                             onClick={handleDeleteCartItems}
                             variant="outlined"
                             sx={{
-                                width: 130,
-                                fontSize: 14,
+                                width: isMobile ? 110 : 130,
+                                fontSize: isMobile ? 12 : 14,
                                 '&:hover': {
                                     color: '#B67352',
                                     background: '#ffffff',
