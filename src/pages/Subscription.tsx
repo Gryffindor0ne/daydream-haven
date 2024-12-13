@@ -1,16 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 
 import { useAppDispatch } from '~/app/reduxHooks';
 import ProductsList from '~/components/product/ProductsList';
 import { setLoading } from '~/features/auth/authSlice';
 import useScrollToTop from '~/hooks/useScrollToTop';
 import getSubscriptionsAPI from '~/api/getSubscriptionsAPI';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const Subscription = () => {
     const dispatch = useAppDispatch();
     const [subscriptions, setSubscriptions] = useState([]);
+    const { isMobile } = useResponsiveLayout();
 
     useScrollToTop();
 
@@ -32,9 +35,11 @@ const Subscription = () => {
     }, [getSubscriptions]);
 
     return (
-        <Box sx={{ minHeight: '75vh', pt: 12, px: 2, mt: 10, mb: 22 }}>
-            {subscriptions.length !== 0 && <ProductsList lists={subscriptions} />}
-        </Box>
+        <Container maxWidth="xl">
+            <Box sx={{ minHeight: '75vh', pt: isMobile ? 5 : 12, px: 2, mt: 10, mb: 22 }}>
+                {subscriptions.length !== 0 && <ProductsList lists={subscriptions} />}
+            </Box>
+        </Container>
     );
 };
 

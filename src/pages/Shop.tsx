@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 
 import { useAppDispatch } from '~/app/reduxHooks';
 import ProductsList from '~/components/product/ProductsList';
@@ -8,10 +9,12 @@ import { setLoading } from '~/features/auth/authSlice';
 
 import useScrollToTop from '~/hooks/useScrollToTop';
 import getProductsAPI from '~/api/getProductsAPI';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const Shop = () => {
     const dispatch = useAppDispatch();
     const [products, setProducts] = useState([]);
+    const { isMobile } = useResponsiveLayout();
 
     useScrollToTop();
 
@@ -33,9 +36,11 @@ const Shop = () => {
     }, [getProducts]);
 
     return (
-        <Box sx={{ minHeight: '75vh', pt: 12, px: 2, mt: 10, mb: 22 }}>
-            {products.length !== 0 && <ProductsList lists={products} />}
-        </Box>
+        <Container maxWidth="xl">
+            <Box sx={{ minHeight: '75vh', pt: isMobile ? 5 : 12, px: 2, mt: 10, mb: 22 }}>
+                {products.length !== 0 && <ProductsList lists={products} />}
+            </Box>
+        </Container>
     );
 };
 

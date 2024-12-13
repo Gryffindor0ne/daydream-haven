@@ -7,7 +7,7 @@ import { ProductInfo } from '~/components/product/ProductsList';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const SubscriptionInfoBox = ({ item }: { item: ProductInfo | undefined }) => {
-    const { isTablet } = useResponsiveLayout();
+    const { isMobile } = useResponsiveLayout();
 
     if (!item) {
         return null;
@@ -19,8 +19,7 @@ const SubscriptionInfoBox = ({ item }: { item: ProductInfo | undefined }) => {
         <>
             <Typography
                 sx={{
-                    fontSize: 25,
-                    mt: isTablet ? 0 : 5,
+                    fontSize: isMobile ? 18 : 25,
                     mb: 1,
                     px: 2,
                 }}

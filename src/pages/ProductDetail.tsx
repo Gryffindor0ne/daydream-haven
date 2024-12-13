@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
 
 import { axiosInstance } from '~/lib/axiosInstance';
 import ProductSelectBox from '~/components/product/ProductSelectBox';
@@ -41,13 +42,13 @@ const ProductDetail = () => {
     useScrollToTop();
 
     return (
-        <>
-            <Box sx={{ minHeight: '75vh', pt: 20, px: 2, mt: 10, mb: 20 }}>
+        <Container maxWidth="xl">
+            <Box sx={{ minHeight: '75vh', pt: isMobile ? 5 : 12, px: 2, mt: 10, mb: 20 }}>
                 {isLoading ? (
                     <div></div>
                 ) : (
                     <>
-                        <Grid container spacing={2} sx={{ mb: 20 }}>
+                        <Grid container spacing={2} sx={{ mb: 10 }}>
                             {/* <--------------------------------- 이미지 ---------------------------------------> */}
 
                             <Grid item xs={12} sm={12} md={6}>
@@ -93,7 +94,7 @@ const ProductDetail = () => {
                         </Grid>
 
                         {/* <-----------------------------------하단부----------------------------------> */}
-                        <Box sx={{ p: 2, mt: 10 }}>
+                        <Box sx={{ p: isMobile ? 0 : 2 }}>
                             <Box sx={{ mb: 7 }}>
                                 <Typography
                                     sx={{
@@ -306,7 +307,7 @@ const ProductDetail = () => {
                     </>
                 )}
             </Box>
-        </>
+        </Container>
     );
 };
 

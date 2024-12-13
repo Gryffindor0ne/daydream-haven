@@ -18,6 +18,7 @@ import { addToOrder, updateDirectOrder, updateOrderTotal } from '~/features/orde
 import { authState } from '~/features/auth/authSlice';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import { findPriceByCapacityAndPeriod } from '~/utils/utils';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 export type OrderItemSummaryInfo = {
     id: string;
@@ -48,6 +49,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
 
     const { cartItems } = useAppSelector(cartState);
     const { isAuthenticated } = useAppSelector(authState);
+    const { isMobile } = useResponsiveLayout();
 
     //capacity와 grindSize & period를 통합
     const handleOptionChange = (
@@ -207,7 +209,7 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
     }, [showCartGuidancePopup, selectedProducts]);
 
     return (
-        <Box sx={{ mt: 5 }}>
+        <Box sx={{ mt: isMobile ? 0 : 2 }}>
             {showAlert && <BasicPopup open={showAlert} onClose={handleAlertClose} message={alertMessage} />}
 
             {/* 용량과 분쇄도 & 기간 선택 컴포넌트 */}
@@ -256,7 +258,16 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                 />
             )}
 
-            <Stack direction="row" spacing={2} sx={{ mt: 5, height: 50 }}>
+            <Stack
+                direction="row"
+                spacing={2}
+                sx={{
+                    mt: 5,
+                    width: isMobile ? 300 : 450,
+                    height: isMobile ? 40 : 50,
+                    justifyContent: 'space-evenly',
+                }}
+            >
                 <Button
                     onClick={() => {
                         if (findDuplicateProducts().length !== 0) {
@@ -269,8 +280,8 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                     }}
                     variant="outlined"
                     sx={{
-                        width: 215,
-                        fontSize: 16,
+                        width: isMobile ? 140 : 215,
+                        fontSize: isMobile ? 12 : 16,
                         '&:hover': {
                             color: '#B67352',
                             background: '#ffffff',
@@ -294,8 +305,8 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                     }}
                     variant="contained"
                     sx={{
-                        width: 215,
-                        fontSize: 16,
+                        width: isMobile ? 140 : 215,
+                        fontSize: isMobile ? 12 : 16,
                         '&:hover': {
                             color: '#ffffff',
                             background: '#B67352',

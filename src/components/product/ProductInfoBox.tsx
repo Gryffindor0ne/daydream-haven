@@ -18,7 +18,9 @@ const Dot = styled('span')({
 });
 
 const ProductInfo = ({ item }: { item: ProductInfo }) => {
-    const { isMobile, isTablet } = useResponsiveLayout();
+    const { isMobile } = useResponsiveLayout();
+    const responsiveFontSize = isMobile ? 11 : 13;
+    const responsiveWidth = isMobile ? 100 : 120;
 
     const flavor = item?.flavor;
     const deliveryFeeNotice = `3,000원 (50,000원 이상 구매 시 무료)`;
@@ -27,8 +29,7 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
         <>
             <Typography
                 sx={{
-                    fontSize: 25,
-                    mt: isTablet ? 0 : 5,
+                    fontSize: isMobile ? 18 : 25,
                     mb: 1,
                     px: 2,
                 }}
@@ -56,8 +57,8 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
             <Box sx={{ display: 'flex', my: 1 }}>
                 <Typography
                     sx={{
-                        width: isMobile ? 100 : 120,
-                        fontSize: isMobile ? 11 : 13,
+                        width: responsiveWidth,
+                        fontSize: responsiveFontSize,
                         my: 0.5,
                         pl: 1,
                     }}
@@ -69,7 +70,7 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
                         <React.Fragment key={idx}>
                             <Typography
                                 sx={{
-                                    fontSize: isMobile ? 11 : 13,
+                                    fontSize: responsiveFontSize,
                                     my: 0.5,
                                     px: isMobile ? 0 : 1,
                                 }}
@@ -85,8 +86,8 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
             <Box sx={{ display: 'flex', my: 1 }}>
                 <Typography
                     sx={{
-                        width: isMobile ? 100 : 120,
-                        fontSize: isMobile ? 11 : 13,
+                        width: responsiveWidth,
+                        fontSize: responsiveFontSize,
                         my: 0.5,
                         pl: 1,
                     }}
@@ -96,7 +97,7 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
 
                 <Typography
                     sx={{
-                        fontSize: isMobile ? 11 : 13,
+                        fontSize: responsiveFontSize,
                         my: 0.5,
                         px: isMobile ? 0 : 1,
                     }}
@@ -108,8 +109,8 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
             <Box sx={{ display: 'flex', my: 1 }}>
                 <Typography
                     sx={{
-                        width: isMobile ? 100 : 120,
-                        fontSize: isMobile ? 11 : 13,
+                        width: responsiveWidth,
+                        fontSize: responsiveFontSize,
                         my: 0.5,
                         pl: 1,
                     }}
@@ -121,7 +122,7 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
                         <React.Fragment key={idx}>
                             <Typography
                                 sx={{
-                                    fontSize: isMobile ? 11 : 13,
+                                    fontSize: responsiveFontSize,
                                     my: 0.5,
                                     px: isMobile ? 0 : 1,
                                 }}
@@ -137,8 +138,8 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
             <Box sx={{ display: 'flex', my: 1 }}>
                 <Typography
                     sx={{
-                        width: isMobile ? 100 : 120,
-                        fontSize: isMobile ? 11 : 13,
+                        width: responsiveWidth,
+                        fontSize: responsiveFontSize,
                         my: 0.5,
                         pl: 1,
                     }}
@@ -148,7 +149,7 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
 
                 <Typography
                     sx={{
-                        fontSize: isMobile ? 11 : 13,
+                        fontSize: responsiveFontSize,
                         my: 0.5,
                         px: isMobile ? 0 : 1,
                     }}
@@ -160,8 +161,8 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
             <Box sx={{ display: 'flex', my: 1 }}>
                 <Typography
                     sx={{
-                        width: isMobile ? 100 : 120,
-                        fontSize: isMobile ? 11 : 13,
+                        width: responsiveWidth,
+                        fontSize: responsiveFontSize,
                         my: 0.5,
                         pl: 1,
                     }}
@@ -171,7 +172,7 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
 
                 <Typography
                     sx={{
-                        fontSize: isMobile ? 11 : 13,
+                        fontSize: responsiveFontSize,
                         my: 0.5,
                         px: isMobile ? 0 : 1,
                     }}
@@ -183,8 +184,8 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
             <Box sx={{ display: 'flex', my: 1 }}>
                 <Typography
                     sx={{
-                        width: isMobile ? 100 : 120,
-                        fontSize: isMobile ? 11 : 13,
+                        width: responsiveWidth,
+                        fontSize: responsiveFontSize,
                         my: 0.5,
                         pl: 1,
                     }}
@@ -194,7 +195,7 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
 
                 <Typography
                     sx={{
-                        fontSize: isMobile ? 11 : 13,
+                        fontSize: responsiveFontSize,
                         my: 0.5,
                         px: isMobile ? 0 : 1,
                     }}

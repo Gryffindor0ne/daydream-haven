@@ -83,16 +83,10 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
                                 p: 1,
                             }}
                         >
-                            <Typography
-                                variant="subtitle2"
-                                sx={{ display: 'flex', justifyContent: 'center', fontSize: 12 }}
-                            >
+                            <Typography sx={{ display: 'flex', justifyContent: 'center', fontSize: 12 }}>
                                 배송비
                             </Typography>
-                            <Typography
-                                variant="subtitle2"
-                                sx={{ display: 'flex', justifyContent: 'center', fontSize: 12 }}
-                            >
+                            <Typography sx={{ display: 'flex', justifyContent: 'center', fontSize: 12 }}>
                                 {products.length !== 0 ? (deliveryFee ? '3,000원' : '무료') : '0 원'}
                             </Typography>
                         </Box>
