@@ -9,7 +9,7 @@ import { requiredTerms } from '~/utils/constants';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const Member = () => {
-    const { isTablet } = useResponsiveLayout();
+    const { isMobile, isTabletOrMobile } = useResponsiveLayout();
 
     const { id } = useCurrentPathAndId();
     const getContent = () => {
@@ -23,7 +23,7 @@ const Member = () => {
 
     return (
         <Container maxWidth="lg">
-            <Box sx={{ pt: 10, px: isTablet ? 0 : 1, mb: 30 }}>
+            <Box sx={{ pt: isMobile ? 5 : 7, px: isTabletOrMobile ? 0 : 1, mb: 30 }}>
                 <Typography
                     sx={{
                         fontSize: 25,

@@ -77,7 +77,7 @@ const Footer = () => {
                         CEO. Lee Uk Jae
                     </Typography>
                     <Typography variant="footer" align={commonFooterTextAlign}>
-                        135, Gwanak-daero, Dongan-gu, Anyang-si, Gyeonggi-do, Republic of Korea
+                        236, Gwanak-daero, Dongan-gu, Anyang-si, Gyeonggi-do, Republic of Korea
                     </Typography>
                     <Typography variant="footer" align={commonFooterTextAlign}>
                         Hosting by Ardent Project.
@@ -100,7 +100,7 @@ const Footer = () => {
                         T. 031-123-4567
                     </Typography>
                     <Typography variant="footer" align={commonFooterTextAlign}>
-                        master@daydreamhaven.com
+                        <a href="mailto:master@daydreamhaven.com">master@daydreamhaven.com</a>
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={2}>

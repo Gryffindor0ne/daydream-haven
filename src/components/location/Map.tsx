@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef } from 'react';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 declare global {
     interface Window {
@@ -9,6 +10,7 @@ declare global {
 
 function Map() {
     const mapRef = useRef<HTMLDivElement>(null);
+    const { isMobile } = useResponsiveLayout();
 
     useEffect(() => {
         const script = document.createElement('script');
@@ -21,7 +23,7 @@ function Map() {
                 if (!mapRef.current) return;
 
                 const options = {
-                    center: new window.kakao.maps.LatLng(37.40048795010311, 126.94674883318096),
+                    center: new window.kakao.maps.LatLng(37.40127307136004, 126.9495605104874),
                     level: 2,
                 };
 
@@ -36,7 +38,9 @@ function Map() {
         };
     }, []);
 
-    return <div ref={mapRef} style={{ width: '900px', height: '600px' }}></div>;
+    return (
+        <div ref={mapRef} style={{ width: isMobile ? '100%' : '900px', height: isMobile ? '240px' : '600px' }}></div>
+    );
 }
 
 export default Map;
