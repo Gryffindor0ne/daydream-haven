@@ -1,5 +1,6 @@
-import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 import { formattedPhoneNumber } from '~/utils/utils';
 
@@ -14,23 +15,30 @@ export type UserInfoProps = {
 };
 
 const OrdererInfo = ({ userInfo }: { userInfo: UserInfoProps }) => {
+    const { isMobile } = useResponsiveLayout();
+
+    const contentStyle = {
+        px: 4,
+        py: 0.5,
+        fontSize: isMobile ? 12 : 16,
+        fontFamily: 'Gowun Batang',
+    };
+
     return (
-        <>
-            <Box sx={{ my: 3, py: 3, bgcolor: '#ffffff' }}>
-                <Typography variant="h6" sx={{ display: 'flex', px: 5, pb: 3 }}>
-                    주문자 정보
-                </Typography>
-                <Typography sx={{ fontSize: 20, fontFamily: 'Gowun Batang', display: 'flex', px: 5, py: 1 }}>
-                    {userInfo?.name}
-                </Typography>
-                <Typography sx={{ fontSize: 16, fontFamily: 'Gowun Batang', display: 'flex', px: 5, py: 0.5 }}>
-                    {formattedPhoneNumber(userInfo?.phoneNumber as string)}
-                </Typography>
-                <Typography sx={{ fontSize: 17, fontFamily: 'Gowun Batang', display: 'flex', px: 5, py: 0.5 }}>
-                    {userInfo?.email}
-                </Typography>
-            </Box>
-        </>
+        <Grid container sx={{ my: 3, py: 3, bgcolor: '#ffffff' }}>
+            <Grid item xs={12}>
+                <Typography sx={{ px: 3, pb: 2, fontSize: isMobile ? 15 : 20 }}>주문자 정보</Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <Typography sx={contentStyle}>{userInfo?.name}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <Typography sx={contentStyle}>{formattedPhoneNumber(userInfo?.phoneNumber as string)}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <Typography sx={contentStyle}>{userInfo?.email}</Typography>
+            </Grid>
+        </Grid>
     );
 };
 

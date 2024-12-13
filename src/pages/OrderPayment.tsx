@@ -29,6 +29,7 @@ import { paymentMethods } from '~/utils/constants';
 import useScrollToTop from '~/hooks/useScrollToTop';
 import useFetchUserInfo from '~/hooks/useFetchUserInfo';
 import { setLoading } from '~/features/auth/authSlice';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 // 주문결제 페이지 배경색 설정
 const OrderPaymentPaper = styled(Paper)(() => ({
@@ -91,6 +92,7 @@ const OrderPayment = () => {
     const accessToken = extractAccessTokenFromCookie();
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
+    const { isMobile } = useResponsiveLayout();
 
     useFetchUserInfo({ setUserInfo });
 
@@ -192,13 +194,38 @@ const OrderPayment = () => {
         }
     };
 
+    const subtitleStyle = { px: 3, mb: 2, fontSize: isMobile ? 15 : 20 };
+    const contentStyle = { display: 'flex', justifyContent: 'center', py: 1, fontSize: isMobile ? 12 : 15 };
+    const orderPriceBoxStyle = {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        px: 3,
+    };
+    const inputBoxStyle = {
+        '& .MuiInputBase-root': {
+            height: isMobile ? 30 : 35,
+            fontSize: isMobile ? 12 : 15,
+        },
+    };
+    const inputBoxLabelStyle = {
+        '& .MuiInputLabel-root': {
+            fontSize: isMobile ? 12 : 15,
+        },
+    };
+    const formControlLabelStyle = {
+        '& .MuiFormControlLabel-label': {
+            fontSize: isMobile ? 12 : 15,
+        },
+    };
+
     return (
         <OrderPaymentPaper>
             <Container maxWidth="lg">
                 {userInfo ? (
-                    <Box sx={{ minHeight: '100vh', pt: 12, mt: 10 }}>
+                    <Box sx={{ minHeight: '100vh', pt: 10, mt: isMobile ? 3 : 8 }}>
                         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Typography sx={{ fontSize: 34, mb: 5 }}>결제하기</Typography>
+                            <Typography sx={{ fontSize: isMobile ? 24 : 30, mb: 3 }}>결제하기</Typography>
                         </Box>
 
                         <Formik
@@ -223,22 +250,20 @@ const OrderPayment = () => {
                                             {/* 파트1 부분 */}
                                             <Grid item xs={12} sm={12} md={8}>
                                                 <Box sx={{ pt: 3, bgcolor: '#ffffff' }}>
-                                                    <Typography variant="h6" sx={{ display: 'flex', px: 5, pb: 3 }}>
-                                                        주문 상품 정보
-                                                    </Typography>
-                                                    {orderItems.map((item) => (
-                                                        <OrderItem item={item} key={item.id} />
-                                                    ))}
+                                                    <Typography sx={subtitleStyle}>주문 상품 정보</Typography>
+                                                    <Box sx={{ py: 1 }}>
+                                                        {orderItems.map((item) => (
+                                                            <OrderItem item={item} key={item.id} />
+                                                        ))}
+                                                    </Box>
                                                 </Box>
                                                 {/* 주문자정보 */}
                                                 {userInfo && <OrdererInfo userInfo={userInfo} />}
 
                                                 {/* 배송정보 */}
-                                                <Box sx={{ my: 3, py: 3, bgcolor: '#ffffff' }}>
-                                                    <Typography variant="h6" sx={{ px: 5 }}>
-                                                        배송 정보
-                                                    </Typography>
-                                                    <Box sx={{ px: 5, py: 2 }}>
+                                                <Box sx={{ mb: 1, py: 3, bgcolor: '#ffffff' }}>
+                                                    <Typography sx={subtitleStyle}>배송 정보</Typography>
+                                                    <Box sx={{ px: 3, py: 1 }}>
                                                         <Box sx={{ display: 'flex' }}>
                                                             <Box>
                                                                 <Field
@@ -247,7 +272,11 @@ const OrderPayment = () => {
                                                                     value={values.postcode}
                                                                     variant="outlined"
                                                                     size="small"
-                                                                    sx={{ mr: 2 }}
+                                                                    sx={{
+                                                                        mr: 2,
+                                                                        my: 1,
+                                                                        ...inputBoxStyle,
+                                                                    }}
                                                                 />
                                                             </Box>
                                                             <AddressSearchForm
@@ -265,9 +294,13 @@ const OrderPayment = () => {
                                                             variant="outlined"
                                                             size="small"
                                                             fullWidth
-                                                            sx={{ mr: 1, mt: 2 }}
                                                             error={!!errors.address}
                                                             helperText={errors.address}
+                                                            sx={{
+                                                                mt: 2,
+                                                                my: 1,
+                                                                ...inputBoxStyle,
+                                                            }}
                                                         />
                                                         <Field
                                                             name="additionalAddress"
@@ -277,7 +310,12 @@ const OrderPayment = () => {
                                                             variant="outlined"
                                                             size="small"
                                                             fullWidth
-                                                            sx={{ mr: 1, mt: 2 }}
+                                                            sx={{
+                                                                mt: 1,
+                                                                my: 1,
+                                                                ...inputBoxStyle,
+                                                                ...inputBoxLabelStyle,
+                                                            }}
                                                             error={
                                                                 errors.additionalAddress && touched.additionalAddress
                                                             }
@@ -295,88 +333,60 @@ const OrderPayment = () => {
                                             <Grid item xs={12} sm={12} md={4}>
                                                 {/* 주문 금액 정보 */}
 
-                                                <Box sx={{ mb: 3, bgcolor: '#ffffff', p: 3 }}>
-                                                    <Typography variant="h6" sx={{ display: 'flex', pb: 2 }}>
-                                                        주문 요약
-                                                    </Typography>
-                                                    <Box
-                                                        sx={{
-                                                            display: 'flex',
-                                                            flexDirection: 'row',
-                                                            justifyContent: 'space-between',
-                                                        }}
-                                                    >
-                                                        <Typography
-                                                            variant="subtitle1"
-                                                            sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
-                                                        >
-                                                            상품금액
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="subtitle1"
-                                                            sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
-                                                        >
-                                                            {formattedNumber(subTotal)} 원
-                                                        </Typography>
-                                                    </Box>
-                                                    <Box
-                                                        sx={{
-                                                            display: 'flex',
-                                                            flexDirection: 'row',
-                                                            justifyContent: 'space-between',
-                                                        }}
-                                                    >
-                                                        <Typography
-                                                            variant="subtitle1"
-                                                            sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
-                                                        >
-                                                            배송비
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="subtitle1"
-                                                            sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
-                                                        >
-                                                            {deliveryFee ? '3,000원' : '무료'}
-                                                        </Typography>
-                                                    </Box>
-                                                    <Box sx={{ display: 'flex', justifyContent: 'center', my: 1 }}>
-                                                        <Divider
+                                                <Grid container sx={{ mb: 3, py: 3, bgcolor: '#ffffff' }}>
+                                                    <Grid item xs={12}>
+                                                        <Typography sx={subtitleStyle}>주문 요약</Typography>
+                                                    </Grid>
+                                                    <Grid item xs={12}>
+                                                        <Box sx={orderPriceBoxStyle}>
+                                                            <Typography sx={contentStyle}>상품금액</Typography>
+                                                            <Typography sx={contentStyle}>
+                                                                {formattedNumber(subTotal)} 원
+                                                            </Typography>
+                                                        </Box>
+                                                    </Grid>
+                                                    <Grid item xs={12}>
+                                                        <Box sx={orderPriceBoxStyle}>
+                                                            <Typography sx={contentStyle}>배송비</Typography>
+                                                            <Typography sx={contentStyle}>
+                                                                {deliveryFee ? '3,000원' : '무료'}
+                                                            </Typography>
+                                                        </Box>
+                                                    </Grid>
+                                                    <Grid item xs={12}>
+                                                        <Box
                                                             sx={{
-                                                                width: '100%',
+                                                                display: 'flex',
+                                                                justifyContent: 'center',
+                                                                my: 1,
+                                                                fontSize: isMobile ? 12 : 15,
                                                             }}
-                                                        />
-                                                    </Box>
-                                                    <Box
-                                                        sx={{
-                                                            display: 'flex',
-                                                            flexDirection: 'row',
-                                                            justifyContent: 'space-between',
-                                                        }}
-                                                    >
-                                                        <Typography
-                                                            variant="subtitle1"
-                                                            sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
                                                         >
-                                                            최종 결제금액
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="subtitle1"
-                                                            sx={{ display: 'flex', justifyContent: 'center', py: 1 }}
-                                                        >
-                                                            {formattedNumber(totalAmount)} 원
-                                                        </Typography>
-                                                    </Box>
-                                                </Box>
+                                                            <Divider
+                                                                sx={{
+                                                                    width: '100%',
+                                                                }}
+                                                            />
+                                                        </Box>
+                                                    </Grid>
+                                                    <Grid item xs={12}>
+                                                        <Box sx={orderPriceBoxStyle}>
+                                                            <Typography sx={contentStyle}>최종 결제금액</Typography>
+                                                            <Typography sx={contentStyle}>
+                                                                {formattedNumber(totalAmount)} 원
+                                                            </Typography>
+                                                        </Box>
+                                                    </Grid>
+                                                </Grid>
 
                                                 {/* 결제수단 정보 */}
-                                                <Box sx={{ mb: 3, bgcolor: '#ffffff', p: 3 }}>
-                                                    <Typography variant="h6" sx={{ display: 'flex', pb: 2 }}>
-                                                        결제 수단
-                                                    </Typography>
+                                                <Box sx={{ mb: 3, py: 3, bgcolor: '#ffffff' }}>
+                                                    <Typography sx={subtitleStyle}>결제 수단</Typography>
                                                     <RadioGroup
                                                         name="selectedPaymentMethod"
                                                         value={values.selectedPaymentMethod}
                                                         onChange={handleChange}
+                                                        sx={{ px: 3 }}
                                                     >
                                                         {['카드결제', '실시간 계좌이체', '무통장입금'].map((option) => (
                                                             <FormControlLabel
@@ -384,6 +394,7 @@ const OrderPayment = () => {
                                                                 value={option}
                                                                 control={<Radio />}
                                                                 label={option}
+                                                                sx={formControlLabelStyle}
                                                             />
                                                         ))}
                                                     </RadioGroup>
@@ -391,12 +402,17 @@ const OrderPayment = () => {
                                                     {values.selectedPaymentMethod === '무통장입금' && (
                                                         <>
                                                             <TextField
-                                                                value="기업은행 888-000000-01-999 (주)데이드림해븐"
+                                                                value="기업은행 001-000000-00-001 (주)데이드림해븐"
                                                                 name="account"
                                                                 variant="outlined"
                                                                 size="small"
                                                                 fullWidth
-                                                                sx={{ mr: 1, mt: 2 }}
+                                                                sx={{
+                                                                    mr: 1,
+                                                                    mt: 2,
+                                                                    px: 3,
+                                                                    ...inputBoxStyle,
+                                                                }}
                                                             />
                                                             <Field
                                                                 as={TextField}
@@ -406,7 +422,13 @@ const OrderPayment = () => {
                                                                 size="small"
                                                                 fullWidth
                                                                 label="입금자명"
-                                                                sx={{ mr: 1, mt: 2 }}
+                                                                sx={{
+                                                                    ml: 3,
+                                                                    mt: 2,
+                                                                    pr: 6,
+                                                                    ...inputBoxStyle,
+                                                                    ...inputBoxLabelStyle,
+                                                                }}
                                                                 error={!!errors.orderer && touched.orderer}
                                                                 helperText={
                                                                     errors.orderer && touched.orderer
@@ -415,12 +437,12 @@ const OrderPayment = () => {
                                                                 }
                                                             />
                                                             <Typography
-                                                                variant="subtitle2"
                                                                 sx={{
                                                                     display: 'flex',
                                                                     justifyContent: 'center',
                                                                     py: 2,
                                                                     color: '#8C6A5D',
+                                                                    fontSize: isMobile ? 12 : 15,
                                                                 }}
                                                             >
                                                                 주문 후 72시간 이내 미입금시 자동 취소됩니다.
@@ -453,11 +475,13 @@ const OrderPayment = () => {
                                                                     value="true"
                                                                     control={<Radio />}
                                                                     label="현금영수증 신청"
+                                                                    sx={{ px: 3, ...formControlLabelStyle }}
                                                                 />
                                                                 <FormControlLabel
                                                                     value="false"
                                                                     control={<Radio />}
                                                                     label="신청안함"
+                                                                    sx={{ px: 3, ...formControlLabelStyle }}
                                                                 />
                                                             </RadioGroup>
 
@@ -476,6 +500,7 @@ const OrderPayment = () => {
                                                                                 value={target}
                                                                                 control={<Radio />}
                                                                                 label={target}
+                                                                                sx={{ px: 3, ...formControlLabelStyle }}
                                                                             />
                                                                         ))}
                                                                     </RadioGroup>
@@ -491,7 +516,13 @@ const OrderPayment = () => {
                                                                                 ? '전화번호 입력'
                                                                                 : '사업자번호 입력'
                                                                         }
-                                                                        sx={{ mt: 2 }}
+                                                                        sx={{
+                                                                            ml: 3,
+                                                                            mt: 2,
+                                                                            pr: 6,
+                                                                            ...inputBoxStyle,
+                                                                            ...inputBoxLabelStyle,
+                                                                        }}
                                                                         error={
                                                                             !!errors.issuanceTargetNumber &&
                                                                             touched.issuanceTargetNumber
@@ -509,7 +540,13 @@ const OrderPayment = () => {
                                                     )}
                                                 </Box>
                                                 {/* 결제 동의 확인 */}
-                                                <Box sx={{ mb: 3, bgcolor: '#ffffff', p: 3 }}>
+                                                <Box
+                                                    sx={{
+                                                        mb: 3,
+                                                        bgcolor: '#ffffff',
+                                                        p: 3,
+                                                    }}
+                                                >
                                                     <FormControlLabel
                                                         label="전체 동의"
                                                         control={
@@ -521,6 +558,7 @@ const OrderPayment = () => {
                                                                 onChange={handleChange}
                                                             />
                                                         }
+                                                        sx={formControlLabelStyle}
                                                     />
                                                     <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
                                                         <FormControlLabel
@@ -534,6 +572,7 @@ const OrderPayment = () => {
                                                                     onChange={handleChange}
                                                                 />
                                                             }
+                                                            sx={formControlLabelStyle}
                                                         />
                                                     </Box>
                                                     <Box sx={{ color: 'red', fontSize: 12, m: 1 }}>
@@ -544,14 +583,14 @@ const OrderPayment = () => {
                                                         />
                                                     </Box>
                                                 </Box>
-                                                <Box>
+                                                <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
                                                     <Button
                                                         type="submit"
                                                         variant="outlined"
                                                         sx={{
-                                                            width: '100%',
-                                                            height: 50,
-                                                            fontSize: 16,
+                                                            width: isMobile ? 240 : '100%',
+                                                            height: isMobile ? 40 : 50,
+                                                            fontSize: isMobile ? 12 : 16,
                                                             color: '#ffffff',
                                                             background: '#B67352',
 
@@ -559,6 +598,7 @@ const OrderPayment = () => {
                                                                 color: '#ffffff',
                                                                 background: '#B67352',
                                                             },
+                                                            mb: 10,
                                                         }}
                                                     >
                                                         결제하기

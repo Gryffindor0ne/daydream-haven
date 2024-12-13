@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 import { AddressProps } from '~/pages/OrderPayment';
 
 declare global {
@@ -30,8 +32,10 @@ const AddressSearchForm = ({ onAddressSelect }: { onAddressSelect: (address: Add
         }).open();
     };
 
+    const { isMobile } = useResponsiveLayout();
+
     return (
-        <div>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Button
                 variant="contained"
                 onClick={handleAddressSearch}
@@ -40,11 +44,12 @@ const AddressSearchForm = ({ onAddressSelect }: { onAddressSelect: (address: Add
                         color: '#ffffff',
                         background: '#B67352',
                     },
+                    fontSize: isMobile ? 9 : 13,
                 }}
             >
                 주소 검색
             </Button>
-        </div>
+        </Box>
     );
 };
 

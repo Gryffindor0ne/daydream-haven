@@ -17,12 +17,12 @@ export interface OrderHistoryProps {
 }
 
 const OrderItem = ({ item }: { item: OrderHistoryProps }) => {
-    const { isTabletOrMobile } = useResponsiveLayout();
+    const { isMobile, isTabletOrMobile } = useResponsiveLayout();
 
     return (
         <Box sx={{ display: 'flex', py: 0.5 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', py: isTabletOrMobile ? 1 : 3 }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', px: 2 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', px: isMobile ? 3 : 4 }}>
                     <Box
                         sx={{
                             width: isTabletOrMobile ? 50 : 70,
