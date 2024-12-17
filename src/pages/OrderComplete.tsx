@@ -1,27 +1,26 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import { Box, Button, Container, Grid, Typography } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { UserInfoProps } from '~/components/order/OrdererInfo';
-import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import { clearOrder, orderState } from '~/features/order/orderSlice';
 import { OrderDetailProps } from '~/features/payment/paymentSaga';
 import { paymentState, resetPaymentState } from '~/features/payment/paymentSlice';
+import { removeFromCart } from '~/features/cart/cartSlice';
 import { formattedDate, formattedNumber } from '~/utils/utils';
 import { paymentMethods } from '~/utils/constants';
+
+import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import useScrollToTop from '~/hooks/useScrollToTop';
 import useFetchUserInfo from '~/hooks/useFetchUserInfo';
 import useFetchOrderInfo from '~/hooks/useFetchOrderInfo';
-import { removeFromCart } from '~/features/cart/cartSlice';
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const OrderComplete = () => {
     const { paymentStatus, error } = useAppSelector(paymentState);
     const { orderItems, totalAmount, directOrder } = useAppSelector(orderState);
+    const { isMobile } = useResponsiveLayout();
 
     useScrollToTop();
 
@@ -77,266 +76,175 @@ const OrderComplete = () => {
     // 주문 정보 호출
     useFetchOrderInfo({ id: paymentId ?? id, setOrderInfo });
 
+    // 주문 상품명 포맷팅 유틸리티
+    const formatOrderItemsName = (orderItems: Array<{ name: string }>) =>
+        orderItems.length > 1 ? `${orderItems[0].name} 외 ${orderItems.length - 1} 건` : orderItems[0].name;
+
+    const fontStyle = { fontSize: isMobile ? 12 : 15 };
+
+    const commonGridProp = {
+        display: 'flex',
+        justifyContent: 'center',
+        py: 0.7,
+        pl: isMobile ? 0 : 5,
+    };
+
+    // 공통 정보 Row 컴포넌트
+    const InfoRow = ({ title, content, sx }: { title: string; content: string | number; sx?: object }) => (
+        <Grid item xs={12} sx={sx}>
+            <Typography
+                sx={{
+                    width: isMobile ? 65 : 90,
+                    fontSize: isMobile ? 12 : 15,
+                    mb: 0.5,
+                }}
+            >
+                {title}
+            </Typography>
+            <Typography
+                sx={{
+                    width: isMobile ? 250 : 340,
+                    fontSize: isMobile ? 13 : 16,
+                }}
+            >
+                {content}
+            </Typography>
+        </Grid>
+    );
+
+    if (!userInfo) return <Box sx={{ minHeight: '120vh' }}></Box>;
+
     return (
-        <Container maxWidth="lg">
-            {userInfo ? (
-                <Box sx={{ minHeight: '120vh', pt: 12, mt: 10 }}>
-                    <Box
+        <Container
+            maxWidth="lg"
+            sx={{
+                minHeight: '120vh',
+            }}
+        >
+            <Grid
+                container
+                sx={{
+                    pt: isMobile ? 15 : 25,
+                    alignItems: 'center',
+                }}
+            >
+                <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Typography
                         sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
+                            fontSize: isMobile ? 25 : 35,
+                            mb: isMobile ? 2 : 4,
                         }}
                     >
-                        <Typography sx={{ fontSize: 34, mb: 5 }}>
-                            {paymentStatus === 'success' ? '주문완료' : '주문/결제'}
-                        </Typography>
-                        <Typography sx={{ fontSize: 40, mb: 15 }}>
-                            {paymentStatus === 'success'
-                                ? '주문이 정상적으로 완료되었습니다.'
-                                : '주문이 정상적으로 완료되지 않았습니다.'}
-                        </Typography>
+                        {paymentStatus === 'success' ? '주문완료' : '주문/결제'}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Typography sx={{ fontSize: isMobile ? 18 : 25, mb: isMobile ? 2 : 5 }}>
+                        {paymentStatus === 'success'
+                            ? '주문이 정상적으로 완료되었습니다.'
+                            : '주문이 정상적으로 완료되지 않았습니다.'}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} sx={{ py: 3 }}>
+                    {paymentStatus === 'success' ? (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                flexDirection: 'column',
+                                mb: isMobile ? 2 : 5,
+                            }}
+                        >
+                            <InfoRow title="주문자" content={userInfo?.name || ''} sx={commonGridProp} />
+                            <InfoRow title="주문 상품" content={formatOrderItemsName(orderItems)} sx={commonGridProp} />
 
-                        {paymentStatus === 'success' ? (
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    alignItems: 'flex-start',
-                                    mb: 5,
-                                    width: 400,
-                                }}
-                            >
-                                {/* ------------------------------------- */}
-                                <Box sx={{ display: 'flex', my: 1 }}>
-                                    <Typography
-                                        sx={{
-                                            width: 120,
-                                            fontSize: 15,
-                                            my: 0.5,
-                                            pl: 1,
-                                        }}
-                                    >
-                                        주문자
+                            <InfoRow
+                                title="결제 금액"
+                                content={`${formattedNumber(totalAmount)} 원`}
+                                sx={commonGridProp}
+                            />
+
+                            <InfoRow title="결제 방법" content={paymentMethodType as string} sx={commonGridProp} />
+
+                            <InfoRow
+                                title="주문 일시"
+                                content={formattedDate(orderInfo?.createdAt as string)}
+                                sx={commonGridProp}
+                            />
+
+                            {paymentMethodType === '무통장입금' && (
+                                <Box sx={{ mt: 5, textAlign: 'center' }}>
+                                    <Typography sx={{ mb: 1, fontSize: isMobile ? 13 : 16 }}>
+                                        기업은행 001-000000-00-001 (주)데이드림해븐
                                     </Typography>
-
-                                    <Typography
-                                        sx={{
-                                            fontSize: 15,
-                                            my: 0.5,
-                                            px: 1,
-                                        }}
-                                    >
-                                        {userInfo?.name}
+                                    <Typography sx={{ fontSize: isMobile ? 13 : 16 }}>
+                                        주문 후 72시간 이내 미입금시 자동 취소됩니다.
                                     </Typography>
                                 </Box>
-                                {/* ------------------------------------- */}
-                                <Box sx={{ display: 'flex', my: 1 }}>
+                            )}
+                        </Box>
+                    ) : (
+                        <Box>
+                            <Box sx={{ my: 7 }}>
+                                <Grid item xs={12} sx={{ mb: 0.5 }}>
                                     <Typography
                                         sx={{
-                                            width: 120,
-                                            fontSize: 15,
-                                            my: 0.5,
-                                            pl: 1,
-                                        }}
-                                    >
-                                        주문 상품
-                                    </Typography>
-
-                                    <Typography
-                                        sx={{
-                                            fontSize: 15,
-                                            my: 0.5,
-                                            px: 1,
-                                        }}
-                                    >
-                                        {orderItems.length > 1
-                                            ? `${orderItems[0].name} 외 ${orderItems.length - 1} 건`
-                                            : orderItems[0].name}
-                                    </Typography>
-                                </Box>
-                                {/* ------------------------------------- */}
-
-                                <Box sx={{ display: 'flex', my: 1 }}>
-                                    <Typography
-                                        sx={{
-                                            width: 120,
-                                            fontSize: 15,
-                                            my: 0.5,
-                                            pl: 1,
-                                        }}
-                                    >
-                                        결제 금액
-                                    </Typography>
-
-                                    <Typography
-                                        sx={{
-                                            fontSize: 15,
-                                            my: 0.5,
-                                            px: 1,
-                                        }}
-                                    >
-                                        {formattedNumber(totalAmount)} 원
-                                    </Typography>
-                                </Box>
-                                {/* ------------------------------------- */}
-                                <Box sx={{ display: 'flex', my: 1 }}>
-                                    <Typography
-                                        sx={{
-                                            width: 120,
-                                            fontSize: 15,
-                                            my: 0.5,
-                                            pl: 1,
-                                        }}
-                                    >
-                                        결제 방법
-                                    </Typography>
-
-                                    <Typography
-                                        sx={{
-                                            fontSize: 15,
-                                            my: 0.5,
-                                            px: 1,
-                                        }}
-                                    >
-                                        {paymentMethodType}
-                                    </Typography>
-                                </Box>
-                                {/* ------------------------------------- */}
-                                <Box sx={{ display: 'flex', my: 1 }}>
-                                    <Typography
-                                        sx={{
-                                            width: 120,
-                                            fontSize: 15,
-                                            my: 0.5,
-                                            pl: 1,
-                                        }}
-                                    >
-                                        주문 일시
-                                    </Typography>
-
-                                    <Typography
-                                        sx={{
-                                            fontSize: 15,
-                                            my: 0.5,
-                                            px: 1,
-                                        }}
-                                    >
-                                        {formattedDate(orderInfo?.createdAt as string)}
-                                    </Typography>
-                                </Box>
-                                {/* ------------------------------------- */}
-
-                                {paymentMethodType === '무통장입금' && (
-                                    <Box sx={{ my: 3 }}>
-                                        <Typography
-                                            sx={{
-                                                width: 400,
-                                                fontSize: 15,
-                                                my: 0.5,
-                                                pl: 1,
-                                            }}
-                                        >
-                                            기업은행 888-000000-01-999 (주)데이드림해븐
-                                        </Typography>
-
-                                        <Typography
-                                            sx={{
-                                                fontSize: 15,
-                                                my: 1,
-                                                px: 1,
-                                            }}
-                                        >
-                                            주문 후 72시간 이내 미입금시 자동 취소됩니다.
-                                        </Typography>
-                                    </Box>
-                                )}
-                            </Box>
-                        ) : (
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    alignItems: 'flex-start',
-                                    mb: 5,
-                                    width: 400,
-                                }}
-                            >
-                                {/* ------------------------------------- */}
-                                <Box sx={{ display: 'flex', my: 1 }}>
-                                    <Typography
-                                        sx={{
-                                            width: 120,
-                                            fontSize: 15,
-                                            my: 0.5,
-                                            pl: 1,
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            width: '100%',
+                                            fontSize: isMobile ? 15 : 18,
                                         }}
                                     >
                                         오류 사유
                                     </Typography>
-
+                                </Grid>
+                                <Grid item xs={12}>
                                     <Typography
                                         sx={{
-                                            fontSize: 15,
-                                            my: 0.5,
-                                            px: 1,
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            width: '100%',
+                                            ...fontStyle,
                                         }}
                                     >
                                         {error}
                                     </Typography>
-                                </Box>
-                                {/* ------------------------------------- */}
-
-                                <Box sx={{ my: 3 }}>
-                                    <Typography
-                                        sx={{
-                                            width: 400,
-                                            fontSize: 15,
-                                            my: 0.5,
-                                            pl: 1,
-                                        }}
-                                    >
-                                        오류가 발생하여 결제가 정상적으로 이루어지지 않았습니다.
-                                    </Typography>
-
-                                    <Typography
-                                        sx={{
-                                            fontSize: 15,
-                                            my: 1,
-                                            px: 1,
-                                        }}
-                                    >
-                                        죄송하지만, 다시 시도해 주십시오.
-                                    </Typography>
-                                </Box>
+                                </Grid>
                             </Box>
-                        )}
-                        <Button
-                            onClick={() => {
-                                dispatch(clearOrder());
-                                dispatch(resetPaymentState());
-                                navigate('/');
-                            }}
-                            variant="outlined"
-                            sx={{
-                                width: 130,
-                                fontSize: 14,
-                                '&:hover': {
-                                    color: '#B67352',
-                                    background: '#ffffff',
-                                },
-                            }}
-                        >
-                            홈으로 가기
-                        </Button>
-                    </Box>
-                </Box>
-            ) : (
-                <Box sx={{ minHeight: '120vh' }}></Box>
-            )}
+
+                            <Box sx={{ mt: 5, textAlign: 'center' }}>
+                                <Typography sx={{ mb: 1, fontSize: isMobile ? 13 : 16 }}>
+                                    오류 발생으로 인해 결제가 정상적으로 이루어지지 않았습니다.
+                                </Typography>
+                                <Typography sx={{ fontSize: isMobile ? 13 : 16 }}>
+                                    죄송하지만, 다시 시도해 주십시오.
+                                </Typography>
+                            </Box>
+                        </Box>
+                    )}
+                </Grid>
+                <Grid item xs={12} sx={{ ...commonGridProp, pl: 0 }}>
+                    <Button
+                        onClick={() => {
+                            dispatch(clearOrder());
+                            dispatch(resetPaymentState());
+                            navigate('/');
+                        }}
+                        variant="outlined"
+                        sx={{
+                            width: 130,
+                            ...fontStyle,
+                            '&:hover': {
+                                color: '#B67352',
+                                background: '#ffffff',
+                            },
+                        }}
+                    >
+                        홈으로 가기
+                    </Button>
+                </Grid>
+            </Grid>
         </Container>
     );
 };
