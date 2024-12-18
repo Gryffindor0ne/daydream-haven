@@ -105,126 +105,126 @@ const MyPage = () => {
         </Box>
     );
 
+    if (!userInfo) return <Box sx={{ minHeight: '120vh' }}></Box>;
+
     return (
         <Container maxWidth="lg" sx={{ minHeight: 1400 }}>
-            {userInfo && (
-                <>
-                    <Box
-                        sx={{
-                            pt: isTabletOrMobile ? 15 : 25,
-                            px: isTabletOrMobile ? 1 : 2,
-                            mb: isTabletOrMobile ? 4 : 8,
-                        }}
-                    >
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <>
+                <Box
+                    sx={{
+                        pt: isTabletOrMobile ? 15 : 25,
+                        px: isTabletOrMobile ? 1 : 2,
+                        mb: isTabletOrMobile ? 4 : 8,
+                    }}
+                >
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography
+                            sx={{
+                                fontSize: isTabletOrMobile ? 20 : 25,
+                                pl: isTabletOrMobile ? 1 : 0,
+                            }}
+                        >
+                            마이 페이지
+                        </Typography>
+                        <Button
+                            onClick={handleLogout}
+                            sx={{
+                                color: '#503C3C',
+                                fontFamily: 'Merriweather',
+                                fontWeight: 400,
+                                fontSize: isTabletOrMobile ? 10 : 14,
+                                background: '#F4EDCC',
+                            }}
+                        >
+                            로그아웃
+                        </Button>
+                    </Box>
+                    <Box>
+                        <Box sx={{ mt: 7 }}>
                             <Typography
                                 sx={{
-                                    fontSize: isTabletOrMobile ? 20 : 25,
-                                    pl: isTabletOrMobile ? 1 : 0,
+                                    fontSize: isTabletOrMobile ? 15 : 20,
+                                    fontFamily: 'Gowun Batang',
+                                    display: 'flex',
                                 }}
                             >
-                                마이 페이지
-                            </Typography>
-                            <Button
-                                onClick={handleLogout}
-                                sx={{
-                                    color: '#503C3C',
-                                    fontFamily: 'Merriweather',
-                                    fontWeight: 400,
-                                    fontSize: isTabletOrMobile ? 10 : 14,
-                                    background: '#F4EDCC',
-                                }}
-                            >
-                                로그아웃
-                            </Button>
-                        </Box>
-                        <Box>
-                            <Box sx={{ mt: 7 }}>
-                                <Typography
+                                안녕하세요,
+                                <Box
+                                    component="span"
                                     sx={{
                                         fontSize: isTabletOrMobile ? 15 : 20,
+                                        fontFamily: 'Gowun Batang',
+                                        fontWeight: 600,
+                                        px: 1,
+                                    }}
+                                >
+                                    {userInfo?.name}
+                                </Box>
+                                님
+                            </Typography>
+                        </Box>
+
+                        <Grid
+                            container
+                            columns={{ xs: 2, sm: 2, md: 12 }}
+                            sx={{
+                                mt: isTabletOrMobile ? 2 : 5,
+                                px: 4,
+                                py: isTabletOrMobile ? 3 : 7,
+                                background: '#F4EDCC',
+                                borderRadius: 2,
+                            }}
+                        >
+                            <Grid item xs={2} md={6} sx={{ mb: isTabletOrMobile ? 1 : 0 }}>
+                                <Typography
+                                    sx={{
+                                        fontSize: isTabletOrMobile ? 12 : 15,
                                         fontFamily: 'Gowun Batang',
                                         display: 'flex',
                                     }}
                                 >
-                                    안녕하세요,
+                                    총 주문 금액 (횟수)
+                                </Typography>
+                            </Grid>
+
+                            <Grid item xs={2} md={6}>
+                                <Typography
+                                    sx={{
+                                        fontSize: isTabletOrMobile ? 17 : 20,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: isTabletOrMobile ? 'flex-start' : 'flex-end',
+                                    }}
+                                >
+                                    {`${formattedNumber(userInfo?.totalPurchaseAmount)}원`}
+
                                     <Box
                                         component="span"
                                         sx={{
-                                            fontSize: isTabletOrMobile ? 15 : 20,
-                                            fontFamily: 'Gowun Batang',
-                                            fontWeight: 600,
-                                            px: 1,
-                                        }}
-                                    >
-                                        {userInfo?.name}
-                                    </Box>
-                                    님
-                                </Typography>
-                            </Box>
-
-                            <Grid
-                                container
-                                columns={{ xs: 2, sm: 2, md: 12 }}
-                                sx={{
-                                    mt: isTabletOrMobile ? 2 : 5,
-                                    px: 4,
-                                    py: isTabletOrMobile ? 3 : 7,
-                                    background: '#F4EDCC',
-                                    borderRadius: 2,
-                                }}
-                            >
-                                <Grid item xs={2} md={6} sx={{ mb: isTabletOrMobile ? 1 : 0 }}>
-                                    <Typography
-                                        sx={{
                                             fontSize: isTabletOrMobile ? 12 : 15,
                                             fontFamily: 'Gowun Batang',
-                                            display: 'flex',
+                                            px: 2,
                                         }}
                                     >
-                                        총 주문 금액 (횟수)
-                                    </Typography>
-                                </Grid>
-
-                                <Grid item xs={2} md={6}>
-                                    <Typography
-                                        sx={{
-                                            fontSize: isTabletOrMobile ? 17 : 20,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: isTabletOrMobile ? 'flex-start' : 'flex-end',
-                                        }}
-                                    >
-                                        {`${formattedNumber(userInfo?.totalPurchaseAmount)}원`}
-
-                                        <Box
-                                            component="span"
-                                            sx={{
-                                                fontSize: isTabletOrMobile ? 12 : 15,
-                                                fontFamily: 'Gowun Batang',
-                                                px: 2,
-                                            }}
-                                        >
-                                            (총 {userInfo?.totalPurchaseCount}회)
-                                        </Box>
-                                    </Typography>
-                                </Grid>
+                                        (총 {userInfo?.totalPurchaseCount}회)
+                                    </Box>
+                                </Typography>
                             </Grid>
-                        </Box>
+                        </Grid>
                     </Box>
-                    <Box sx={{ pb: 10 }}>
-                        <Typography
-                            sx={{
-                                fontSize: isTabletOrMobile ? 17 : 20,
-                                px: isTabletOrMobile ? 2 : 0,
-                            }}
-                        >
-                            주문 목록
-                        </Typography>
-                        {allOrders.length > 0 ? <OrderList orders={transformedOrders} /> : <EmptyOrderMessage />}
-                    </Box>
-                </>
-            )}
+                </Box>
+                <Box sx={{ pb: 10 }}>
+                    <Typography
+                        sx={{
+                            fontSize: isTabletOrMobile ? 17 : 20,
+                            px: isTabletOrMobile ? 2 : 0,
+                        }}
+                    >
+                        주문 목록
+                    </Typography>
+                    {allOrders.length > 0 ? <OrderList orders={transformedOrders} /> : <EmptyOrderMessage />}
+                </Box>
+            </>
         </Container>
     );
 };

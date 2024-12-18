@@ -16,6 +16,7 @@ import Member from '~/pages/Member';
 import MyPage from '~/pages/MyPage';
 import UnauthenticatedRoute from '~/pages/routes/UnauthenticatedRoute';
 import AuthenticatedRoute from '~/pages/routes/AuthenticatedRoute';
+import OrderDetail from '~/pages/OrderDetail';
 
 const Router = () => {
     return (
@@ -40,6 +41,7 @@ const Router = () => {
                     <Route path="/mypage" element={<MyPage />} />
                     <Route path="/order" element={<OrderPayment />} />
                     <Route path="/order/:id" element={<OrderComplete />} />
+                    <Route path="/order/detail/:id" element={<OrderDetail />} />
                 </Route>
 
                 <Route path="/member/agreement" element={<Member />} />

@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router-dom';
 import OrderItem from '~/components/order/OrderItem';
 
 import { OrderDetailProps } from '~/features/payment/paymentSaga';
@@ -8,6 +9,15 @@ import { formatDateToDots } from '~/utils/utils';
 
 const OrderItemList = ({ order }: { order: OrderDetailProps }) => {
     const { isTabletOrMobile } = useResponsiveLayout();
+    const navigate = useNavigate();
+
+    const handleOrderDetailClick = (order: OrderDetailProps) => {
+        navigate(`/order/detail/${order.id}`, {
+            state: {
+                orderDetails: order,
+            },
+        });
+    };
 
     return (
         <Box sx={{ my: 3, p: isTabletOrMobile ? 1 : 2, border: '3px solid #F4EDCC', borderRadius: 1 }}>
@@ -15,7 +25,15 @@ const OrderItemList = ({ order }: { order: OrderDetailProps }) => {
                 <Typography sx={{ fontSize: isTabletOrMobile ? 15 : 20 }}>
                     {`${formatDateToDots(order.updatedAt)}`}{' '}
                 </Typography>
-                <Typography sx={{ display: 'flex', alignItems: 'center', fontSize: isTabletOrMobile ? 12 : 15 }}>
+                <Typography
+                    onClick={() => handleOrderDetailClick(order)}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        fontSize: isTabletOrMobile ? 12 : 15,
+                        cursor: 'pointer',
+                    }}
+                >
                     주문 상세정보
                 </Typography>
             </Box>
