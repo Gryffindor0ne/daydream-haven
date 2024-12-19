@@ -14,10 +14,11 @@
 
 Daydream Haven은 가상의 커피브랜드 홈페이지이면서 커피쇼핑몰입니다.
 '평소 좋아하는 커피를 브랜드화해서 웹페이지로 직접 만든다면 어떨까?' 라는 생각으로 기획했습니다.<br><br>
-프로젝트는 총 About, Shop, Wholesale, Subsription, Contact의 5가지 카테고리로 구성되어 있습니다. <br><br>
-About은 해당 브랜드에 대한 설명이 있으며, Shop, Wholesale, Subsription은 판매하는 상품에 대한 페이지입니다. (but, Wholesale은 간단히 구현되었습니다.)<br>
+프로젝트는 총 About, Shop, Wholesale, Subscription, Contact의 5가지 카테고리로 구성되어 있습니다. <br><br>
+About은 해당 브랜드에 대한 설명이 있으며, Shop, Wholesale, Subscription은 판매하는 상품에 대한 페이지입니다. <br>(but, Wholesale은 간단히 구현되었습니다.)<br>
 Contact은 실제 매장이 존재한다는 전제하에 매장에 대한 정보를 제공하는 페이지로 구현되었습니다.<br>
-Cart 페이지에서는 상품을 주문할 수 있으며, 주문페이지에서는 실제 결제를 하듯 결제를 진행할 수 있도록 가상결제 서비스를 구현하였습니다.
+마이페이지에서는 사용자의 총 주문금액 및 횟수를 보여주며, 구매했던 주문 목록을 볼 수 있습니다. 주문 목록의 주문 상세정보를 클릭하면 상세한 주문 내역을 볼 수 있도록 구현되었습니다.<br>
+Cart 페이지에서는 상품을 주문할 수 있으며, 주문페이지에서는 실제 결제를 하듯 결제를 진행할 수 있도록 가상결제 서비스를 구현하였습니다.<br>
 
 <br>
 
@@ -29,6 +30,12 @@ Cart 페이지에서는 상품을 주문할 수 있으며, 주문페이지에서
 -   상품 상세정보 및 이미지 조회.
 -   상품 옵션을 선택 후 상품 장바구니 담기 또는 바로 구매
 -   다수 상품 선택 및 수량 조정.
+
+### 사용자 주문 정보 조회 기능
+
+-   총 주문 금액 및 횟수 조회.
+-   주문 목록 전체 조회.
+-   주문 목록별 상세 정보 조회.
 
 ### 장바구니 기능
 
@@ -80,8 +87,14 @@ npm run dev
 │  ├─ App.tsx
 │  ├─ api
 │  │  ├─ checkAccessTokenValidityAPI.ts
-│  │  ├─ checkOrderDetailAPI.ts
-│  │  └─ getUserInfoDetailAPI.ts
+│  │  ├─ getAllOrderAPI.ts
+│  │  ├─ getLoginTokenAPI.ts
+│  │  ├─ getOrderDetailsAPI.ts
+│  │  ├─ getProductDetailAPI.ts
+│  │  ├─ getProductsAPI.ts
+│  │  ├─ getSubscriptionDetailAPI.ts
+│  │  ├─ getSubscriptionsAPI.ts
+│  │  └─ getUserDetailslAPI.ts
 │  ├─ app
 │  │  ├─ reduxHooks.ts
 │  │  ├─ rootSaga.ts
@@ -105,8 +118,10 @@ npm run dev
 │  │  │  ├─ AddressSeacrchForm.tsx
 │  │  │  └─ Map.tsx
 │  │  ├─ order
+│  │  │  ├─ OrdererInfo.tsx
 │  │  │  ├─ OrderItem.tsx
-│  │  │  └─ OrdererInfo.tsx
+│  │  │  ├─ OrderItemList.tsx
+│  │  │  └─ OrderList.tsx
 │  │  └─ product
 │  │     ├─ Product.tsx
 │  │     ├─ ProductInfoBox.tsx
@@ -126,6 +141,12 @@ npm run dev
 │  │     ├─ paymentSaga.ts
 │  │     └─ paymentSlice.ts
 │  ├─ hooks
+│  │  ├─ useScrollToTop.ts
+│  │  ├─ usesFecthOrderInfo.ts
+│  │  ├─ usesFecthSubscriptionInfo.ts
+│  │  ├─ usesFecthProductInfo.ts
+│  │  ├─ usesFecthUserInfo.ts
+│  │  ├─ usesResponsiveLayout.ts
 │  │  └─ useCurrentPathAndId.ts
 │  ├─ index.css
 │  ├─ lib
@@ -136,7 +157,10 @@ npm run dev
 │  ├─ pages
 │  │  ├─ About.tsx
 │  │  ├─ Contact.tsx
+│  │  ├─ Member.tsx
+│  │  ├─ MyPage.tsx
 │  │  ├─ OrderComplete.tsx
+│  │  ├─ OrderDetail.tsx
 │  │  ├─ OrderPayment.tsx
 │  │  ├─ ProductDetail.tsx
 │  │  ├─ Router.tsx
@@ -149,14 +173,24 @@ npm run dev
 │  │  │  └─ Register.tsx
 │  │  ├─ index.tsx
 │  │  └─ routes
-│  │     ├─ LoginRouteGuard.tsx
-│  │     └─ PrivatedRoute.tsx
+│  │     ├─ AuthenticatedRoute.tsx
+│  │     └─ UnauthenticatedRoute.tsx
 │  ├─ theme
 │  │  └─ index.tsx
+│  ├─ types
+│  │  ├─ cart.ts
+│  │  ├─ order.ts
+│  │  ├─ popup.ts
+│  │  ├─ product.ts
+│  │  └─ user.ts
 │  ├─ utils
 │  │  ├─ constants.ts
 │  │  ├─ cookiesUtils.ts
-│  │  └─ utils.ts
+│  │  ├─ date.ts
+│  │  ├─ number.ts
+│  │  ├─ orderTransform.ts
+│  │  ├─ phone.ts
+│  │  └─ product.ts
 │  └─ vite-env.d.ts
 ├─ tsconfig.json
 ├─ tsconfig.node.json
