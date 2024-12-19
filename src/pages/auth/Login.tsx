@@ -1,14 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-
+import { Box, Button, Container, Divider, Grid, TextField, Typography } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
@@ -19,16 +12,12 @@ import { setAuthenticated, setLoading } from '~/features/auth/authSlice';
 import { setAccessTokenCookie } from '~/utils/cookiesUtils';
 import useScrollToTop from '~/hooks/useScrollToTop';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
+import { LoginInfo } from '~/types/user';
 
 const loginSchema = Yup.object().shape({
     email: Yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일을 입력해주세요.'),
     password: Yup.string().required('비밀번호를 입력해주세요.'),
 });
-
-export type LoginInfo = {
-    email: string;
-    password: string;
-};
 
 const Login = () => {
     const { isMobile } = useResponsiveLayout();

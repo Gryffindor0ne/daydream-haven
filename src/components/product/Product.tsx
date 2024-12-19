@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import { Typography, Box } from '@mui/material';
 
-import { ProductInfo } from '~/components/product/ProductsList';
-import { findPriceByCapacityAndPeriod, formattedNumber } from '~/utils/utils';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
+import { findPriceByCapacityAndPeriod } from '~/utils/product';
+import { formatNumber } from '~/utils/number';
+import { ProductInfo } from '~/types/product';
 
 const Product = (content: ProductInfo) => {
     const { isTabletOrMobile } = useResponsiveLayout();
@@ -61,11 +61,11 @@ const Product = (content: ProductInfo) => {
 
             {currentPath === 'subscription' ? (
                 <Typography sx={{ fontFamily: 'Gowun Batang', fontSize: 14, px: 2 }}>
-                    {`${formattedNumber(price200 as number)}원`}
+                    {`${formatNumber(price200 as number)}원`}
                 </Typography>
             ) : (
                 <Typography sx={{ fontFamily: 'Gowun Batang', fontSize: 14, px: 2 }}>
-                    {`${formattedNumber(content.price)}원`}
+                    {`${formatNumber(content.price)}원`}
                 </Typography>
             )}
         </Box>

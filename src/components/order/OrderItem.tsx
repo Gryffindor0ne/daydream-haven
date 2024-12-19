@@ -1,20 +1,9 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Box, Typography } from '@mui/material';
+
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
-
+import { OrderHistoryProps } from '~/types/order';
 import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
-import { formattedNumber } from '~/utils/utils';
-
-export interface OrderHistoryProps {
-    id: string;
-    quantity: number;
-    grindSize: string;
-    capacity: string;
-    price: number;
-    thumbnail: string;
-    name: string;
-    period?: string;
-}
+import { formatNumber } from '~/utils/number';
 
 const OrderItem = ({ item }: { item: OrderHistoryProps }) => {
     const { isMobile, isTabletOrMobile } = useResponsiveLayout();
@@ -58,7 +47,7 @@ const OrderItem = ({ item }: { item: OrderHistoryProps }) => {
 
                     <Typography
                         sx={{ fontSize: isTabletOrMobile ? 12 : 17 }}
-                    >{`${formattedNumber(item.price)}원`}</Typography>
+                    >{`${formatNumber(item.price)}원`}</Typography>
                 </Box>
             </Box>
         </Box>

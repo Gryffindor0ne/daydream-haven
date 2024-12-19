@@ -7,39 +7,43 @@ import * as Yup from 'yup';
 
 import PortOne from '@portone/browser-sdk/v2';
 
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import TextField from '@mui/material/TextField';
-import { Button, Checkbox, FormControlLabel, Paper, Radio, RadioGroup } from '@mui/material';
-import { styled } from '@mui/system';
+import {
+    Button,
+    Checkbox,
+    Divider,
+    FormControlLabel,
+    Grid,
+    Paper,
+    Radio,
+    RadioGroup,
+    TextField,
+    Typography,
+} from '@mui/material';
+import { Box, Container, styled } from '@mui/system';
 
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { orderState } from '~/features/order/orderSlice';
 import { paymentSuccess } from '~/features/payment/paymentSlice';
+import { setLoading } from '~/features/auth/authSlice';
 import AddressSearchForm from '~/components/location/AddressSeacrchForm';
 import OrderItem from '~/components/order/OrderItem';
-import OrdererInfo, { UserInfoProps } from '~/components/order/OrdererInfo';
+import OrdererInfo from '~/components/order/OrdererInfo';
+
 import { axiosInstance } from '~/lib/axiosInstance';
-import { formattedNumber } from '~/utils/utils';
-import { extractAccessTokenFromCookie } from '~/utils/cookiesUtils';
-import { paymentMethods } from '~/utils/constants';
+
 import useScrollToTop from '~/hooks/useScrollToTop';
 import useFetchUserInfo from '~/hooks/useFetchUserInfo';
-import { setLoading } from '~/features/auth/authSlice';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
+import { paymentMethods } from '~/utils/constants';
+import { extractAccessTokenFromCookie } from '~/utils/cookiesUtils';
+import { formatNumber } from '~/utils/number';
+import { AddressProps, OrderItemProps, OrderProps } from '~/types/order';
+import { UserInfoProps } from '~/types/user';
 
 // 주문결제 페이지 배경색 설정
 const OrderPaymentPaper = styled(Paper)(() => ({
     backgroundColor: '#EEEDEB',
 }));
-
-export type AddressProps = {
-    postcode: string;
-    address: string;
-};
 
 const orderSchema = Yup.object().shape({
     address: Yup.string().required('주소는 필수 입력 항목입니다.'),
@@ -65,26 +69,6 @@ const orderSchema = Yup.object().shape({
 
     paymentAgreed: Yup.boolean().oneOf([true], '전체 동의를 하셔야 결제 가능합니다.'),
 });
-
-type OrderProps = {
-    postcode: string;
-    address: string;
-    additionalAddress: string;
-    selectedPaymentMethod: string;
-    orderer: string;
-    cashReceipt: boolean;
-    issuanceTarget: string;
-    issuanceTargetNumber: string;
-    paymentAgreed: boolean;
-};
-
-export interface OrderItemProps {
-    id: string;
-    quantity: number;
-    grindSize: string;
-    capacity: string;
-    period?: string;
-}
 
 const OrderPayment = () => {
     const { orderItems, subTotal, deliveryFee, totalAmount } = useAppSelector(orderState);
@@ -341,7 +325,7 @@ const OrderPayment = () => {
                                                         <Box sx={orderPriceBoxStyle}>
                                                             <Typography sx={contentStyle}>상품금액</Typography>
                                                             <Typography sx={contentStyle}>
-                                                                {formattedNumber(subTotal)} 원
+                                                                {formatNumber(subTotal)} 원
                                                             </Typography>
                                                         </Box>
                                                     </Grid>
@@ -373,7 +357,7 @@ const OrderPayment = () => {
                                                         <Box sx={orderPriceBoxStyle}>
                                                             <Typography sx={contentStyle}>최종 결제금액</Typography>
                                                             <Typography sx={contentStyle}>
-                                                                {formattedNumber(totalAmount)} 원
+                                                                {formatNumber(totalAmount)} 원
                                                             </Typography>
                                                         </Box>
                                                     </Grid>

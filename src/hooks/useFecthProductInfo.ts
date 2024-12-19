@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
+
 import getProductDetailAPI from '~/api/getProductDetailAPI';
 import { useAppDispatch } from '~/app/reduxHooks';
-import { ProductInfo } from '~/components/product/ProductsList';
+
 import { setLoading } from '~/features/auth/authSlice';
+import { ProductInfo } from '~/types/product';
 
 type FetchProductInfoProps = {
     productIds: string;

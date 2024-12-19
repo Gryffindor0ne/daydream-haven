@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import getUserDetailsAPI from '~/api/getUserDetailsAPI';
 import { useAppDispatch } from '~/app/reduxHooks';
-import { UserInfoProps } from '~/components/order/OrdererInfo';
+import { UserInfoProps } from '~/types/user';
 
 type FetchUserInfoProps = {
     setUserInfo: React.Dispatch<React.SetStateAction<UserInfoProps | undefined>>;

@@ -1,27 +1,12 @@
 import { useState } from 'react';
 
-import Typography from '@mui/material/Typography';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { FormControl, MenuItem, Select, Typography } from '@mui/material';
 
-import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
-import { formattedNumber } from '~/utils/utils';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 
-type SelectorProps = {
-    productPrice: number;
-    capacity: string;
-    setCapacity: React.Dispatch<React.SetStateAction<string>>;
-    grindSize: string;
-    setGrindSize: React.Dispatch<React.SetStateAction<string>>;
-    period: string;
-    setPeriod: React.Dispatch<React.SetStateAction<string>>;
-    handleOptionChange: (
-        event: SelectChangeEvent<string>,
-        setter: React.Dispatch<React.SetStateAction<string>>,
-    ) => void;
-};
+import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
+import { formatNumber } from '~/utils/number';
+import { SelectorProps } from '~/types/product';
 
 const CapacityGrindSelector = ({
     productPrice,
@@ -38,7 +23,7 @@ const CapacityGrindSelector = ({
     const CAPACITY_OPTIONS = [
         { value: '', label: '용량을 선택하세요.', disabled: true },
         { value: '200', label: '200g' },
-        { value: '500', label: currentPath === 'shop' ? `500g(+${formattedNumber(productPrice)}원)` : `500g` },
+        { value: '500', label: currentPath === 'shop' ? `500g(+${formatNumber(productPrice)}원)` : `500g` },
     ];
 
     const [isOpen, setIsOpen] = useState(false);

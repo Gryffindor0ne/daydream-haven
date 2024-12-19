@@ -1,10 +1,9 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
+import { Box, Divider, Typography } from '@mui/material';
 
-import { findPriceByCapacityAndPeriod, formattedNumber } from '~/utils/utils';
-import { ProductInfo } from '~/components/product/ProductsList';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
+import { findPriceByCapacityAndPeriod } from '~/utils/product';
+import { ProductInfo } from '~/types/product';
+import { formatNumber } from '~/utils/number';
 
 const SubscriptionInfoBox = ({ item }: { item: ProductInfo | undefined }) => {
     const { isMobile } = useResponsiveLayout();
@@ -34,7 +33,7 @@ const SubscriptionInfoBox = ({ item }: { item: ProductInfo | undefined }) => {
                         px: 2,
                     }}
                 >
-                    {`${formattedNumber(price200 as number)}원`}
+                    {`${formatNumber(price200 as number)}원`}
                 </Typography>
             )}
             <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>

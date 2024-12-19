@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
+import { Box, Container } from '@mui/material';
 
 import BasicPopup from '~/components/layout/popup/BasicPopup';
 import useScrollToTop from '~/hooks/useScrollToTop';

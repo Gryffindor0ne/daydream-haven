@@ -1,14 +1,8 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import { AddCircleOutlined, RemoveCircleOutlined } from '@mui/icons-material';
-import useResponsiveLayout from '~/hooks/useResponsiveLayout';
+import { Box, IconButton, Typography } from '@mui/material';
 
-type QuantityButtonProps = {
-    quantity: number;
-    onIncrease: () => void;
-    onDecrease: () => void;
-};
+import useResponsiveLayout from '~/hooks/useResponsiveLayout';
+import { QuantityButtonProps } from '~/types/product';
 
 const QuantityButton = ({ quantity, onIncrease, onDecrease }: QuantityButtonProps) => {
     const { isMobile } = useResponsiveLayout();

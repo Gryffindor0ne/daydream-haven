@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
+
 import getOrderDetailsAPI from '~/api/getOrderDetailsAPI';
 import { useAppDispatch } from '~/app/reduxHooks';
 import { setLoading } from '~/features/auth/authSlice';
-import { OrderDetailProps } from '~/features/payment/paymentSaga';
+import { OrderDetailProps } from '~/types/order';
 
 type FetchOrderInfoProps = {
     id: string;

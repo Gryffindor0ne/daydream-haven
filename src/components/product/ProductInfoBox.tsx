@@ -1,13 +1,11 @@
 import React from 'react';
 
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
+import { Box, Divider, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import { formattedNumber } from '~/utils/utils';
-import type { ProductInfo } from '~/components/product/ProductsList';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
+import type { ProductInfo } from '~/types/product';
+import { formatNumber } from '~/utils/number';
 
 const Dot = styled('span')({
     width: '2px',
@@ -43,7 +41,7 @@ const ProductInfo = ({ item }: { item: ProductInfo }) => {
                     px: 2,
                 }}
             >
-                {`${formattedNumber(item?.price as number)}원`}
+                {`${formatNumber(item?.price as number)}원`}
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>
                 <Divider

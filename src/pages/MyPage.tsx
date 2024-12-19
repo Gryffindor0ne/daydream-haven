@@ -1,26 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import { Box, Button, Container, Grid, Typography } from '@mui/material';
 
 import getAllOrderAPI from '~/api/getAllOrderAPI';
 import { useAppDispatch } from '~/app/reduxHooks';
-import { UserInfoProps } from '~/components/order/OrdererInfo';
-import { ProductInfo } from '~/components/product/ProductsList';
 import OrderList from '~/components/order/OrderList';
 import { setLoading } from '~/features/auth/authSlice';
-import { OrderDetailProps } from '~/features/payment/paymentSaga';
-import { formattedNumber } from '~/utils/utils';
-import { transformOrdersWithProducts } from '~/utils/orderTransform';
+
 import useScrollToTop from '~/hooks/useScrollToTop';
 import useFetchUserInfo from '~/hooks/useFetchUserInfo';
 import useFetchSubscriptionInfo from '~/hooks/useFetchSubscriptionInfo';
 import useFetchProductInfo from '~/hooks/useFecthProductInfo';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
+import { transformOrdersWithProducts } from '~/utils/orderTransform';
+import { ProductInfo } from '~/types/product';
+import { formatNumber } from '~/utils/number';
+import { UserInfoProps } from '~/types/user';
+import { OrderDetailProps } from '~/types/order';
 
 const MyPage = () => {
     const { isTabletOrMobile } = useResponsiveLayout();
@@ -196,7 +193,7 @@ const MyPage = () => {
                                         justifyContent: isTabletOrMobile ? 'flex-start' : 'flex-end',
                                     }}
                                 >
-                                    {`${formattedNumber(userInfo?.totalPurchaseAmount)}원`}
+                                    {`${formatNumber(userInfo?.totalPurchaseAmount)}원`}
 
                                     <Box
                                         component="span"

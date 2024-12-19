@@ -1,13 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from '~/app/store';
-import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
-
-export type CartState = {
-    cartItems: OrderItemSummaryInfo[];
-    subTotal: number;
-    deliveryFeeCondition: string;
-};
+import { CartState } from '~/types/cart';
+import { OrderItemSummaryInfo } from '~/types/order';
 
 const initialState: CartState = {
     cartItems: [],

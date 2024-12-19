@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react';
 
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
+import { Box, Container, Grid, Typography } from '@mui/material';
 
 import { axiosInstance } from '~/lib/axiosInstance';
 import ProductSelectBox from '~/components/product/ProductSelectBox';
-import { ProductInfo } from '~/components/product/ProductsList';
 import ProductInfoBox from '~/components/product/ProductInfoBox';
 import SubscriptionInfoBox from '~/components/product/SubscriptionInfoBox';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import useScrollToTop from '~/hooks/useScrollToTop';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
+import { ProductInfo } from '~/types/product';
 
 const ProductDetail = () => {
     const { currentPath, id } = useCurrentPathAndId();

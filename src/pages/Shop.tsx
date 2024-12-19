@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import { Box, Container } from '@mui/material';
+
+import getProductsAPI from '~/api/getProductsAPI';
 
 import { useAppDispatch } from '~/app/reduxHooks';
 import ProductsList from '~/components/product/ProductsList';
 import { setLoading } from '~/features/auth/authSlice';
 
 import useScrollToTop from '~/hooks/useScrollToTop';
-import getProductsAPI from '~/api/getProductsAPI';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const Shop = () => {

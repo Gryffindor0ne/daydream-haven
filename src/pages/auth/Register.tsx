@@ -4,28 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { Checkbox, FormControlLabel } from '@mui/material';
+import { Container, Box, Grid, Typography, TextField, Button, Checkbox, FormControlLabel } from '@mui/material';
 
 import { requiredTerms } from '~/utils/constants';
 import { axiosInstance } from '~/lib/axiosInstance';
 import BasicPopup from '~/components/layout/popup/BasicPopup';
 import useScrollToTop from '~/hooks/useScrollToTop';
-
-type RegisterInfo = {
-    email: string;
-    password: string;
-    confirmPassword: string;
-    username: string;
-    phoneNumber: string;
-    termsAgreed: boolean[];
-    marketingTermsAgreed: boolean;
-};
+import { RegisterInfo } from '~/types/user';
 
 const registerSchema = Yup.object().shape({
     email: Yup.string().email('유효한 이메일 주소를 입력하세요.').required('이메일은 필수 입력 항목입니다.'),

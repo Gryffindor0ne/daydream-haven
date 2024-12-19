@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { IconButton } from '@mui/material';
+import { Box, Button, Checkbox, Container, IconButton, Typography } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { cartState, removeFromCart, updateCartTotal } from '~/features/cart/cartSlice';

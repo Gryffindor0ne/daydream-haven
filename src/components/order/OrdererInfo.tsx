@@ -1,18 +1,8 @@
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import { Grid, Typography } from '@mui/material';
+
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
-
-import { formattedPhoneNumber } from '~/utils/utils';
-
-export type UserInfoProps = {
-    id: string;
-    email: string;
-    name: string;
-    phoneNumber: string;
-    address: string | null;
-    totalPurchaseAmount: number;
-    totalPurchaseCount: number;
-};
+import { UserInfoProps } from '~/types/user';
+import { formatPhoneNumber } from '~/utils/phone';
 
 const OrdererInfo = ({ userInfo }: { userInfo: UserInfoProps }) => {
     const { isMobile } = useResponsiveLayout();
@@ -33,7 +23,7 @@ const OrdererInfo = ({ userInfo }: { userInfo: UserInfoProps }) => {
                 <Typography sx={contentStyle}>{userInfo?.name}</Typography>
             </Grid>
             <Grid item xs={12}>
-                <Typography sx={contentStyle}>{formattedPhoneNumber(userInfo?.phoneNumber as string)}</Typography>
+                <Typography sx={contentStyle}>{formatPhoneNumber(userInfo?.phoneNumber as string)}</Typography>
             </Grid>
             <Grid item xs={12}>
                 <Typography sx={contentStyle}>{userInfo?.email}</Typography>

@@ -1,26 +1,7 @@
 import Grid from '@mui/material/Grid';
+
 import Product from '~/components/product/Product';
-
-export type PriceItem = {
-    name: string;
-    prices: number[];
-};
-
-export type ProductInfo = {
-    id: string;
-    name: string;
-    price: number;
-    plans?: PriceItem[];
-    thumbnail: string;
-    detailImages: string[];
-    categoryId: number;
-    roastingLevel: string;
-    origin: string[];
-    flavor: string[];
-    productComposition?: string[];
-    bulkOrderAvailable: boolean;
-    isVisible: boolean;
-};
+import { ProductInfo } from '~/types/product';
 
 const ProductsList = ({ lists }: { lists: ProductInfo[] }) => {
     return (

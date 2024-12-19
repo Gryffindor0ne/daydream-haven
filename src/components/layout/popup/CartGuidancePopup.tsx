@@ -1,18 +1,10 @@
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
+
 import { useNavigate } from 'react-router-dom';
 
-interface PopupProps {
-    open: boolean;
-    onClose: (open: boolean) => void;
-}
+import { cartPopupProps } from '~/types/popup';
 
-const CartGuidancePopup: React.FC<PopupProps> = ({ open, onClose }: PopupProps) => {
+const CartGuidancePopup: React.FC<cartPopupProps> = ({ open, onClose }: cartPopupProps) => {
     const navigate = useNavigate();
 
     return (

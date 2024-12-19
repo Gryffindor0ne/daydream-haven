@@ -1,22 +1,12 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Checkbox from '@mui/material/Checkbox';
+import { Grid, Box, Typography, Checkbox } from '@mui/material';
 
 import { useAppDispatch } from '~/app/reduxHooks';
-import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
 import QuantityButton from '~/components/common/QuantityButton';
 import { updateCartItemQuantity } from '~/features/cart/cartSlice';
-import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
-import { formattedNumber } from '~/utils/utils';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
-import { Grid } from '@mui/material';
-
-type CartItemProps = {
-    item: OrderItemSummaryInfo;
-    deliveryFeeCondition: string;
-    checked: boolean;
-    handler: () => void;
-};
+import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
+import { formatNumber } from '~/utils/number';
+import { CartItemProps } from '~/types/cart';
 
 const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProps) => {
     const dispatch = useAppDispatch();
@@ -70,7 +60,7 @@ const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProp
                                 py: 1,
                             }}
                         >
-                            {`${formattedNumber(item.price)}원`}
+                            {`${formatNumber(item.price)}원`}
                         </Typography>
                         <Typography
                             sx={{
@@ -194,7 +184,7 @@ const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProp
                                     fontSize: 15,
                                 }}
                             >
-                                {`${formattedNumber(item.price)}원`}
+                                {`${formatNumber(item.price)}원`}
                             </Typography>
                         </Box>
                         <Box

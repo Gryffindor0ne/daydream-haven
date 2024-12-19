@@ -1,15 +1,15 @@
 import { useNavigate } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+
+import { Box, Button, Typography } from '@mui/material';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { orderState, updateDirectOrder } from '~/features/order/orderSlice';
 import { authState } from '~/features/auth/authSlice';
-import { formattedNumber } from '~/utils/utils';
+
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
+import { formatNumber } from '~/utils/number';
 
 const CartOrderSection = ({ products }: { products: string[] }) => {
     const navigate = useNavigate();
@@ -54,7 +54,7 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
                             <Typography
                                 sx={{ display: 'flex', justifyContent: 'center', fontSize: 13, fontWeight: 'bold' }}
                             >
-                                {products.length !== 0 ? formattedNumber(totalAmount) : 0} 원
+                                {products.length !== 0 ? formatNumber(totalAmount) : 0} 원
                             </Typography>
                         </Box>
                         <Box
@@ -70,7 +70,7 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
                                 상품금액
                             </Typography>
                             <Typography sx={{ display: 'flex', justifyContent: 'center', fontSize: 12 }}>
-                                {products.length !== 0 ? formattedNumber(subTotal) : 0} 원
+                                {products.length !== 0 ? formatNumber(subTotal) : 0} 원
                             </Typography>
                         </Box>
 
@@ -106,7 +106,7 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
                                 variant="subtitle1"
                                 sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5 }}
                             >
-                                {products.length !== 0 ? formattedNumber(subTotal) : 0} 원
+                                {products.length !== 0 ? formatNumber(subTotal) : 0} 원
                             </Typography>
                             <Typography
                                 variant="subtitle1"
@@ -148,7 +148,7 @@ const CartOrderSection = ({ products }: { products: string[] }) => {
                                 variant="subtitle1"
                                 sx={{ display: 'flex', justifyContent: 'center', py: 2, px: 5 }}
                             >
-                                {products.length !== 0 ? formattedNumber(totalAmount) : 0} 원
+                                {products.length !== 0 ? formatNumber(totalAmount) : 0} 원
                             </Typography>
                             <Typography
                                 variant="subtitle1"

@@ -1,5 +1,5 @@
-import { ProductInfo } from '~/components/product/ProductsList';
-import { OrderDetailProps } from '~/features/payment/paymentSaga';
+import { OrderDetailProps } from '~/types/order';
+import { ProductInfo } from '~/types/product';
 
 export const transformOrdersWithProducts = (
     orders: OrderDetailProps[],

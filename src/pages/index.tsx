@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Box, Typography } from '@mui/material';
 
 import { categoryItems } from '~/utils/constants';
 import useScrollToTop from '~/hooks/useScrollToTop';

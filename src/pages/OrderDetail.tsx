@@ -3,15 +3,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 
+import OrderItem from '~/components/order/OrderItem';
 import useScrollToTop from '~/hooks/useScrollToTop';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 import useFetchUserInfo from '~/hooks/useFetchUserInfo';
-import OrderItem from '~/components/order/OrderItem';
-import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
-import { UserInfoProps } from '~/components/order/OrdererInfo';
-import { OrderDetailProps } from '~/features/payment/paymentSaga';
-import { formattedDate, formattedNumber, formattedPhoneNumber } from '~/utils/utils';
+
 import { paymentMethods } from '~/utils/constants';
+import { formatDateToKorean } from '~/utils/date';
+import { formatNumber } from '~/utils/number';
+import { formatPhoneNumber } from '~/utils/phone';
+import { UserInfoProps } from '~/types/user';
+import { OrderDetailProps, OrderItemSummaryInfo } from '~/types/order';
 
 // 반복되는 Grid 레이아웃을 위한 컴포넌트
 const InfoRow = ({
@@ -30,7 +32,7 @@ const InfoRow = ({
             {label}
         </Grid>
         <Grid item xs={isTabletOrMobile ? 8 : 9} sx={contentStyleProp}>
-            {typeof value === 'number' ? formattedNumber(value) : value}
+            {typeof value === 'number' ? formatNumber(value) : value}
         </Grid>
     </>
 );
@@ -119,7 +121,7 @@ const OrderDetail = () => {
                             />
                             <InfoRow
                                 label="주문일자"
-                                value={formattedDate(orderDetails.createdAt)}
+                                value={formatDateToKorean(orderDetails.createdAt)}
                                 isTabletOrMobile={isTabletOrMobile}
                                 contentStyleProp={contentStyleProp}
                             />
@@ -188,7 +190,7 @@ const OrderDetail = () => {
                             />
                             <InfoRow
                                 label="전화번호"
-                                value={formattedPhoneNumber(userInfo?.phoneNumber || '')}
+                                value={formatPhoneNumber(userInfo?.phoneNumber || '')}
                                 isTabletOrMobile={isTabletOrMobile}
                                 contentStyleProp={contentStyleProp}
                             />

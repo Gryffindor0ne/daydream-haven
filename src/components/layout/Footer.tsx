@@ -1,13 +1,10 @@
 import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Box, Grid, Link, Tooltip, Typography } from '@mui/material';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 
-import { Link, Tooltip } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const Icons = {

@@ -1,28 +1,16 @@
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 
 import { useAppDispatch } from '~/app/reduxHooks';
-import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
+
 import { addToCart } from '~/features/cart/cartSlice';
+import { duplicatePopupProps } from '~/types/popup';
 
-interface PopupProps {
-    open: boolean;
-    products: OrderItemSummaryInfo[];
-    onClose: () => void;
-    showCartGuidancePopup: (open: boolean) => void;
-}
-
-const DuplicateGuidancePopup: React.FC<PopupProps> = ({
+const DuplicateGuidancePopup: React.FC<duplicatePopupProps> = ({
     open,
     onClose,
     products,
     showCartGuidancePopup,
-}: PopupProps) => {
+}: duplicatePopupProps) => {
     const dispatch = useAppDispatch();
 
     return (

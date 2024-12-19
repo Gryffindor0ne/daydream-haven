@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { axiosInstance } from '~/lib/axiosInstance';
-import { LoginInfo } from '~/pages/auth/Login';
+import { LoginInfo } from '~/types/user';
 
 const getLoginToken = async ({ email, password }: LoginInfo) => {
     try {

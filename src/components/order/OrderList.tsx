@@ -1,6 +1,7 @@
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
+
 import OrderItemList from '~/components/order/OrderItemList';
-import { OrderDetailProps } from '~/features/payment/paymentSaga';
+import { OrderDetailProps } from '~/types/order';
 
 type OrderList = OrderDetailProps[];
 

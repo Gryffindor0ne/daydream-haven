@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import { Box, Button } from '@mui/material';
+
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
-import { AddressProps } from '~/pages/OrderPayment';
+import { AddressProps } from '~/types/order';
 
 declare global {
     interface Window {

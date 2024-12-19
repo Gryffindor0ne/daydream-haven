@@ -1,14 +1,13 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+import { Box, Typography, IconButton } from '@mui/material';
+
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
-import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
 import QuantityButton from '~/components/common/QuantityButton';
-import { formattedNumber } from '~/utils/utils';
-import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
+import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
+import { formatNumber } from '~/utils/number';
+import { OrderItemSummaryInfo } from '~/types/order';
 
 const ProductSummaryBox = ({
     product,
@@ -79,9 +78,7 @@ const ProductSummaryBox = ({
                     onIncrease={() => handleQuantityChange(product.quantity + 1)}
                     onDecrease={() => handleQuantityChange(product.quantity - 1)}
                 />
-                <Typography sx={{ fontSize: isMobile ? 14 : 18, mr: 2 }}>
-                    {formattedNumber(product?.price)}원
-                </Typography>
+                <Typography sx={{ fontSize: isMobile ? 14 : 18, mr: 2 }}>{formatNumber(product?.price)}원</Typography>
             </Box>
         </Box>
     );

@@ -1,50 +1,8 @@
 import { call, delay, put, takeLatest } from 'redux-saga/effects';
-import { AxiosRequestConfig } from 'axios';
 
 import { fetchData, paymentFailure, paymentSuccess } from '~/features/payment/paymentSlice';
 import getOrderDetailsAPI from '~/api/getOrderDetailsAPI';
-import { OrderItemSummaryInfo } from '~/components/product/ProductSelectBox';
-
-type PaymentProps = {
-    paymentId: string;
-    type: string;
-};
-
-export interface AxiosResponse<T> {
-    data: T;
-    status: number;
-    statusText: string;
-    headers: Record<string, string | string[]>;
-    config: AxiosRequestConfig;
-    request: XMLHttpRequest;
-}
-
-export interface PaymentInfo {
-    paymentMethod: string;
-    cashReceiptRequired: boolean;
-    issuanceNumber: string;
-    cashReceiptRecipientName: string | null;
-    accountHolderName: string | null;
-}
-
-interface DeliveryInfo {
-    name: string;
-    address: string;
-    addressDetail: string;
-    postcode: string;
-}
-
-export interface OrderDetailProps {
-    id: string;
-    status: string;
-    items: OrderItemSummaryInfo[];
-    paymentInfo: PaymentInfo;
-    deliveryInfo: DeliveryInfo;
-    createdAt: string;
-    updatedAt: string;
-}
-
-type PaymentApiResponse = AxiosResponse<OrderDetailProps>;
+import { PaymentApiResponse, PaymentProps } from '~/types/order';
 
 // 폴링을 위한 saga 로직
 function* paymentStateSaga(action: PaymentProps) {

@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import { Container, Box } from '@mui/material';
 
 import { useAppDispatch } from '~/app/reduxHooks';
+import getSubscriptionsAPI from '~/api/getSubscriptionsAPI';
 import ProductsList from '~/components/product/ProductsList';
 import { setLoading } from '~/features/auth/authSlice';
 import useScrollToTop from '~/hooks/useScrollToTop';
-import getSubscriptionsAPI from '~/api/getSubscriptionsAPI';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 
 const Subscription = () => {

@@ -1,11 +1,12 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
+
+import { Box, Typography } from '@mui/material';
+
 import OrderItem from '~/components/order/OrderItem';
 
-import { OrderDetailProps } from '~/features/payment/paymentSaga';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
-import { formatDateToDots } from '~/utils/utils';
+import { formatDateToDots } from '~/utils/date';
+import { OrderDetailProps } from '~/types/order';
 
 const OrderItemList = ({ order }: { order: OrderDetailProps }) => {
     const { isTabletOrMobile } = useResponsiveLayout();

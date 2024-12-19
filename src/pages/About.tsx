@@ -1,8 +1,4 @@
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Divider from '@mui/material/Divider';
+import { Container, Box, Typography, Grid, Divider } from '@mui/material';
 
 import useScrollToTop from '~/hooks/useScrollToTop';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';

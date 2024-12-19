@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
 
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Box, Container, Typography } from '@mui/material';
 
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
-import { requiredTerms } from '~/utils/constants';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
+import { requiredTerms } from '~/utils/constants';
 
 const Member = () => {
     const { isMobile, isTabletOrMobile } = useResponsiveLayout();

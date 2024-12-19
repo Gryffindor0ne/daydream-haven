@@ -1,21 +1,24 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
-import { UserInfoProps } from '~/components/order/OrdererInfo';
 import { clearOrder, orderState } from '~/features/order/orderSlice';
-import { OrderDetailProps } from '~/features/payment/paymentSaga';
+
 import { paymentState, resetPaymentState } from '~/features/payment/paymentSlice';
 import { removeFromCart } from '~/features/cart/cartSlice';
-import { formattedDate, formattedNumber } from '~/utils/utils';
-import { paymentMethods } from '~/utils/constants';
 
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
 import useScrollToTop from '~/hooks/useScrollToTop';
 import useFetchUserInfo from '~/hooks/useFetchUserInfo';
 import useFetchOrderInfo from '~/hooks/useFetchOrderInfo';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
+import { paymentMethods } from '~/utils/constants';
+import { formatDateToKorean } from '~/utils/date';
+import { formatNumber } from '~/utils/number';
+import { UserInfoProps } from '~/types/user';
+import { OrderDetailProps } from '~/types/order';
 
 const OrderComplete = () => {
     const { paymentStatus, error } = useAppSelector(paymentState);
@@ -161,7 +164,7 @@ const OrderComplete = () => {
 
                             <InfoRow
                                 title="결제 금액"
-                                content={`${formattedNumber(totalAmount)} 원`}
+                                content={`${formatNumber(totalAmount)} 원`}
                                 sx={commonGridProp}
                             />
 
@@ -169,7 +172,7 @@ const OrderComplete = () => {
 
                             <InfoRow
                                 title="주문 일시"
-                                content={formattedDate(orderInfo?.createdAt as string)}
+                                content={formatDateToKorean(orderInfo?.createdAt as string)}
                                 sx={commonGridProp}
                             />
 

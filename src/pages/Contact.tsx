@@ -1,7 +1,4 @@
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Box, Container, Grid, Typography } from '@mui/material';
 
 import Map from '~/components/location/Map';
 import useScrollToTop from '~/hooks/useScrollToTop';

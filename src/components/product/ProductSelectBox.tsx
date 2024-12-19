@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Box from '@mui/material/Box';
+import { Box, Button, Stack } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 
 import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
-import { ProductInfo } from '~/components/product/ProductsList';
+
 import ProductSummaryBox from '~/components/product/ProductSummaryBox';
 import BasicPopup from '~/components/layout/popup/BasicPopup';
 import CartGuidancePopup from '~/components/layout/popup/CartGuidancePopup';
@@ -17,20 +15,10 @@ import { cartState, addToCart, updateCartTotal } from '~/features/cart/cartSlice
 import { addToOrder, updateDirectOrder, updateOrderTotal } from '~/features/order/orderSlice';
 import { authState } from '~/features/auth/authSlice';
 import useCurrentPathAndId from '~/hooks/useCurrentPathAndId';
-import { findPriceByCapacityAndPeriod } from '~/utils/utils';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
-
-export type OrderItemSummaryInfo = {
-    id: string;
-    name: string;
-    price: number;
-    capacity: string;
-    grindSize: string;
-    period?: string;
-    quantity: number;
-    thumbnail: string;
-    type?: string;
-};
+import { ProductInfo } from '~/types/product';
+import { OrderItemSummaryInfo } from '~/types/order';
+import { findPriceByCapacityAndPeriod } from '~/utils/product';
 
 const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
     const [capacity, setCapacity] = useState<string>('');
