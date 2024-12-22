@@ -8,12 +8,13 @@ const Contact = () => {
     const { isMobile } = useResponsiveLayout();
 
     const titleStyle = {
-        fontSize: isMobile ? 12 : 18,
-        mb: isMobile ? 0.5 : 1,
+        fontSize: isMobile ? 15 : 20,
+        fontWeight: 600,
+        mb: isMobile ? 1 : 1.5,
     };
 
     const contentStyle = {
-        fontSize: isMobile ? 8 : 15,
+        fontSize: isMobile ? 14 : 17,
         mb: isMobile ? 2 : 5,
     };
 
@@ -44,7 +45,7 @@ const Contact = () => {
                 <Grid item xs={12}>
                     <Typography
                         sx={{
-                            fontSize: isMobile ? 16 : 25,
+                            fontSize: isMobile ? 20 : 25,
                             mt: isMobile ? 3 : 6,
                             mb: isMobile ? 4 : 8,
                         }}
@@ -62,14 +63,25 @@ const Contact = () => {
                 </Grid>
                 <Grid item xs={12}>
                     <Typography sx={titleStyle}>영업시간</Typography>
-                    <Typography sx={contentStyle}>
-                        평일 오전 9시 ~ 오후 7시 (주말, 공휴일 오전 10시 ~ 오후 7시)
-                    </Typography>
+                    <Typography sx={{ ...contentStyle, mb: 0.5 }}>평일 오전 9시 ~ 오후 7시</Typography>
+                    <Typography sx={contentStyle}>(주말, 공휴일 오전 10시 ~ 오후 7시)</Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Typography sx={titleStyle}>이메일</Typography>
-                    <Typography sx={contentStyle}>
-                        <a href="mailto:contact@daydreamhaven.com">contact@daydreamhaven.com</a>
+
+                    <Typography
+                        component="a"
+                        href="mailto:contact@daydreamhaven.com"
+                        sx={{
+                            color: 'primary.main',
+                            textDecoration: 'none',
+                            '&:hover': {
+                                color: 'secondary.main',
+                            },
+                            ...contentStyle,
+                        }}
+                    >
+                        contact@daydreamhaven.com
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
