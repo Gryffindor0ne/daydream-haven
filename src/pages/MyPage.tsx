@@ -117,7 +117,7 @@ const MyPage = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Typography
                             sx={{
-                                fontSize: isTabletOrMobile ? 20 : 25,
+                                fontSize: isTabletOrMobile ? 25 : 30,
                                 pl: isTabletOrMobile ? 1 : 0,
                             }}
                         >
@@ -126,10 +126,11 @@ const MyPage = () => {
                         <Button
                             onClick={handleLogout}
                             sx={{
+                                width: isTabletOrMobile ? 80 : 120,
                                 color: '#503C3C',
                                 fontFamily: 'Merriweather',
                                 fontWeight: 400,
-                                fontSize: isTabletOrMobile ? 10 : 14,
+                                fontSize: isTabletOrMobile ? 14 : 18,
                                 background: '#F4EDCC',
                             }}
                         >
@@ -140,7 +141,7 @@ const MyPage = () => {
                         <Box sx={{ mt: 7 }}>
                             <Typography
                                 sx={{
-                                    fontSize: isTabletOrMobile ? 15 : 20,
+                                    fontSize: isTabletOrMobile ? 20 : 25,
                                     fontFamily: 'Gowun Batang',
                                     display: 'flex',
                                 }}
@@ -149,8 +150,10 @@ const MyPage = () => {
                                 <Box
                                     component="span"
                                     sx={{
-                                        fontSize: isTabletOrMobile ? 15 : 20,
+                                        fontSize: isTabletOrMobile ? 20 : 25,
                                         fontFamily: 'Gowun Batang',
+                                        display: 'flex',
+                                        alignItems: 'center',
                                         fontWeight: 600,
                                         px: 1,
                                     }}
@@ -175,7 +178,7 @@ const MyPage = () => {
                             <Grid item xs={2} md={6} sx={{ mb: isTabletOrMobile ? 1 : 0 }}>
                                 <Typography
                                     sx={{
-                                        fontSize: isTabletOrMobile ? 12 : 15,
+                                        fontSize: isTabletOrMobile ? 15 : 20,
                                         fontFamily: 'Gowun Batang',
                                         display: 'flex',
                                     }}
@@ -187,7 +190,7 @@ const MyPage = () => {
                             <Grid item xs={2} md={6}>
                                 <Typography
                                     sx={{
-                                        fontSize: isTabletOrMobile ? 17 : 20,
+                                        fontSize: isTabletOrMobile ? 20 : 25,
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: isTabletOrMobile ? 'flex-start' : 'flex-end',
@@ -198,7 +201,7 @@ const MyPage = () => {
                                     <Box
                                         component="span"
                                         sx={{
-                                            fontSize: isTabletOrMobile ? 12 : 15,
+                                            fontSize: isTabletOrMobile ? 15 : 20,
                                             fontFamily: 'Gowun Batang',
                                             px: 2,
                                         }}
