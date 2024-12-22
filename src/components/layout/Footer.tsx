@@ -96,8 +96,21 @@ const Footer = () => {
                     <Typography variant="footer" align={commonFooterTextAlign}>
                         T. 031-123-4567
                     </Typography>
-                    <Typography variant="footer" align={commonFooterTextAlign}>
-                        <a href="mailto:master@daydreamhaven.com">master@daydreamhaven.com</a>
+                    <Typography
+                        component="a"
+                        href="mailto:master@daydreamhaven.com"
+                        variant="footer"
+                        sx={{
+                            display: 'flex',
+                            justifyContent: isMobile ? 'center' : 'flex-start',
+                            color: 'primary.main',
+                            textDecoration: 'none',
+                            '&:hover': {
+                                color: 'secondary.main',
+                            },
+                        }}
+                    >
+                        master@daydreamhaven.com
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={2}>
