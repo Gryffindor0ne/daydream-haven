@@ -31,8 +31,11 @@ const OrderItemList = ({ order }: { order: OrderDetailProps }) => {
                     sx={{
                         display: 'flex',
                         alignItems: 'center',
-                        fontSize: isTabletOrMobile ? 12 : 15,
+                        fontSize: isTabletOrMobile ? 15 : 20,
                         cursor: 'pointer',
+                        '&:hover': {
+                            color: '#B67352',
+                        },
                     }}
                 >
                     주문 상세정보

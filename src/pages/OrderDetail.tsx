@@ -32,7 +32,7 @@ const InfoRow = ({
             {label}
         </Grid>
         <Grid item xs={isTabletOrMobile ? 8 : 9} sx={contentStyleProp}>
-            {typeof value === 'number' ? formatNumber(value) : value}
+            {typeof value === 'number' ? `${formatNumber(value)} 원` : value}
         </Grid>
     </>
 );
@@ -67,20 +67,20 @@ const OrderDetail = () => {
 
     const contentStyleProp = {
         borderBottom: '1px solid #e0e0e0',
-        fontSize: isTabletOrMobile ? 13 : 15,
+        fontSize: isTabletOrMobile ? 15 : 18,
         py: 1,
     };
 
     // 섹션 타이틀 스타일
     const sectionTitleStyle = {
-        fontSize: isTabletOrMobile ? 15 : 18,
+        fontSize: isTabletOrMobile ? 20 : 23,
         fontWeight: 500,
-        mb: 2,
+        mb: 1,
     };
 
     // 공통 섹션 래퍼 컴포넌트
     const SectionWrapper = ({ title, children }: { title: string; children: React.ReactNode }) => (
-        <Grid item xs={12} sx={{ mb: 5 }}>
+        <Grid item xs={12} sx={{ mb: 7 }}>
             <Grid item xs={12} sx={sectionTitleStyle}>
                 {title}
             </Grid>
@@ -101,7 +101,7 @@ const OrderDetail = () => {
                 <Grid item xs={12} sx={{ mb: 5 }}>
                     <Typography
                         sx={{
-                            fontSize: isTabletOrMobile ? 20 : 25,
+                            fontSize: isTabletOrMobile ? 25 : 30,
                             pl: isTabletOrMobile ? 1 : 0,
                         }}
                     >
@@ -220,8 +220,8 @@ const OrderDetail = () => {
                         }}
                         variant="outlined"
                         sx={{
-                            width: 130,
-                            fontSize: isTabletOrMobile ? 13 : 15,
+                            width: 180,
+                            fontSize: isTabletOrMobile ? 15 : 18,
                             '&:hover': {
                                 color: '#B67352',
                                 background: '#ffffff',

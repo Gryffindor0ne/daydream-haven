@@ -44,7 +44,7 @@ const AddressSearchForm = ({ onAddressSelect }: { onAddressSelect: (address: Add
                         color: '#ffffff',
                         background: '#B67352',
                     },
-                    fontSize: isMobile ? 9 : 13,
+                    fontSize: isMobile ? 13 : 15,
                 }}
             >
                 주소 검색

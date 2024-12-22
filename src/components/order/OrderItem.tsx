@@ -8,6 +8,13 @@ import { formatNumber } from '~/utils/number';
 const OrderItem = ({ item }: { item: OrderHistoryProps }) => {
     const { isMobile, isTabletOrMobile } = useResponsiveLayout();
 
+    const getDetailsText = () => {
+        const baseText = `${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]}`;
+        return item.period
+            ? `${baseText} / ${PERIOD_OPTIONS[parseInt(item.period)]}`
+            : `${baseText} - ${item.quantity}개`;
+    };
+
     return (
         <Box sx={{ display: 'flex', py: 0.5 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', py: isTabletOrMobile ? 1 : 3 }}>
@@ -28,25 +35,18 @@ const OrderItem = ({ item }: { item: OrderHistoryProps }) => {
                     </Box>
                 </Box>
                 <Box sx={{ flex: 3, display: 'flex', flexDirection: 'column', pl: isTabletOrMobile ? 1 : 2 }}>
-                    <Typography sx={{ display: 'flex', mb: 0.5, fontSize: isTabletOrMobile ? 12 : 17 }}>
+                    <Typography sx={{ display: 'flex', mb: 0.5, fontSize: isTabletOrMobile ? 15 : 20 }}>
                         {item.name}
                     </Typography>
-                    {item.period ? (
-                        <Typography
-                            sx={{ display: 'flex', color: '#AB886D', mb: 0.5, fontSize: isTabletOrMobile ? 9 : 12 }}
-                        >
-                            {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]} / ${PERIOD_OPTIONS[parseInt(item.period)]}`}
-                        </Typography>
-                    ) : (
-                        <Typography
-                            sx={{ display: 'flex', color: '#AB886D', mb: 0.5, fontSize: isTabletOrMobile ? 9 : 12 }}
-                        >
-                            {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]} -  ${item.quantity}개`}
-                        </Typography>
-                    )}
 
                     <Typography
-                        sx={{ fontSize: isTabletOrMobile ? 12 : 17 }}
+                        sx={{ display: 'flex', color: '#AB886D', mb: 0.5, fontSize: isTabletOrMobile ? 13 : 15 }}
+                    >
+                        {getDetailsText()}
+                    </Typography>
+
+                    <Typography
+                        sx={{ fontSize: isTabletOrMobile ? 15 : 20 }}
                     >{`${formatNumber(item.price)}원`}</Typography>
                 </Box>
             </Box>

@@ -178,8 +178,8 @@ const OrderPayment = () => {
         }
     };
 
-    const subtitleStyle = { px: 3, mb: 2, fontSize: isMobile ? 15 : 20 };
-    const contentStyle = { display: 'flex', justifyContent: 'center', py: 1, fontSize: isMobile ? 12 : 15 };
+    const subtitleStyle = { px: 3, mb: 2, fontSize: isMobile ? 16 : 20, fontWeight: 600 };
+    const contentStyle = { display: 'flex', justifyContent: 'center', py: 1, fontSize: isMobile ? 15 : 18 };
     const orderPriceBoxStyle = {
         display: 'flex',
         flexDirection: 'row',
@@ -189,17 +189,17 @@ const OrderPayment = () => {
     const inputBoxStyle = {
         '& .MuiInputBase-root': {
             height: isMobile ? 30 : 35,
-            fontSize: isMobile ? 12 : 15,
+            fontSize: isMobile ? 15 : 17,
         },
     };
     const inputBoxLabelStyle = {
         '& .MuiInputLabel-root': {
-            fontSize: isMobile ? 12 : 15,
+            fontSize: isMobile ? 13 : 15,
         },
     };
     const formControlLabelStyle = {
         '& .MuiFormControlLabel-label': {
-            fontSize: isMobile ? 12 : 15,
+            fontSize: isMobile ? 15 : 18,
         },
     };
 
@@ -574,7 +574,7 @@ const OrderPayment = () => {
                                                         sx={{
                                                             width: isMobile ? 240 : '100%',
                                                             height: isMobile ? 40 : 50,
-                                                            fontSize: isMobile ? 12 : 16,
+                                                            fontSize: isMobile ? 15 : 20,
                                                             color: '#ffffff',
                                                             background: '#B67352',
 

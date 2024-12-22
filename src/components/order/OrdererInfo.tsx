@@ -10,14 +10,16 @@ const OrdererInfo = ({ userInfo }: { userInfo: UserInfoProps }) => {
     const contentStyle = {
         px: 4,
         py: 0.5,
-        fontSize: isMobile ? 12 : 16,
+        fontSize: isMobile ? 15 : 18,
         fontFamily: 'Gowun Batang',
     };
 
     return (
         <Grid container sx={{ my: 3, py: 3, bgcolor: '#ffffff' }}>
             <Grid item xs={12}>
-                <Typography sx={{ px: 3, pb: 2, fontSize: isMobile ? 15 : 20 }}>주문자 정보</Typography>
+                <Typography sx={{ px: 3, pb: 2, fontSize: isMobile ? 16 : 20, fontWeight: 600 }}>
+                    주문자 정보
+                </Typography>
             </Grid>
             <Grid item xs={12}>
                 <Typography sx={contentStyle}>{userInfo?.name}</Typography>
