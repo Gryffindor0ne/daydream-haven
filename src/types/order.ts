@@ -52,6 +52,7 @@ export interface PaymentInfo {
 interface DeliveryInfo extends BaseAddress {
     name: string;
     addressDetail: string;
+    phoneNumber: string;
 }
 
 export interface OrderDetailProps {
@@ -62,6 +63,8 @@ export interface OrderDetailProps {
     deliveryInfo: DeliveryInfo;
     createdAt: string;
     updatedAt: string;
+    totalAmount: number;
+    deliveryFeeIncluded: boolean;
 }
 
 export type PaymentApiResponse = import('axios').AxiosResponse<OrderDetailProps>;

@@ -98,7 +98,16 @@ const MyPage = () => {
 
     const EmptyOrderMessage = () => (
         <Box sx={{ my: 5, p: 5, border: '3px solid #F4EDCC', borderRadius: 1 }}>
-            <Typography sx={{ display: 'flex', alignItems: 'center' }}>주문한 내역이 없습니다.</Typography>
+            <Typography
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: isTabletOrMobile ? 15 : 20,
+                }}
+            >
+                주문 내역이 없습니다.
+            </Typography>
         </Box>
     );
 
@@ -213,11 +222,12 @@ const MyPage = () => {
                         </Grid>
                     </Box>
                 </Box>
+
                 <Box sx={{ pb: 10 }}>
                     <Typography
                         sx={{
-                            fontSize: isTabletOrMobile ? 17 : 20,
-                            px: isTabletOrMobile ? 2 : 0,
+                            fontSize: isTabletOrMobile ? 20 : 25,
+                            px: isTabletOrMobile ? 1 : 0,
                         }}
                     >
                         주문 목록

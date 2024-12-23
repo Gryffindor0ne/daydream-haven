@@ -97,17 +97,19 @@ const OrderComplete = () => {
         <Grid item xs={12} sx={sx}>
             <Typography
                 sx={{
-                    width: isMobile ? 65 : 90,
-                    fontSize: isMobile ? 12 : 15,
+                    width: isMobile ? 70 : 90,
+                    fontSize: isMobile ? 15 : 20,
                     mb: 0.5,
+                    mr: isMobile ? 3 : 6,
+                    px: 0.5,
                 }}
             >
                 {title}
             </Typography>
             <Typography
                 sx={{
-                    width: isMobile ? 250 : 340,
-                    fontSize: isMobile ? 13 : 16,
+                    width: isMobile ? 230 : 300,
+                    fontSize: isMobile ? 15 : 20,
                 }}
             >
                 {content}
@@ -152,9 +154,6 @@ const OrderComplete = () => {
                     {paymentStatus === 'success' ? (
                         <Box
                             sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
                                 flexDirection: 'column',
                                 mb: isMobile ? 2 : 5,
                             }}
@@ -178,10 +177,10 @@ const OrderComplete = () => {
 
                             {paymentMethodType === '무통장입금' && (
                                 <Box sx={{ mt: 5, textAlign: 'center' }}>
-                                    <Typography sx={{ mb: 1, fontSize: isMobile ? 13 : 16 }}>
+                                    <Typography sx={{ mb: 1, fontSize: isMobile ? 15 : 18 }}>
                                         기업은행 001-000000-00-001 (주)데이드림해븐
                                     </Typography>
-                                    <Typography sx={{ fontSize: isMobile ? 13 : 16 }}>
+                                    <Typography sx={{ fontSize: isMobile ? 15 : 18 }}>
                                         주문 후 72시간 이내 미입금시 자동 취소됩니다.
                                     </Typography>
                                 </Box>
@@ -217,10 +216,10 @@ const OrderComplete = () => {
                             </Box>
 
                             <Box sx={{ mt: 5, textAlign: 'center' }}>
-                                <Typography sx={{ mb: 1, fontSize: isMobile ? 13 : 16 }}>
+                                <Typography sx={{ mb: 1, fontSize: isMobile ? 15 : 18 }}>
                                     오류 발생으로 인해 결제가 정상적으로 이루어지지 않았습니다.
                                 </Typography>
-                                <Typography sx={{ fontSize: isMobile ? 13 : 16 }}>
+                                <Typography sx={{ fontSize: isMobile ? 15 : 18 }}>
                                     죄송하지만, 다시 시도해 주십시오.
                                 </Typography>
                             </Box>

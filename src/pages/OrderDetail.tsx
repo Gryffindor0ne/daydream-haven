@@ -69,6 +69,7 @@ const OrderDetail = () => {
         borderBottom: '1px solid #e0e0e0',
         fontSize: isTabletOrMobile ? 15 : 18,
         py: 1,
+        wordBreak: 'break-word', // 단어 줄바꿈
     };
 
     // 섹션 타이틀 스타일
@@ -125,9 +126,66 @@ const OrderDetail = () => {
                                 isTabletOrMobile={isTabletOrMobile}
                                 contentStyleProp={contentStyleProp}
                             />
+                        </Grid>
+                    </Grid>
+                </SectionWrapper>
+
+                {/* 주문 상품 정보 섹션 */}
+                <SectionWrapper title="주문 상품 정보">
+                    <Grid item xs={12}>
+                        <Grid item xs={12} sx={{ border: '1px solid #e0e0e0' }}>
+                            {orderDetails.items.map((item: OrderItemSummaryInfo) => (
+                                <OrderItem key={`${item.id}+${item.capacity}+${item.grindSize}`} item={item} />
+                            ))}
+                        </Grid>
+                    </Grid>
+                </SectionWrapper>
+
+                {/* 구매자 정보 섹션 */}
+                <SectionWrapper title="구매자 정보">
+                    <Grid item xs={12}>
+                        <Grid container spacing={2} sx={{ py: 2, px: 0.5 }}>
                             <InfoRow
                                 label="주문자"
+                                value={userInfo.name}
+                                isTabletOrMobile={isTabletOrMobile}
+                                contentStyleProp={contentStyleProp}
+                            />
+                            <InfoRow
+                                label="연락처"
+                                value={formatPhoneNumber(userInfo.phoneNumber)}
+                                isTabletOrMobile={isTabletOrMobile}
+                                contentStyleProp={contentStyleProp}
+                            />
+                            <InfoRow
+                                label="이메일"
+                                value={userInfo.email}
+                                isTabletOrMobile={isTabletOrMobile}
+                                contentStyleProp={contentStyleProp}
+                            />
+                        </Grid>
+                    </Grid>
+                </SectionWrapper>
+
+                {/* 배송지 정보 섹션 */}
+                <SectionWrapper title="배송지 정보">
+                    <Grid item xs={12}>
+                        <Grid container spacing={2} sx={{ py: 2, px: 0.5 }}>
+                            <InfoRow
+                                label="받으시는 분"
                                 value={orderDetails.deliveryInfo.name}
+                                isTabletOrMobile={isTabletOrMobile}
+                                contentStyleProp={contentStyleProp}
+                            />
+                            <InfoRow
+                                label="연락처"
+                                value={formatPhoneNumber(orderDetails.deliveryInfo.phoneNumber)}
+                                isTabletOrMobile={isTabletOrMobile}
+                                contentStyleProp={contentStyleProp}
+                            />
+                            <InfoRow
+                                label="받는 주소"
+                                value={`(${orderDetails.deliveryInfo.postcode}) ${orderDetails.deliveryInfo.address} ${orderDetails.deliveryInfo.addressDetail}`}
                                 isTabletOrMobile={isTabletOrMobile}
                                 contentStyleProp={contentStyleProp}
                             />
@@ -146,8 +204,14 @@ const OrderDetail = () => {
                                 contentStyleProp={contentStyleProp}
                             />
                             <InfoRow
+                                label="배송비"
+                                value={orderDetails.deliveryFeeIncluded ? 3000 : 0}
+                                isTabletOrMobile={isTabletOrMobile}
+                                contentStyleProp={contentStyleProp}
+                            />
+                            <InfoRow
                                 label="총 결제금액"
-                                value={totalPrice}
+                                value={orderDetails.totalAmount}
                                 isTabletOrMobile={isTabletOrMobile}
                                 contentStyleProp={contentStyleProp}
                             />
@@ -167,48 +231,6 @@ const OrderDetail = () => {
                     </Grid>
                 </SectionWrapper>
 
-                {/* 주문 상품 정보 섹션 */}
-                <SectionWrapper title="주문 상품 정보">
-                    <Grid item xs={12}>
-                        <Grid item xs={12} sx={{ border: '1px solid #e0e0e0' }}>
-                            {orderDetails.items.map((item: OrderItemSummaryInfo) => (
-                                <OrderItem key={`${item.id}+${item.capacity}+${item.grindSize}`} item={item} />
-                            ))}
-                        </Grid>
-                    </Grid>
-                </SectionWrapper>
-
-                {/* 배송지 정보 섹션 */}
-                <SectionWrapper title="배송지 정보">
-                    <Grid item xs={12}>
-                        <Grid container spacing={2} sx={{ py: 2, px: 0.5 }}>
-                            <InfoRow
-                                label="받으시는 분"
-                                value={orderDetails.deliveryInfo.name}
-                                isTabletOrMobile={isTabletOrMobile}
-                                contentStyleProp={contentStyleProp}
-                            />
-                            <InfoRow
-                                label="전화번호"
-                                value={formatPhoneNumber(userInfo?.phoneNumber || '')}
-                                isTabletOrMobile={isTabletOrMobile}
-                                contentStyleProp={contentStyleProp}
-                            />
-                            <InfoRow
-                                label="우편번호"
-                                value={orderDetails.deliveryInfo.postcode}
-                                isTabletOrMobile={isTabletOrMobile}
-                                contentStyleProp={contentStyleProp}
-                            />
-                            <InfoRow
-                                label="주소"
-                                value={`${orderDetails.deliveryInfo.address} ${orderDetails.deliveryInfo.addressDetail}`}
-                                isTabletOrMobile={isTabletOrMobile}
-                                contentStyleProp={contentStyleProp}
-                            />
-                        </Grid>
-                    </Grid>
-                </SectionWrapper>
                 <Grid
                     item
                     xs={12}
