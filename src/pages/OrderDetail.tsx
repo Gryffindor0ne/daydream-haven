@@ -172,7 +172,7 @@ const OrderDetail = () => {
                     <Grid item xs={12}>
                         <Grid item xs={12} sx={{ border: '1px solid #e0e0e0' }}>
                             {orderDetails.items.map((item: OrderItemSummaryInfo) => (
-                                <OrderItem key={item.id} item={item} />
+                                <OrderItem key={`${item.id}+${item.capacity}+${item.grindSize}`} item={item} />
                             ))}
                         </Grid>
                     </Grid>

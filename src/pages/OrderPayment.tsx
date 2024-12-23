@@ -91,7 +91,7 @@ const OrderPayment = () => {
     }, [navigate, orderItems, userInfo, dispatch]);
 
     const orderProductsList: OrderItemProps[] = orderItems.map((item) => ({
-        id: item.id,
+        id: item.productId,
         quantity: item.quantity,
         grindSize: item.grindSize,
         capacity: item.capacity,
@@ -237,7 +237,10 @@ const OrderPayment = () => {
                                                     <Typography sx={subtitleStyle}>주문 상품 정보</Typography>
                                                     <Box sx={{ py: 1 }}>
                                                         {orderItems.map((item) => (
-                                                            <OrderItem item={item} key={item.id} />
+                                                            <OrderItem
+                                                                item={item}
+                                                                key={`${item.id}+${item.capacity}+${item.grindSize}`}
+                                                            />
                                                         ))}
                                                     </Box>
                                                 </Box>

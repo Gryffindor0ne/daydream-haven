@@ -43,7 +43,7 @@ const OrderItemList = ({ order }: { order: OrderDetailProps }) => {
             </Box>
             <Box sx={{ border: '1px solid #F4EDCC', borderRadius: 1 }}>
                 {order.items.map((item) => (
-                    <OrderItem key={item.id} item={item} />
+                    <OrderItem key={`${item.id}+${item.capacity}+${item.grindSize}`} item={item} />
                 ))}
             </Box>
         </Box>

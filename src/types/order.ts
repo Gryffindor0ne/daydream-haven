@@ -27,6 +27,7 @@ export interface OrderProps {
 export interface OrderItemProps extends BaseOrderItem {}
 
 export interface OrderItemSummaryInfo extends BaseOrderItem {
+    productId: string;
     name: string;
     price: number;
     thumbnail: string;

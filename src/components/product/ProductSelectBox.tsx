@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { nanoid } from 'nanoid';
 
 import { Box, Button, Stack } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
@@ -80,7 +81,8 @@ const ProductSelectBox: React.FC<ProductSelectBoxProps> = ({ product }) => {
 
     const createNewProduct = useCallback((): OrderItemSummaryInfo => {
         const baseProduct = {
-            id,
+            id: nanoid(), // 리스트 아이템을 위한 고유 ID 생성
+            productId: id, // 원래 제품 ID는 productId로 저장
             name: product.name,
             capacity,
             grindSize,
