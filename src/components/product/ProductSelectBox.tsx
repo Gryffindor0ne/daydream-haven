@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Box, Button, Stack } from '@mui/material';
@@ -20,26 +20,57 @@ import { ProductInfo } from '~/types/product';
 import { OrderItemSummaryInfo } from '~/types/order';
 import { findPriceByCapacityAndPeriod } from '~/utils/product';
 
-const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
-    const [capacity, setCapacity] = useState<string>('');
-    const [grindSize, setGrindSize] = useState<string>('');
-    const [period, setPeriod] = useState<string>('');
+interface ProductSelectBoxProps {
+    product: ProductInfo;
+}
+
+const ProductSelectBox: React.FC<ProductSelectBoxProps> = ({ product }) => {
+    // State management
+    const [capacity, setCapacity] = useState('');
+    const [grindSize, setGrindSize] = useState('');
+    const [period, setPeriod] = useState('');
     const [selectedProducts, setSelectedProducts] = useState<OrderItemSummaryInfo[]>([]);
-    const [showAlert, setShowAlert] = useState<boolean>(false);
-    const [showCartGuidancePopup, setShowCartGuidancePopup] = useState<boolean>(false);
-    const [showDuplicateGuidancePopup, setShowDuplicateGuidancePopup] = useState<boolean>(false);
+    const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
+    const [showCartGuidance, setShowCartGuidance] = useState(false);
+    const [showDuplicateGuidance, setShowDuplicateGuidance] = useState(false);
 
+    // Hooks
     const { currentPath, id } = useCurrentPathAndId();
-
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-
     const { cartItems } = useAppSelector(cartState);
     const { isAuthenticated } = useAppSelector(authState);
     const { isMobile } = useResponsiveLayout();
 
-    //capacity와 grindSize & period를 통합
+    // Alert handlers
+    const handleAlertClose = useCallback(() => {
+        setShowAlert(false);
+        setAlertMessage('');
+    }, []);
+
+    const handleCartGuidanceToggle = useCallback((open: boolean) => {
+        setShowCartGuidance(open);
+    }, []);
+
+    const handleDuplicateGuidanceClose = useCallback(() => {
+        setShowDuplicateGuidance(false);
+    }, []);
+
+    const showAlertMessage = useCallback((message: string) => {
+        setAlertMessage(message);
+        setShowAlert(true);
+    }, []);
+
+    // Product handlers
+    const calculateProductPrice = useCallback(
+        (selectedCapacity: string, quantity: number) => {
+            const basePrice = product.price;
+            return selectedCapacity === '200' ? basePrice * quantity : basePrice * 2 * quantity;
+        },
+        [product.price],
+    );
+
     const handleOptionChange = (
         event: SelectChangeEvent<string>,
         setter: React.Dispatch<React.SetStateAction<string>>,
@@ -47,229 +78,199 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
         setter(event.target.value);
     };
 
-    const handleAlertClose = () => {
-        setShowAlert(false);
-    };
+    const createNewProduct = useCallback((): OrderItemSummaryInfo => {
+        const baseProduct = {
+            id,
+            name: product.name,
+            capacity,
+            grindSize,
+            quantity: 1,
+            thumbnail: product.thumbnail,
+        };
 
-    const handleCartGuidancePopupToggle = (open: boolean) => {
-        setShowCartGuidancePopup(open);
-    };
-
-    const handleDuplicateGuidancePopupClose = () => {
-        setShowDuplicateGuidancePopup(false);
-    };
-
-    const addProduct = useCallback(() => {
-        let newProduct: OrderItemSummaryInfo;
         if (currentPath === 'subscription') {
-            const newPrice = findPriceByCapacityAndPeriod(product, capacity, parseInt(period))!;
-            newProduct = {
-                id,
-                name: product.name,
-                price: newPrice,
-                capacity: capacity,
-                grindSize: grindSize,
-                period: period,
-                quantity: 1,
-                thumbnail: product.thumbnail,
-            };
-        } else {
-            newProduct = {
-                id,
-                name: product.name,
-                price: capacity === '200' ? product.price : product.price * 2,
-                capacity: capacity,
-                grindSize: grindSize,
-                quantity: 1,
-                thumbnail: product.thumbnail,
+            return {
+                ...baseProduct,
+                price: findPriceByCapacityAndPeriod(product, capacity, parseInt(period))!,
+                period,
             };
         }
 
-        setSelectedProducts((prevProducts) => [...prevProducts, newProduct]);
-    }, [currentPath, product, capacity, period, grindSize, id]);
+        return {
+            ...baseProduct,
+            price: calculateProductPrice(capacity, 1),
+        };
+    }, [currentPath, product, capacity, grindSize, period, id, calculateProductPrice]);
 
-    const handleDelete = (orderItemId: string) => {
-        setSelectedProducts((prevProducts) => prevProducts.filter((product) => product.id !== orderItemId));
-    };
+    const handleProductManagement = useMemo(
+        () => ({
+            add: () => {
+                const newProduct = createNewProduct();
+                setSelectedProducts((prev) => [...prev, newProduct]);
+                setCapacity('');
+                setGrindSize('');
+                setPeriod('');
+            },
 
-    const handleQuantityChange = (orderItemId: string, newQuantity: number) => {
-        if (currentPath === 'subscription') {
-            setSelectedProducts((prevProducts) => {
-                return prevProducts.map((item) => {
-                    if (item.id === orderItemId && item.period) {
-                        const newPrice = findPriceByCapacityAndPeriod(product, item.capacity, parseInt(item.period))!;
-                        return { ...item, price: newPrice * newQuantity, quantity: newQuantity };
-                    }
-                    return item;
-                });
-            });
-        } else {
-            setSelectedProducts((prevProducts) => {
-                return prevProducts.map((item) => {
-                    if (item.id === orderItemId) {
-                        const capacity = item.capacity;
-                        const newPrice = capacity === '200' ? product.price : product.price * 2;
-                        return { ...item, price: newPrice * newQuantity, quantity: newQuantity };
-                    }
-                    return item;
-                });
-            });
+            delete: (productId: string) => {
+                setSelectedProducts((prev) => prev.filter((product) => product.id !== productId));
+            },
+
+            updateQuantity: (productId: string, newQuantity: number) => {
+                setSelectedProducts((prev) =>
+                    prev.map((item) => {
+                        if (item.id !== productId) return item;
+
+                        const newPrice =
+                            currentPath === 'subscription'
+                                ? findPriceByCapacityAndPeriod(product, item.capacity, parseInt(item.period!))! *
+                                  newQuantity
+                                : calculateProductPrice(item.capacity, newQuantity);
+
+                        return { ...item, price: newPrice, quantity: newQuantity };
+                    }),
+                );
+            },
+        }),
+        [createNewProduct, currentPath, product, calculateProductPrice],
+    );
+
+    const checkDuplicateProducts = useCallback(() => {
+        return selectedProducts.filter((selectedProduct) =>
+            cartItems.some((cartItem) => {
+                const baseMatch =
+                    cartItem.grindSize === selectedProduct.grindSize &&
+                    cartItem.capacity === selectedProduct.capacity &&
+                    cartItem.name === selectedProduct.name;
+
+                return currentPath === 'subscription'
+                    ? baseMatch && cartItem.period === selectedProduct.period
+                    : baseMatch;
+            }),
+        );
+    }, [cartItems, currentPath, selectedProducts]);
+
+    const handlePurchase = useCallback(() => {
+        if (selectedProducts.length === 0) {
+            showAlertMessage('옵션을 선택하여야 합니다.');
+            return;
         }
-    };
 
-    const findDuplicateProducts = () => {
-        const duplicates: OrderItemSummaryInfo[] = [];
+        dispatch(addToOrder(selectedProducts));
+        dispatch(updateOrderTotal());
+        dispatch(updateDirectOrder(true));
 
-        if (currentPath === 'subscription') {
-            selectedProducts.forEach((selectedProduct) => {
-                const foundProduct = cartItems.find((product) => {
-                    return (
-                        product.grindSize === selectedProduct.grindSize &&
-                        product.capacity === selectedProduct.capacity &&
-                        product.name === selectedProduct.name &&
-                        product.period === selectedProduct.period
-                    );
-                });
+        isAuthenticated ? navigate('/order') : navigate('/login', { state: { redirectedFrom: '/order' } });
+    }, [selectedProducts, dispatch, isAuthenticated, navigate, showAlertMessage]);
 
-                if (foundProduct) {
-                    duplicates.push(foundProduct);
-                }
-            });
-            return duplicates;
-        } else {
-            selectedProducts.forEach((selectedProduct) => {
-                const foundProduct = cartItems.find((product) => {
-                    return (
-                        product.grindSize === selectedProduct.grindSize &&
-                        product.capacity === selectedProduct.capacity &&
-                        product.name === selectedProduct.name
-                    );
-                });
+    const handleAddToCart = useCallback(() => {
+        const duplicates = checkDuplicateProducts();
 
-                if (foundProduct) {
-                    duplicates.push(foundProduct);
-                }
-            });
-            return duplicates;
+        if (duplicates.length > 0) {
+            setShowDuplicateGuidance(true);
+            return;
         }
-    };
 
+        dispatch(addToCart(selectedProducts));
+        dispatch(updateCartTotal());
+        setShowCartGuidance(true);
+    }, [checkDuplicateProducts, dispatch, selectedProducts]);
+
+    // Effects
     useEffect(() => {
-        if (currentPath === 'subscription' && product && period) {
-            const existingProduct = selectedProducts.find(
-                (item) =>
-                    item.grindSize === grindSize &&
-                    item.capacity === capacity &&
-                    item.name === product.name &&
-                    item.period === period,
-            );
-            if (existingProduct) {
-                setShowAlert(true);
-                setAlertMessage('동일한 선택이 존재합니다.');
-            } else {
-                addProduct();
-            }
-            setCapacity('');
-            setGrindSize('');
-            setPeriod('');
-        } else if (currentPath === 'shop' && grindSize && product) {
-            const existingProduct = selectedProducts.find(
-                (item) => item.grindSize === grindSize && item.name === product.name,
-            );
-            if (existingProduct) {
-                setShowAlert(true);
-                setAlertMessage('동일한 선택이 존재합니다.');
-            } else {
-                addProduct();
-            }
-            setCapacity('');
-            setGrindSize('');
-        }
-    }, [addProduct, grindSize, selectedProducts, capacity, product, period, currentPath]);
+        if (!grindSize) return;
 
-    useEffect(() => {
-        if (showCartGuidancePopup && selectedProducts.length === 0) {
-            setShowAlert(true);
-            setAlertMessage('옵션을 선택하여야 합니다.');
-        } else {
-            setShowAlert(false);
+        const isSubscription = currentPath === 'subscription';
+        const isDuplicate = selectedProducts.some((item) => {
+            const baseMatch = item.grindSize === grindSize && item.name === product.name;
+
+            return isSubscription ? baseMatch && item.capacity === capacity && item.period === period : baseMatch;
+        });
+
+        if (isDuplicate) {
+            showAlertMessage('동일한 선택이 존재합니다.');
+            return;
         }
-    }, [showCartGuidancePopup, selectedProducts]);
+
+        if (!isSubscription || (isSubscription && period)) {
+            handleProductManagement.add();
+        }
+    }, [
+        grindSize,
+        capacity,
+        period,
+        currentPath,
+        product,
+        selectedProducts,
+        showAlertMessage,
+        handleProductManagement.add,
+        handleProductManagement,
+    ]);
 
     return (
         <Box sx={{ mt: isMobile ? 0 : 2 }}>
-            {showAlert && <BasicPopup open={showAlert} onClose={handleAlertClose} message={alertMessage} />}
-
-            {/* 용량과 분쇄도 & 기간 선택 컴포넌트 */}
-            <CapacityGrindSelector
-                productPrice={product?.price}
-                capacity={capacity}
-                setCapacity={setCapacity}
-                grindSize={grindSize}
-                setGrindSize={setGrindSize}
-                period={period}
-                setPeriod={setPeriod}
-                handleOptionChange={handleOptionChange}
-            />
-
-            {/* <------------------------------------------------------------------------> */}
-
-            {selectedProducts.map((product) => (
-                <ProductSummaryBox
-                    key={product.id}
-                    product={product}
-                    onDelete={() => handleDelete(product.id)}
-                    onQuantityChange={(newQuantity) => handleQuantityChange(product.id, newQuantity)}
-                />
-            ))}
-            {/* <------------------------------------------------------------------------> */}
-
+            {/* Alerts and Popups */}
             {showAlert && (
                 <BasicPopup
                     open={showAlert}
                     onClose={handleAlertClose}
                     message={alertMessage}
-                    cartPopupClose={handleCartGuidancePopupToggle}
+                    cartPopupClose={handleCartGuidanceToggle}
                 />
             )}
 
-            {showCartGuidancePopup && selectedProducts.length !== 0 && (
-                <CartGuidancePopup open={showCartGuidancePopup} onClose={handleCartGuidancePopupToggle} />
+            {showCartGuidance && selectedProducts.length > 0 && (
+                <CartGuidancePopup open={showCartGuidance} onClose={handleCartGuidanceToggle} />
             )}
 
-            {showDuplicateGuidancePopup && (
+            {showDuplicateGuidance && (
                 <DuplicateGuidancePopup
-                    open={showDuplicateGuidancePopup}
-                    onClose={handleDuplicateGuidancePopupClose}
-                    showCartGuidancePopup={handleCartGuidancePopupToggle}
+                    open={showDuplicateGuidance}
+                    onClose={handleDuplicateGuidanceClose}
+                    showCartGuidancePopup={handleCartGuidanceToggle}
                     products={selectedProducts}
                 />
             )}
 
+            {/* Product Selection */}
+            <CapacityGrindSelector
+                productPrice={product?.price}
+                capacity={capacity}
+                grindSize={grindSize}
+                period={period}
+                setCapacity={setCapacity}
+                setGrindSize={setGrindSize}
+                setPeriod={setPeriod}
+                handleOptionChange={handleOptionChange}
+            />
+
+            {/* Selected Products */}
+            {selectedProducts.map((product) => (
+                <ProductSummaryBox
+                    key={product.id}
+                    product={product}
+                    onDelete={() => handleProductManagement.delete(product.id)}
+                    onQuantityChange={(quantity) => handleProductManagement.updateQuantity(product.id, quantity)}
+                />
+            ))}
+
+            {/* Action Buttons */}
             <Stack
                 direction="row"
                 spacing={2}
                 sx={{
                     mt: 5,
-                    width: isMobile ? 300 : 450,
+                    width: isMobile ? '100%' : 450,
                     height: isMobile ? 40 : 50,
                     justifyContent: 'space-evenly',
                 }}
             >
                 <Button
-                    onClick={() => {
-                        if (findDuplicateProducts().length !== 0) {
-                            setShowDuplicateGuidancePopup(true);
-                        } else {
-                            setShowCartGuidancePopup(true);
-                            dispatch(addToCart(selectedProducts));
-                            dispatch(updateCartTotal());
-                        }
-                    }}
+                    onClick={handleAddToCart}
                     variant="outlined"
                     sx={{
-                        width: isMobile ? 140 : 215,
-                        fontSize: isMobile ? 12 : 16,
+                        width: isMobile ? 200 : 215,
+                        fontSize: isMobile ? 15 : 20,
                         '&:hover': {
                             color: '#B67352',
                             background: '#ffffff',
@@ -279,22 +280,11 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
                     장바구니 담기
                 </Button>
                 <Button
-                    onClick={() => {
-                        if (selectedProducts.length !== 0) {
-                            dispatch(addToOrder(selectedProducts));
-                            dispatch(updateOrderTotal());
-                            dispatch(updateDirectOrder(true));
-
-                            isAuthenticated
-                                ? navigate(`/order`)
-                                : navigate(`/login`, { state: { redirectedFrom: '/order' } });
-                        }
-                        setShowCartGuidancePopup(true);
-                    }}
+                    onClick={handlePurchase}
                     variant="contained"
                     sx={{
-                        width: isMobile ? 140 : 215,
-                        fontSize: isMobile ? 12 : 16,
+                        width: isMobile ? 200 : 215,
+                        fontSize: isMobile ? 15 : 20,
                         '&:hover': {
                             color: '#ffffff',
                             background: '#B67352',
@@ -307,4 +297,5 @@ const ProductSelectBox = ({ product }: { product: ProductInfo }) => {
         </Box>
     );
 };
+
 export default ProductSelectBox;
