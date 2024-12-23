@@ -8,211 +8,117 @@ import { GRINDSIZE_SET, PERIOD_OPTIONS } from '~/utils/constants';
 import { formatNumber } from '~/utils/number';
 import { CartItemProps } from '~/types/cart';
 
-const CartItem = ({ item, deliveryFeeCondition, checked, handler }: CartItemProps) => {
+const CartItem: React.FC<CartItemProps> = ({ item, deliveryFeeCondition, checked, handler }) => {
     const dispatch = useAppDispatch();
-
     const { isMobile } = useResponsiveLayout();
 
     const handleQuantityChange = (newQuantity: number) => {
-        const productId = item.id;
         if (newQuantity >= 1) {
-            dispatch(updateCartItemQuantity({ productId, newQuantity }));
+            dispatch(updateCartItemQuantity({ productId: item.id, newQuantity }));
         }
     };
 
-    return (
-        <>
-            {isMobile ? (
-                <Grid container spacing={1} sx={{ py: 2, borderBottom: '1px solid #F4EDCC' }}>
-                    <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
-                        <Box
-                            sx={{
-                                width: 50,
-                                aspectRatio: '1 / 1',
-                                overflow: 'hidden',
-                                borderRadius: 1,
-                            }}
-                        >
-                            <img
-                                src={item.thumbnail}
-                                alt="thumbnail"
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                            />
-                        </Box>
-                    </Grid>
-                    <Grid item xs={7}>
-                        <Box>
-                            <Typography sx={{ fontSize: 12 }}>{item.name}</Typography>
-                            {item.period ? (
-                                <Typography sx={{ fontSize: 9, color: '#AB886D' }}>
-                                    {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]} / ${PERIOD_OPTIONS[parseInt(item.period)]}`}
-                                </Typography>
-                            ) : (
-                                <Typography sx={{ fontSize: 9, color: '#AB886D' }}>
-                                    {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]}`}
-                                </Typography>
-                            )}
-                        </Box>
-                        <Typography
-                            sx={{
-                                fontSize: 12,
-                                fontWeight: 600,
-                                py: 1,
-                            }}
-                        >
-                            {`${formatNumber(item.price)}원`}
-                        </Typography>
-                        <Typography
-                            sx={{
-                                fontSize: 9,
-                                py: 1,
-                            }}
-                        >
-                            배송비 3,000원 [조건] / 기본배송
-                        </Typography>
-                        <Box>
-                            <QuantityButton
-                                quantity={item.quantity}
-                                onIncrease={() => handleQuantityChange(item.quantity + 1)}
-                                onDecrease={() => handleQuantityChange(item.quantity - 1)}
-                            />
-                        </Box>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Checkbox
-                            checked={checked}
-                            onChange={handler}
-                            size="small"
-                            color="default"
-                            sx={{
-                                '&:hover': { bgcolor: 'transparent' },
-                            }}
-                        />
-                    </Grid>
-                </Grid>
-            ) : (
-                <Box sx={{ display: 'flex', borderBottom: '1px solid #F4EDCC' }}>
-                    <Checkbox
-                        checked={checked}
-                        onChange={handler}
-                        size="small"
-                        color="default"
-                        sx={{
-                            '&:hover': { bgcolor: 'transparent' },
-                        }}
-                    />
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            flexDirection: 'row',
-                            flexGrow: 1,
-                            py: 3,
-                        }}
-                    >
-                        <Box sx={{ flex: 1.5, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                            <Box
-                                sx={{
-                                    flex: 1,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    px: 3,
-                                    py: 2,
-                                    width: 180,
-                                }}
-                            >
-                                <Box
-                                    sx={{
-                                        width: 70,
-                                        aspectRatio: '1 / 1',
-                                        overflow: 'hidden',
-                                        borderRadius: 1,
-                                    }}
-                                >
-                                    <img
-                                        src={item.thumbnail}
-                                        alt="thumbnail"
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                    />
-                                </Box>
-                            </Box>
-                            <Box sx={{ flex: 3, display: 'flex', flexDirection: 'column' }}>
-                                <Typography sx={{ display: 'flex', fontSize: 16, py: 1 }}>{item.name}</Typography>
-                                {item.period ? (
-                                    <Typography sx={{ display: 'flex', fontSize: 14, color: '#AB886D' }}>
-                                        {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]} / ${PERIOD_OPTIONS[parseInt(item.period)]}`}
-                                    </Typography>
-                                ) : (
-                                    <Typography sx={{ display: 'flex', fontSize: 14, color: '#AB886D' }}>
-                                        {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]}`}
-                                    </Typography>
-                                )}
-                            </Box>
-                        </Box>
-                        <Box
-                            sx={{
-                                flex: 0.2,
-                                display: 'flex',
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                py: 2,
-                            }}
-                        >
-                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                <QuantityButton
-                                    quantity={item.quantity}
-                                    onIncrease={() => handleQuantityChange(item.quantity + 1)}
-                                    onDecrease={() => handleQuantityChange(item.quantity - 1)}
-                                />
-                            </Box>
-                        </Box>
-                        <Box
-                            sx={{
-                                flex: 0.7,
-                                display: 'flex',
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                py: 1,
-                                width: 180,
-                            }}
-                        >
-                            <Typography
-                                sx={{
-                                    flex: 1.5,
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    fontSize: 15,
-                                }}
-                            >
-                                {`${formatNumber(item.price)}원`}
-                            </Typography>
-                        </Box>
-                        <Box
-                            sx={{
-                                flex: 0.7,
-                                display: 'flex',
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                py: 1,
-                                width: 180,
-                            }}
-                        >
-                            <Typography
-                                sx={{
-                                    flex: 1.5,
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    fontSize: 15,
-                                }}
-                            >
-                                {deliveryFeeCondition}
-                            </Typography>
-                        </Box>
+    const ProductInfo = () => (
+        <Box>
+            <Typography sx={{ fontSize: isMobile ? 15 : 18, py: 1 }}>{item.name}</Typography>
+            <Typography sx={{ fontSize: isMobile ? 12 : 15, color: '#AB886D' }}>
+                {`${item.capacity}g / ${GRINDSIZE_SET[parseInt(item.grindSize)]}${
+                    item.period ? ` / ${PERIOD_OPTIONS[parseInt(item.period)]}` : ''
+                }`}
+            </Typography>
+        </Box>
+    );
+
+    const ProductImage = () => (
+        <Box
+            sx={{
+                width: isMobile ? 50 : 70,
+                aspectRatio: '1 / 1',
+                overflow: 'hidden',
+                borderRadius: 1,
+            }}
+        >
+            <img src={item.thumbnail} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </Box>
+    );
+
+    const ProductPrice = () => (
+        <Typography
+            sx={{
+                fontSize: isMobile ? 15 : 18,
+                fontWeight: isMobile ? 600 : 400,
+                py: 1,
+                ...(isMobile ? {} : { justifyContent: 'center' }),
+                ...(isMobile ? {} : { display: 'flex' }),
+            }}
+        >
+            {`${formatNumber(item.price)}원`}
+        </Typography>
+    );
+
+    const CustomCheckbox = () => (
+        <Checkbox
+            checked={checked}
+            onChange={handler}
+            size="small"
+            color="default"
+            sx={{ '&:hover': { bgcolor: 'transparent' } }}
+        />
+    );
+
+    const MobileLayout = () => (
+        <Grid container spacing={1} sx={{ py: 2, borderBottom: '1px solid #F4EDCC' }}>
+            <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+                <ProductImage />
+            </Grid>
+            <Grid item xs={7}>
+                <ProductInfo />
+                <ProductPrice />
+                <Typography sx={{ fontSize: 12, py: 1 }}>배송비 3,000원 [조건] / 기본배송</Typography>
+                <QuantityButton
+                    quantity={item.quantity}
+                    onIncrease={() => handleQuantityChange(item.quantity + 1)}
+                    onDecrease={() => handleQuantityChange(item.quantity - 1)}
+                />
+            </Grid>
+            <Grid item xs={2}>
+                <CustomCheckbox />
+            </Grid>
+        </Grid>
+    );
+
+    const DesktopLayout = () => (
+        <Box sx={{ display: 'flex', borderBottom: '1px solid #F4EDCC' }}>
+            <CustomCheckbox />
+            <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, py: 3 }}>
+                <Box sx={{ flex: 1.5, display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ flex: 1, px: 3, py: 2, width: 180 }}>
+                        <ProductImage />
+                    </Box>
+                    <Box sx={{ flex: 3 }}>
+                        <ProductInfo />
                     </Box>
                 </Box>
-            )}
-        </>
+                <Box sx={{ flex: 0.8, display: 'flex', alignItems: 'center', py: 2 }}>
+                    <QuantityButton
+                        quantity={item.quantity}
+                        onIncrease={() => handleQuantityChange(item.quantity + 1)}
+                        onDecrease={() => handleQuantityChange(item.quantity - 1)}
+                    />
+                </Box>
+                <Box sx={{ flex: 0.5, display: 'flex', alignItems: 'center', py: 1, width: 180 }}>
+                    <ProductPrice />
+                </Box>
+                <Box sx={{ flex: 0.7, display: 'flex', alignItems: 'center', py: 1, width: 180 }}>
+                    <Typography sx={{ flex: 1.5, display: 'flex', justifyContent: 'center', fontSize: 18 }}>
+                        {deliveryFeeCondition}
+                    </Typography>
+                </Box>
+            </Box>
+        </Box>
     );
+
+    return isMobile ? <MobileLayout /> : <DesktopLayout />;
 };
 
 export default CartItem;
