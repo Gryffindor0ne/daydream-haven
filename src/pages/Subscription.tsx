@@ -35,7 +35,7 @@ const Subscription = () => {
 
     return (
         <Container maxWidth="xl">
-            <Box sx={{ minHeight: '75vh', pt: isMobile ? 5 : 12, px: 2, mt: 10, mb: 22 }}>
+            <Box sx={{ minHeight: '75vh', pt: isMobile ? 5 : 12, mt: 10, mb: 22 }}>
                 {subscriptions.length !== 0 && <ProductsList lists={subscriptions} />}
             </Box>
         </Container>

@@ -39,55 +39,53 @@ const ProductDetail = () => {
 
     useScrollToTop();
 
+    if (isLoading) return <Box sx={{ minHeight: '120vh' }}></Box>;
+
     return (
         <Container maxWidth="xl">
-            <Box sx={{ minHeight: '75vh', pt: isMobile ? 5 : 12, px: 2, mt: 10, mb: 20 }}>
-                {isLoading ? (
-                    <div></div>
-                ) : (
-                    <>
-                        <Grid container spacing={2} sx={{ mb: 10 }}>
-                            <Grid item xs={12} sm={12} md={6}>
-                                <Box
-                                    sx={{
-                                        maxWidth: '100%',
-                                        height: 'auto',
-                                        px: isTablet ? 2 : 1,
+            <Box sx={{ minHeight: '75vh', pt: isMobile ? 5 : 12, mt: 10, mb: 20 }}>
+                <>
+                    <Grid container spacing={2} sx={{ mb: 10 }}>
+                        <Grid item xs={12} sm={12} md={6}>
+                            <Box
+                                sx={{
+                                    maxWidth: '100%',
+                                    height: 'auto',
+                                    px: isTablet ? 2 : 1,
 
-                                        '& img': {
-                                            width: '100%',
-                                            height: '100%',
-                                        },
-                                    }}
-                                >
-                                    <img src={listItem?.detailImages[0]} alt={`product_${listItem?.name}`} />
-                                </Box>
-                            </Grid>
-
-                            <Grid item xs={12} sm={12} md={6}>
-                                <Box
-                                    sx={{
-                                        px: isMobile ? 1 : 5,
-                                        py: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    {currentPath === 'shop' ? (
-                                        <ProductInfoBox item={listItem as ProductInfo} />
-                                    ) : (
-                                        <SubscriptionInfoBox item={listItem as ProductInfo} />
-                                    )}
-
-                                    <ProductSelectBox product={listItem as ProductInfo} />
-                                </Box>
-                            </Grid>
+                                    '& img': {
+                                        width: '100%',
+                                        height: '100%',
+                                    },
+                                }}
+                            >
+                                <img src={listItem?.detailImages[0]} alt={`product_${listItem?.name}`} />
+                            </Box>
                         </Grid>
 
-                        <ShippingInfo />
-                    </>
-                )}
+                        <Grid item xs={12} sm={12} md={6}>
+                            <Box
+                                sx={{
+                                    px: isMobile ? 1 : 5,
+                                    py: 2,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                {currentPath === 'shop' ? (
+                                    <ProductInfoBox item={listItem as ProductInfo} />
+                                ) : (
+                                    <SubscriptionInfoBox item={listItem as ProductInfo} />
+                                )}
+
+                                <ProductSelectBox product={listItem as ProductInfo} />
+                            </Box>
+                        </Grid>
+                    </Grid>
+
+                    <ShippingInfo />
+                </>
             </Box>
         </Container>
     );

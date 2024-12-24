@@ -25,24 +25,24 @@ const styles = {
     }),
     price: (isMobile: boolean) => ({
         fontSize: isMobile ? 17 : 22,
-        my: 1,
+        my: 0.5,
         px: 2,
     }),
     dividerWrapper: {
         display: 'flex',
         justifyContent: 'center',
-        my: 3,
+        my: 2,
     },
     divider: {
         width: '95%',
     },
     infoRow: {
         display: 'flex',
-        my: 1.5,
+        my: 1.2,
     },
     label: (isMobile: boolean) => ({
-        width: isMobile ? 90 : 120,
-        fontSize: isMobile ? 14 : 16,
+        width: isMobile ? 80 : 120,
+        fontSize: isMobile ? 13 : 16,
         pl: 1,
         mr: 3,
     }),
@@ -53,7 +53,6 @@ const styles = {
     }),
     valueWrapper: {
         display: 'flex',
-        flexDirection: 'row',
         alignItems: 'center',
         flexWrap: 'wrap', // 줄바꿈 허용
     },

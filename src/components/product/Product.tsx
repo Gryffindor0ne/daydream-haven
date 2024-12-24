@@ -9,24 +9,26 @@ import { formatNumber } from '~/utils/number';
 import { ProductInfo } from '~/types/product';
 
 const Product = (content: ProductInfo) => {
-    const { isTabletOrMobile } = useResponsiveLayout();
-
+    const { isMobile } = useResponsiveLayout();
     const navigate = useNavigate();
-
     const { currentPath } = useCurrentPathAndId();
 
     const price200 = findPriceByCapacityAndPeriod(content, '200', 1);
+
+    const handleNavigate = () => {
+        navigate(`/${currentPath}/${content.id}`);
+    };
 
     return (
         <Box
             sx={{
                 pt: 2,
-                px: isTabletOrMobile ? 1 : 3,
-                pb: isTabletOrMobile ? 3 : 4,
+                px: isMobile ? 0 : 2,
+                pb: isMobile ? 2 : 5,
             }}
         >
             <Box
-                onClick={() => navigate(`/${currentPath}/${content.id}`)}
+                onClick={handleNavigate}
                 sx={{
                     maxWidth: '100%',
                     height: 'auto',
@@ -46,11 +48,11 @@ const Product = (content: ProductInfo) => {
                 <img src={content.thumbnail} alt={`product_${content.id}`} />
             </Box>
             <Typography
-                onClick={() => navigate(`/${currentPath}/${content.id}`)}
+                onClick={handleNavigate}
                 sx={{
                     fontFamily: 'Gowun Batang',
-                    fontSize: 16,
-                    mt: 1.5,
+                    fontSize: isMobile ? 13 : 18,
+                    mt: isMobile ? 0.5 : 1,
                     mb: 0.5,
                     px: 2,
                     cursor: 'pointer',
@@ -59,15 +61,11 @@ const Product = (content: ProductInfo) => {
                 {content.name}
             </Typography>
 
-            {currentPath === 'subscription' ? (
-                <Typography sx={{ fontFamily: 'Gowun Batang', fontSize: 14, px: 2 }}>
-                    {`${formatNumber(price200 as number)}원`}
-                </Typography>
-            ) : (
-                <Typography sx={{ fontFamily: 'Gowun Batang', fontSize: 14, px: 2 }}>
-                    {`${formatNumber(content.price)}원`}
-                </Typography>
-            )}
+            <Typography sx={{ fontFamily: 'Gowun Batang', fontSize: isMobile ? 15 : 20, fontWeight: 'bold', px: 2 }}>
+                {currentPath === 'subscription'
+                    ? `${formatNumber(price200 as number)}원`
+                    : `${formatNumber(content.price)}원`}
+            </Typography>
         </Box>
     );
 };
