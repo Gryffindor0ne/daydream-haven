@@ -2,11 +2,16 @@ import axios from 'axios';
 import { axiosInstance } from '~/lib/axiosInstance';
 import { extractAccessTokenFromCookie } from '~/utils/cookiesUtils';
 
-const getAllOrderAPI = async () => {
+interface orderParams {
+    limit: number;
+    page: number;
+}
+
+const getAllOrderAPI = async ({ limit, page }: orderParams) => {
     const accessToken = extractAccessTokenFromCookie();
 
     try {
-        const { data } = await axiosInstance.get(`/orders`, {
+        const { data } = await axiosInstance.get(`/orders?limit=${limit}&page=${page}`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },

@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 
 import getAllOrderAPI from '~/api/getAllOrderAPI';
+import getProductDetailAPI from '~/api/getProductDetailAPI';
+import getSubscriptionDetailAPI from '~/api/getSubscriptionDetailAPI';
 import { useAppDispatch } from '~/app/reduxHooks';
 import OrderList from '~/components/order/OrderList';
+import LoadingSpinner from '~/components/common/LoadingSpinner';
 import { setLoading } from '~/features/auth/authSlice';
 
 import useScrollToTop from '~/hooks/useScrollToTop';
 import useFetchUserInfo from '~/hooks/useFetchUserInfo';
-import useFetchSubscriptionInfo from '~/hooks/useFetchSubscriptionInfo';
-import useFetchProductInfo from '~/hooks/useFecthProductInfo';
 import useResponsiveLayout from '~/hooks/useResponsiveLayout';
 import { transformOrdersWithProducts } from '~/utils/orderTransform';
-import { ProductInfo } from '~/types/product';
 import { formatNumber } from '~/utils/number';
 import { UserInfoProps } from '~/types/user';
 import { OrderDetailProps } from '~/types/order';
@@ -27,12 +27,21 @@ const MyPage = () => {
     useScrollToTop();
 
     const [userInfo, setUserInfo] = useState<UserInfoProps>();
-    const [allOrders, setAllOrders] = useState<OrderDetailProps[]>([]);
-    const [productInfo, setProductInfo] = useState<ProductInfo[]>([]);
-    const [subscriptionInfo, setSubscriptionInfo] = useState<ProductInfo[]>([]);
-    const [productIds, setProductIds] = useState<string>('');
-    const [subscriptionIds, setSubscriptionIds] = useState<string>('');
-    const [transformedOrders, setTransformedOrders] = useState<OrderDetailProps[]>([]);
+
+    const [orders, setOrders] = useState<{
+        items: OrderDetailProps[];
+        hasMore: boolean;
+        isLoading: boolean;
+    }>({
+        items: [],
+        hasMore: true,
+        isLoading: false,
+    });
+
+    const ordersPerPage = 5;
+    const pageRef = useRef(0);
+    const loadMoreRef = useRef<HTMLDivElement>(null);
+    const initialLoadDone = useRef(false);
 
     const extractItemIds = (orders: OrderDetailProps[], type: string) =>
         orders.flatMap((order) => order.items.filter((item) => item.type === type).map((item) => item.id));
@@ -43,53 +52,80 @@ const MyPage = () => {
         dispatch(setLoading(!userInfo));
     }, [dispatch, userInfo]);
 
-    useEffect(() => {
-        const fetchAllOrderInfo = async () => {
-            dispatch(setLoading(true));
-            try {
-                const response = await getAllOrderAPI();
+    const hasMoreRef = useRef(orders.hasMore);
+    const isLoadingRef = useRef(orders.isLoading);
 
-                if (response) {
-                    setAllOrders(response);
+    // 데이터 불러오기 함수
+    const fetchOrders = useCallback(async () => {
+        if (isLoadingRef.current || !hasMoreRef.current) return;
+        isLoadingRef.current = true;
+        setOrders((prev) => ({ ...prev, isLoading: true }));
+
+        try {
+            const response = await getAllOrderAPI({
+                page: pageRef.current, // 최신 page 값 참조
+                limit: ordersPerPage,
+            });
+
+            if (response) {
+                const { data: newOrders, hasMore: moreOrders } = response;
+
+                const productIds = extractItemIds(newOrders, 'product').join(',');
+                const subscriptionIds = extractItemIds(newOrders, 'subscription').join(',');
+
+                const [newProductInfo, newSubscriptionInfo] = await Promise.all([
+                    productIds ? getProductDetailAPI(productIds) : [],
+                    subscriptionIds ? getSubscriptionDetailAPI(subscriptionIds) : [],
+                ]);
+
+                const transformedNewOrders = transformOrdersWithProducts(
+                    newOrders,
+                    newProductInfo,
+                    newSubscriptionInfo,
+                );
+
+                setOrders((prev) => ({
+                    items: [...prev.items, ...transformedNewOrders],
+                    hasMore: moreOrders,
+                    isLoading: false,
+                }));
+
+                pageRef.current += 1;
+                hasMoreRef.current = moreOrders;
+            }
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+        } finally {
+            isLoadingRef.current = false;
+            setOrders((prev) => ({ ...prev, isLoading: false }));
+        }
+    }, []);
+
+    // 초기 데이터 로드
+    useEffect(() => {
+        if (!initialLoadDone.current && orders.items.length === 0) {
+            fetchOrders();
+            initialLoadDone.current = true;
+        }
+    }, [fetchOrders, orders.items.length]);
+
+    // Intersection Observer로 스크롤 감지
+    useEffect(() => {
+        const currentRef = loadMoreRef.current;
+        if (!currentRef) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && orders.hasMore && !orders.isLoading) {
+                    fetchOrders();
                 }
-            } catch (error) {
-                console.error('Error fetching all order info:', error);
-            } finally {
-                dispatch(setLoading(false));
-            }
-        };
+            },
+            { threshold: 0.1 },
+        );
+        observer.observe(currentRef);
 
-        fetchAllOrderInfo();
-    }, [dispatch, setAllOrders]);
-
-    useEffect(() => {
-        if (allOrders.length > 0) {
-            const productIds = extractItemIds(allOrders, 'product').join(',');
-            const subscriptionIds = extractItemIds(allOrders, 'subscription').join(',');
-
-            if (productIds) {
-                setProductIds(productIds);
-            }
-
-            if (subscriptionIds) {
-                setSubscriptionIds(subscriptionIds);
-            }
-        }
-    }, [allOrders]);
-
-    // 상품 정보 가져오기
-    useFetchProductInfo({ productIds, setProductInfo });
-
-    // 구독 정보 가져오기
-    useFetchSubscriptionInfo({ subscriptionIds, setSubscriptionInfo });
-
-    useEffect(() => {
-        if ((allOrders.length > 0 && productInfo.length > 0) || subscriptionInfo.length > 0) {
-            // 주문 내역 변환
-            const newOrders = transformOrdersWithProducts(allOrders, productInfo, subscriptionInfo);
-            setTransformedOrders(newOrders);
-        }
-    }, [allOrders, productInfo, subscriptionInfo]);
+        return () => observer.disconnect();
+    }, [orders.hasMore, orders.isLoading, fetchOrders]);
 
     const handleLogout = () => {
         dispatch({ type: 'auth/logoutUser' });
@@ -232,7 +268,43 @@ const MyPage = () => {
                     >
                         주문 목록
                     </Typography>
-                    {allOrders.length > 0 ? <OrderList orders={transformedOrders} /> : <EmptyOrderMessage />}
+                    {orders.items.length > 0 ? (
+                        <>
+                            <OrderList orders={orders.items} />
+                            <Box ref={loadMoreRef} sx={{ height: '50', my: 10 }}>
+                                {(orders.hasMore || orders.isLoading) && (
+                                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                        <LoadingSpinner />
+                                    </Box>
+                                )}
+                                {!orders.hasMore && orders.items.length > 0 && (
+                                    <Typography
+                                        sx={{
+                                            textAlign: 'center',
+                                            color: 'gray',
+                                            mt: 5,
+                                            fontSize: isTabletOrMobile ? 15 : 18,
+                                        }}
+                                    >
+                                        모든 주문 내역을 불러왔습니다.
+                                    </Typography>
+                                )}
+                            </Box>
+                        </>
+                    ) : (
+                        <>
+                            <Box ref={loadMoreRef} sx={{ height: '50', my: 10 }}>
+                                {/* 목록 불러오기 전 EmptyOrderMessage 뜨는 것 방지 */}
+                                {orders.hasMore || orders.isLoading ? (
+                                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                        <LoadingSpinner />
+                                    </Box>
+                                ) : (
+                                    <EmptyOrderMessage />
+                                )}
+                            </Box>
+                        </>
+                    )}
                 </Box>
             </>
         </Container>
