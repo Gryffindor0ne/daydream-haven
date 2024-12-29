@@ -56,6 +56,7 @@ interface DeliveryInfo extends BaseAddress {
 }
 
 export interface OrderDetailProps {
+    displayOrderId: string;
     id: string;
     status: string;
     items: OrderItemSummaryInfo[];

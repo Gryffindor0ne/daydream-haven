@@ -116,7 +116,7 @@ const OrderDetail = () => {
                         <Grid container spacing={2} sx={{ py: 2, px: 0.5 }}>
                             <InfoRow
                                 label="주문번호"
-                                value={orderDetails.id}
+                                value={orderDetails.displayOrderId}
                                 isTabletOrMobile={isTabletOrMobile}
                                 contentStyleProp={contentStyleProp}
                             />
