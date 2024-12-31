@@ -48,6 +48,9 @@ const ProductSelectBox: React.FC<ProductSelectBoxProps> = ({ product }) => {
     const handleAlertClose = useCallback(() => {
         setShowAlert(false);
         setAlertMessage('');
+        setCapacity('');
+        setGrindSize('');
+        setPeriod('');
     }, []);
 
     const handleCartGuidanceToggle = useCallback((open: boolean) => {
@@ -184,9 +187,9 @@ const ProductSelectBox: React.FC<ProductSelectBoxProps> = ({ product }) => {
 
         const isSubscription = currentPath === 'subscription';
         const isDuplicate = selectedProducts.some((item) => {
-            const baseMatch = item.grindSize === grindSize && item.name === product.name;
+            const baseMatch = item.grindSize === grindSize && item.name === product.name && item.capacity === capacity;
 
-            return isSubscription ? baseMatch && item.capacity === capacity && item.period === period : baseMatch;
+            return isSubscription ? baseMatch && item.period === period : baseMatch;
         });
 
         if (isDuplicate) {
