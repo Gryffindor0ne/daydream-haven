@@ -25,7 +25,7 @@ const Wholesale = () => {
     }, []);
 
     return (
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ minHeight: 1400 }}>
             {showAlert && <BasicPopup open={showAlert} onClose={handleAlertClose} message={alertMessage} />}
             <Box sx={{ minHeight: '75vh', pt: 12, mt: 10 }}></Box>
         </Container>

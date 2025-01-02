@@ -17,9 +17,9 @@ const DuplicateGuidancePopup: React.FC<duplicatePopupProps> = ({
         <Dialog open={open}>
             <DialogTitle
                 sx={{
-                    width: 340,
-                    height: 50,
-                    fontSize: 20,
+                    width: { xs: 320, sm: 400 },
+                    height: 65,
+                    fontSize: { xs: 20, sm: 24 },
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -31,15 +31,23 @@ const DuplicateGuidancePopup: React.FC<duplicatePopupProps> = ({
             <DialogContent>
                 <Typography
                     sx={{
-                        fontSize: 13,
+                        fontSize: { xs: 15, sm: 17 },
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        mb: 0.5,
+                    }}
+                >
+                    장바구니에 동일한 상품이 존재합니다.
+                </Typography>
+                <Typography
+                    sx={{
+                        fontSize: { xs: 15, sm: 17 },
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}
                 >
-                    장바구니에 동일한 상품이 존재합니다.
-                </Typography>
-                <Typography sx={{ fontSize: 13, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     장바구니에 해당 상품을 추가하겠습니까?
                 </Typography>
             </DialogContent>
@@ -55,6 +63,7 @@ const DuplicateGuidancePopup: React.FC<duplicatePopupProps> = ({
                             variant="outlined"
                             onClick={onClose}
                             sx={{
+                                width: 120,
                                 '&:hover': {
                                     color: '#B67352',
                                     background: '#ffffff',
@@ -64,7 +73,7 @@ const DuplicateGuidancePopup: React.FC<duplicatePopupProps> = ({
                         >
                             <Typography
                                 sx={{
-                                    fontSize: 14,
+                                    fontSize: { xs: 15, sm: 18 },
                                 }}
                             >
                                 취소
@@ -80,6 +89,7 @@ const DuplicateGuidancePopup: React.FC<duplicatePopupProps> = ({
                                 onClose();
                             }}
                             sx={{
+                                width: 120,
                                 '&:hover': {
                                     color: '#ffffff',
                                     background: '#B67352',
@@ -88,7 +98,7 @@ const DuplicateGuidancePopup: React.FC<duplicatePopupProps> = ({
                         >
                             <Typography
                                 sx={{
-                                    fontSize: 14,
+                                    fontSize: { xs: 15, sm: 18 },
                                 }}
                             >
                                 확인

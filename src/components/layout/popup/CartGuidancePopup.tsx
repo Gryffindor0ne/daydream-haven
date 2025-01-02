@@ -11,9 +11,9 @@ const CartGuidancePopup: React.FC<cartPopupProps> = ({ open, onClose }: cartPopu
         <Dialog open={open} onClose={() => onClose(false)}>
             <DialogTitle
                 sx={{
-                    width: 340,
+                    width: { xs: 320, sm: 400 },
                     height: 50,
-                    fontSize: 20,
+                    fontSize: { xs: 20, sm: 24 },
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -24,7 +24,13 @@ const CartGuidancePopup: React.FC<cartPopupProps> = ({ open, onClose }: cartPopu
             </DialogTitle>
             <DialogContent>
                 <Typography
-                    sx={{ fontSize: 14, height: 50, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                    sx={{
+                        fontSize: { xs: 16, sm: 18 },
+                        height: 50,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
                 >
                     선택하신 상품이 장바구니에 담겼습니다.
                 </Typography>
@@ -48,7 +54,7 @@ const CartGuidancePopup: React.FC<cartPopupProps> = ({ open, onClose }: cartPopu
                         >
                             <Typography
                                 sx={{
-                                    fontSize: 14,
+                                    fontSize: { xs: 15, sm: 18 },
                                 }}
                             >
                                 계속 쇼핑하기
@@ -71,7 +77,7 @@ const CartGuidancePopup: React.FC<cartPopupProps> = ({ open, onClose }: cartPopu
                         >
                             <Typography
                                 sx={{
-                                    fontSize: 14,
+                                    fontSize: { xs: 15, sm: 18 },
                                 }}
                             >
                                 장바구니 가기
