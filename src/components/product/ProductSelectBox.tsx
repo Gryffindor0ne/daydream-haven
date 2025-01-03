@@ -44,6 +44,8 @@ const ProductSelectBox: React.FC<ProductSelectBoxProps> = ({ product }) => {
     const { isAuthenticated } = useAppSelector(authState);
     const { isMobile } = useResponsiveLayout();
 
+    const isSubscription = currentPath === 'subscription';
+
     // Alert handlers
     const handleAlertClose = useCallback(() => {
         setShowAlert(false);
@@ -81,6 +83,18 @@ const ProductSelectBox: React.FC<ProductSelectBoxProps> = ({ product }) => {
     ) => {
         setter(event.target.value);
     };
+
+    const checkAllOptionsSelected = useCallback(() => {
+        if (selectedProducts.length !== 0) return;
+
+        const isBaseOptionsSelected = grindSize && capacity;
+        const areAllOptionsSelected = isSubscription ? isBaseOptionsSelected && period : isBaseOptionsSelected;
+
+        if (!areAllOptionsSelected) {
+            showAlertMessage('모든 옵션을 선택하여야 합니다.');
+            return;
+        }
+    }, [capacity, grindSize, isSubscription, period, selectedProducts.length, showAlertMessage]);
 
     const createNewProduct = useCallback((): OrderItemSummaryInfo => {
         const baseProduct = {
@@ -156,19 +170,20 @@ const ProductSelectBox: React.FC<ProductSelectBoxProps> = ({ product }) => {
     }, [cartItems, currentPath, selectedProducts]);
 
     const handlePurchase = useCallback(() => {
-        if (selectedProducts.length === 0) {
-            showAlertMessage('옵션을 선택하여야 합니다.');
-            return;
-        }
+        // 모든 옵션 채워졌는지 확인
+        checkAllOptionsSelected();
 
         dispatch(addToOrder(selectedProducts));
         dispatch(updateOrderTotal());
         dispatch(updateDirectOrder(true));
 
         isAuthenticated ? navigate('/order') : navigate('/login', { state: { redirectedFrom: '/order' } });
-    }, [selectedProducts, dispatch, isAuthenticated, navigate, showAlertMessage]);
+    }, [checkAllOptionsSelected, dispatch, selectedProducts, isAuthenticated, navigate]);
 
     const handleAddToCart = useCallback(() => {
+        // 모든 옵션 채워졌는지 확인
+        checkAllOptionsSelected();
+
         const duplicates = checkDuplicateProducts();
 
         if (duplicates.length > 0) {
@@ -179,13 +194,12 @@ const ProductSelectBox: React.FC<ProductSelectBoxProps> = ({ product }) => {
         dispatch(addToCart(selectedProducts));
         dispatch(updateCartTotal());
         setShowCartGuidance(true);
-    }, [checkDuplicateProducts, dispatch, selectedProducts]);
+    }, [checkDuplicateProducts, dispatch, checkAllOptionsSelected, selectedProducts]);
 
     // Effects
     useEffect(() => {
         if (!grindSize) return;
 
-        const isSubscription = currentPath === 'subscription';
         const isDuplicate = selectedProducts.some((item) => {
             const baseMatch = item.grindSize === grindSize && item.name === product.name && item.capacity === capacity;
 
@@ -210,6 +224,7 @@ const ProductSelectBox: React.FC<ProductSelectBoxProps> = ({ product }) => {
         showAlertMessage,
         handleProductManagement.add,
         handleProductManagement,
+        isSubscription,
     ]);
 
     return (
