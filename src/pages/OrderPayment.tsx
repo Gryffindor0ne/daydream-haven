@@ -25,7 +25,7 @@ import { useAppDispatch, useAppSelector } from '~/app/reduxHooks';
 import { orderState } from '~/features/order/orderSlice';
 import { paymentSuccess } from '~/features/payment/paymentSlice';
 import { setLoading } from '~/features/auth/authSlice';
-import AddressSearchForm from '~/components/location/AddressSeacrchForm';
+import AddressSearchForm from '~/components/location/AddressSearchForm';
 import OrderItem from '~/components/order/OrderItem';
 import OrdererInfo from '~/components/order/OrdererInfo';
 

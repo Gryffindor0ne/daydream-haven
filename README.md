@@ -115,7 +115,7 @@ npm run dev
 │  │  │     ├─ CartGuidancePopup.tsx
 │  │  │     └─ DuplicateGuidancePopup.tsx
 │  │  ├─ location
-│  │  │  ├─ AddressSeacrchForm.tsx
+│  │  │  ├─ AddressSearchForm.tsx
 │  │  │  └─ Map.tsx
 │  │  ├─ order
 │  │  │  ├─ OrdererInfo.tsx
@@ -142,11 +142,9 @@ npm run dev
 │  │     └─ paymentSlice.ts
 │  ├─ hooks
 │  │  ├─ useScrollToTop.ts
-│  │  ├─ usesFecthOrderInfo.ts
-│  │  ├─ usesFecthSubscriptionInfo.ts
-│  │  ├─ usesFecthProductInfo.ts
-│  │  ├─ usesFecthUserInfo.ts
-│  │  ├─ usesResponsiveLayout.ts
+│  │  ├─ useFecthOrderInfo.ts
+│  │  ├─ useFecthUserInfo.ts
+│  │  ├─ useResponsiveLayout.ts
 │  │  └─ useCurrentPathAndId.ts
 │  ├─ index.css
 │  ├─ lib
